@@ -1,9 +1,9 @@
-source("bmd.huber.r")
+source("bmd.hsvm.r")
 source("err.r")
 source("lamfix.r")
 source("plot.bmd.r")
-source("plot.bmd.huber.r")
-dyn.load("bmdhuber.so")
+source("plot.bmd.hsvm.r")
+dyn.load("bmdhsvm.so")
 
 dl <- function(r,delta)
 {
@@ -29,14 +29,14 @@ y=sample(c(-1,1),10,replace=T)
 group<-rep(1:40,each=5)
 nobs=nrow(x)
 nvars=ncol(x)
-#m0 <-bmd.huber(y=y,x=x,group=group,eps=1e-6)
+m0 <-bmd.hsvm(y=y,x=x,group=group,eps=1e-6)
 
 bn=as.integer(max(group))
 bs=as.integer(as.numeric(table(group)))
 delta=0.6
 #pf<-1:10
 pf=rep(1,bn)
-m1 <-bmd.huber(y=y,x=x,group=group,eps=1e-13,standardize=T,pf=pf,delta=delta,option="classification")
+m1 <-bmd.hsvm(y=y,x=x,group=group,eps=1e-13,standardize=T,pf=pf,delta=delta,option="classification")
 
 
 one=rep(1, nobs)
