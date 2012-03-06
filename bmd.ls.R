@@ -86,7 +86,7 @@ bmd.ls<-function(x,y,group,
 	}
 	#################################################################################	
 	# call Fortran core
-	fit=.Fortran("blslasso",bn,bs,ix,iy,maj,
+	fit=.Fortran("ls_f",bn,bs,ix,iy,maj,
 								nobs,nvars,as.double(x),as.double(y),
 								pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
 								nalam=integer(1),

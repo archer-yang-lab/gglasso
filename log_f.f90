@@ -1,5 +1,5 @@
 ! --------------------------------------------------
-subroutine blslasso (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
+subroutine log_f (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 					eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! --------------------------------------------------
 	implicit none
@@ -16,7 +16,7 @@ subroutine blslasso (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ula
     double precision :: d,t,dif,unorm,al,alf
  	double precision, dimension (:), allocatable :: b,oldbeta,r,oldb,u,dd,num
  	integer, dimension (:), allocatable :: oidx
-    integer :: i,g,j,l,ctr,ierr,ni,me,start,end
+    integer :: g,j,l,ctr,ierr,ni,me,start,end
 ! - - - begin - - -           	    
 ! - - - allocate variables - - -
 	allocate(b(0:nvars),stat=jerr)                                                                                                
@@ -39,7 +39,7 @@ subroutine blslasso (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ula
 ! - - - num - - -   
 	num=sqrt(dble(bs))*pf
 ! - - - some initial setup - - -   
-	r = y
+	r = 0.0D0
 	b=0.0D0                                                           
 	oldbeta=0.0D0
 	idx=0                                                                  
@@ -64,12 +64,12 @@ subroutine blslasso (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ula
 					if(pf(g)>0.0D0) then
 				      	allocate(u(bs(g)),stat=ierr)  
 					    if(ierr/=0) return
-						u=matmul(r,x(:,ix(g):iy(g)))
+						u=matmul(y/(1.0D0+exp(r)),x(:,ix(g):iy(g)))
 			    		al=max(al,sqrt(dot_product(u,u))/num(g))
 						deallocate(u)
 					endif
 				end do
-				al=2.0D0*al*alf
+				al=al*alf
 			endif
 		endif
 		ctr=0     
@@ -97,19 +97,19 @@ subroutine blslasso (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ula
 				    jerr=jerr+ierr				                                                                                                                                                              
 				    if(jerr/=0) return                
 		      		oldb=b(start:end)      
-					u=matmul(r,x(:,start:end))
-					u=maj(g)*b(start:end)+u
+					u=matmul(y/(1.0D0+exp(r)),x(:,start:end))
+					u=0.25D0*maj(g)*b(start:end)+u
 					unorm=sqrt(dot_product(u,u)) 
-					t=unorm-0.5D0*num(g)*al
+					t=unorm-num(g)*al
 					if(t>0.0D0) then
-		      			b(start:end)=u*t/(maj(g)*unorm)                                                                                                                    
+		      			b(start:end)=4.0D0*u*t/(maj(g)*unorm)                                                                                                                    
 					else           
 						b(start:end)=0.0D0
 					endif
                     dd=b(start:end)-oldb     		      		                                                                                           
-		      		if(any(dd/=0.0D0)) then                                         
+		      		if(any(abs(dd)>0.0D0)) then                                         
 		      			dif=max(dif,maxval(abs(dd)))                                                  
-						r=r-matmul(x(:,start:end),dd)
+						r=r+y*matmul(x(:,start:end),dd)
 		      			if(oidx(g)==0) then                                           
 		      				ni=ni+1      
 		      				if(ni>pmax) exit                                             
@@ -120,13 +120,14 @@ subroutine blslasso (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ula
 					deallocate(u,dd,oldb)
 				enddo  
 				if(ni>pmax) exit	                                            
-				d=sum(r)/nobs                                              
-			    if(d/=0.0D0) then                                            
+			    d = sum(y/(1.0D0+exp(r)))  
+				d = 4.0D0*d/nobs                                                     
+			    if(d /= 0.0D0) then                                            
 			      	b(0)=b(0)+d    
-			   		r=r-d                                                                                                                    
+			   		r=r+y*d                                                                                                                    
 			      	dif=max(dif,abs(d))                                                  
-				endif  
-				if(dif<eps) exit
+				endif
+			    if(dif<eps) exit    
 ! --inner loop----------------------                                                       	
 				do                                   
 				    npass=npass+1
@@ -143,29 +144,30 @@ subroutine blslasso (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ula
 					    jerr=jerr+ierr				                                                                                                                                                              
 					    if(jerr/=0) return                                              
 			      		oldb=b(start:end)      
-						u=matmul(r,x(:,start:end))
-						u=maj(g)*b(start:end)+u
+						u=matmul(y/(1.0D0+exp(r)),x(:,start:end))
+						u=0.25D0*maj(g)*b(start:end)+u
 						unorm=sqrt(dot_product(u,u)) 
-						t=unorm-0.5D0*num(g)*al
+						t=unorm-num(g)*al
 						if(t>0.0D0) then
-			      			b(start:end)=u*t/(maj(g)*unorm)                                                                                                                    
+			      			b(start:end)=4.0D0*u*t/(maj(g)*unorm)                                                                                                                    
 						else           
 							b(start:end)=0.0D0
 						endif
 	                    dd=b(start:end)-oldb     		      		                                                                                           
-			      		if(any(dd/=0.0D0)) then                                         
+			      		if(any(abs(dd)>0.0D0)) then                                         
 			      			dif=max(dif,maxval(abs(dd)))                                                  
-							r=r-matmul(x(:,start:end),dd)
+							r=r+y*matmul(x(:,start:end),dd)
 						endif
 						deallocate(u,dd,oldb)                          
 					enddo                           
-			   	    d=sum(r)/nobs                                          
+				    d = sum(y/(1.0D0+exp(r)))  
+					d = 4.0D0*d/nobs                                                        
 				    if(d/=0.0D0) then                                            
 				      	b(0)=b(0)+d    
-				   		r=r-d                                                                                                                    
+				   		r=r+y*d                                                                                                                    
 				      	dif=max(dif,abs(d))                                                  
 					endif  
-					if(dif<eps) exit
+					if(dif<eps) exit   
 				enddo
 			enddo                                                      
 		    if(ni>pmax) exit  
@@ -201,4 +203,4 @@ subroutine blslasso (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ula
 	enddo    
 	deallocate(b,oldbeta,r,oidx,num)                                         
 	return                                                               
-end subroutine blslasso
+end subroutine log_f

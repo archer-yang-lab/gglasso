@@ -1,5 +1,5 @@
 ! --------------------------------------------------
-subroutine bhreglasso (delta,bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
+subroutine hreg_f (delta,bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 					eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! --------------------------------------------------
 	implicit none
@@ -252,4 +252,4 @@ subroutine bhreglasso (delta,bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,f
 	enddo    
 	deallocate(b,oldbeta,r,oidx,num)                                         
 	return                                                               
-end subroutine bhreglasso
+end subroutine hreg_f

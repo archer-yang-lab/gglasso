@@ -14,7 +14,7 @@ bmd.logit<-function(x,y,group,
   	if(is.null(vnames))vnames=paste("V",seq(nvars),sep="")
 	if(!is.numeric(y)) stop("The response must be numeric. Factors must be converted to numeric")
 	if(length(y)!=nobs) stop("x and y have different number of rows")
-    if(!all(is.element(y,c(-1,1)))) stop("Logistic requires the response to be in {-1,1}")
+    if(!all(is.element(y,c(-1,1)))) stop("classification requires the response to be in {-1,1}")
 	#################################################################################	
 	#group setup
 	if (!missing(group))
@@ -88,7 +88,7 @@ bmd.logit<-function(x,y,group,
 	}
 	#################################################################################	
 	# call Fortran core
-	fit=.Fortran("bloglasso",bn,bs,ix,iy,maj,
+	fit=.Fortran("log_f",bn,bs,ix,iy,maj,
 								nobs,nvars,as.double(x),as.double(y),
 								pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
 								nalam=integer(1),

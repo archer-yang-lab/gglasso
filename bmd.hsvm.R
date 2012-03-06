@@ -91,7 +91,7 @@ bmd.hsvm<-function(x,y,group,
 	}
 	#################################################################################	
 	# call Fortran core
-	 fit=.Fortran("bhsvmlasso",delta,bn,bs,ix,iy,maj,
+	 fit=.Fortran("hsvm_f",delta,bn,bs,ix,iy,maj,
 									nobs,nvars,as.double(x),as.double(y),
 									pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
 									nalam=integer(1),

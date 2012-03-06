@@ -1,9 +1,9 @@
-bmd.huber<-function(x,y,group,
+bmd.hreg<-function(x,y,group,
 				nlambda=100,lambda.min=ifelse(nobs<nvars,5e-2,1e-3),lambda, 
 				standardize=TRUE,eps=1e-4, 
 				dfmax=as.integer(max(group))+1,pmax=min(dfmax*1.2,as.integer(max(group))),
 				pf=rep(1,as.integer(max(group))),maxit=100,
-				delta=1,option=c("classification","regression"))
+				delta=1)
 {
 	#################################################################################	
 	#data setup
@@ -15,8 +15,6 @@ bmd.huber<-function(x,y,group,
   	if(is.null(vnames))vnames=paste("V",seq(nvars),sep="")
 	if(!is.numeric(y)) stop("The response must be numeric. Factors must be converted to numeric")
 	if(length(y)!=nobs) stop("x and y have different number of rows")
-	option <- match.arg(option)
-    if((option=="classification") & (!all(is.element(y,c(-1,1))))) stop("Logistic requires the response to be in {-1,1}")
 	#################################################################################	
 	#group setup
 	if (!missing(group))
@@ -92,18 +90,7 @@ bmd.huber<-function(x,y,group,
 	}
 	#################################################################################	
 	# call Fortran core
-	if(option=="classification") fit=.Fortran("bhsvmlasso",delta,bn,bs,ix,iy,maj,
-									nobs,nvars,as.double(x),as.double(y),
-									pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
-									nalam=integer(1),
-									b0=double(nlam),
-									beta=double(nvars*nlam),
-									idx=integer(pmax),
-									nbeta=integer(nlam),
-									alam=double(nlam),
-									npass=integer(1),
-									jerr=integer(1))
-	else fit=.Fortran("bhreglasso",delta,bn,bs,ix,iy,maj,
+	fit=.Fortran("hreg_f",delta,bn,bs,ix,iy,maj,
 									nobs,nvars,as.double(x),as.double(y),
 									pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
 									nalam=integer(1),
@@ -144,7 +131,6 @@ bmd.huber<-function(x,y,group,
 	names(b0)=stepnames
 	outlist=list(b0=b0,beta=beta,df=df,
 	lambda=lam,npasses=fit$npass,jerr=fit$jerr,dim=dd,call=this.call)
-	if(option=="classification") class(outlist)=c("bmd.huber","bmd.hubsvm","bmd")
-	else class(outlist)=c("bmd.huber","bmd.hubreg","bmd")
+	else class(outlist)=c("bmd.hreg","bmd")
 	outlist
 }
