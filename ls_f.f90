@@ -1,5 +1,5 @@
 ! --------------------------------------------------
-subroutine ls_f (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
+subroutine ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 					eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! --------------------------------------------------
 	implicit none
@@ -9,12 +9,12 @@ subroutine ls_f (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 	integer :: nobs,nvars,dfmax,pmax,nlam,nalam,npass,jerr,maxit
 	integer :: idx(pmax),nbeta(nlam)                   
 	double precision :: flmin,eps
-    double precision :: x(nobs,nvars),y(nobs),pf(bn),ulam(nlam),maj(bn)           
+    double precision :: x(nobs,nvars),y(nobs),pf(bn),ulam(nlam),gam(bn)           
     double precision :: b0(nlam),beta(nvars,nlam),alam(nlam) 
 ! - - - local declarations - - -
 ! - - - local declarations - - -                    
     double precision :: d,t,dif,unorm,al,alf
- 	double precision, dimension (:), allocatable :: b,oldbeta,r,oldb,u,dd,num
+ 	double precision, dimension (:), allocatable :: b,oldbeta,r,oldb,u,dd
  	integer, dimension (:), allocatable :: oidx
     integer :: i,g,j,l,ctr,ierr,ni,me,start,end
 ! - - - begin - - -           	    
@@ -25,9 +25,7 @@ subroutine ls_f (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 	allocate(r(1:nobs),stat=ierr)                                           
 	jerr=jerr+ierr                                                     
 	allocate(oidx(1:bn),stat=ierr)                                          
-	jerr=jerr+ierr        
-	allocate(num(1:bn),stat=ierr)                                          
-	jerr=jerr+ierr                                                                                                                                                                                             
+	jerr=jerr+ierr                                                                                                                                                                                          
 	if(jerr/=0) return
 ! - - - checking pf - - -	
 	if(maxval(pf) <= 0.0D0) then
@@ -36,8 +34,6 @@ subroutine ls_f (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 	endif
 	pf=max(0.0D0,pf)                                                       
 	pf=pf*bn/sum(pf)
-! - - - num - - -   
-	num=sqrt(dble(bs))*pf
 ! - - - some initial setup - - -   
 	r = y
 	b=0.0D0                                                           
@@ -65,7 +61,7 @@ subroutine ls_f (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 				      	allocate(u(bs(g)),stat=ierr)  
 					    if(ierr/=0) return
 						u=matmul(r,x(:,ix(g):iy(g)))
-			    		al=max(al,sqrt(dot_product(u,u))/num(g))
+			    		al=max(al,sqrt(dot_product(u,u))/pf(g))
 						deallocate(u)
 					endif
 				end do
@@ -98,11 +94,11 @@ subroutine ls_f (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 				    if(jerr/=0) return                
 		      		oldb=b(start:end)      
 					u=matmul(r,x(:,start:end))
-					u=maj(g)*b(start:end)+u
+					u=gam(g)*b(start:end)+u
 					unorm=sqrt(dot_product(u,u)) 
-					t=unorm-0.5D0*num(g)*al
+					t=unorm-0.5D0*pf(g)*al
 					if(t>0.0D0) then
-		      			b(start:end)=u*t/(maj(g)*unorm)                                                                                                                    
+		      			b(start:end)=u*t/(gam(g)*unorm)                                                                                                                    
 					else           
 						b(start:end)=0.0D0
 					endif
@@ -144,11 +140,11 @@ subroutine ls_f (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 					    if(jerr/=0) return                                              
 			      		oldb=b(start:end)      
 						u=matmul(r,x(:,start:end))
-						u=maj(g)*b(start:end)+u
+						u=gam(g)*b(start:end)+u
 						unorm=sqrt(dot_product(u,u)) 
-						t=unorm-0.5D0*num(g)*al
+						t=unorm-0.5D0*pf(g)*al
 						if(t>0.0D0) then
-			      			b(start:end)=u*t/(maj(g)*unorm)                                                                                                                    
+			      			b(start:end)=u*t/(gam(g)*unorm)                                                                                                                    
 						else           
 							b(start:end)=0.0D0
 						endif
@@ -199,6 +195,6 @@ subroutine ls_f (bn,bs,ix,iy,maj,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 		enddo
 		if(me>dfmax) exit                                                                                                           
 	enddo    
-	deallocate(b,oldbeta,r,oidx,num)                                         
+	deallocate(b,oldbeta,r,oidx)                                         
 	return                                                               
 end subroutine ls_f

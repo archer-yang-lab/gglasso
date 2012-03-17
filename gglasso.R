@@ -63,7 +63,6 @@ gglasso <-function(x,y,group=NULL,
 	else{
 		for(g in 1:bn) gamma[g] <- max(eigen(crossprod(x[,ix[g]:iy[g]]))$values)
 	}
-	gamma=as.double(gamma)
 	#################################################################################	
 	#parameter setup
 	if(delta<0) stop("delta must be non-negtive")
