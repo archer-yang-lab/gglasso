@@ -84,11 +84,11 @@ getoutput = function(fit, maxit, pmax, nvars, vnames) {
         `-1` = print(errmsg$msg, call. = FALSE))
 	dd=c(nvars,nalam)
 	if(nbetamax>0){
-		beta=matrix(fit$beta[seq(nvars*nalam)],nvars,nalam,dimnames=list(vnames,stepnames))
-		df=apply(abs(beta)>0,2,sum)
+		beta = matrix(fit$beta[seq(nvars*nalam)],nvars,nalam,dimnames=list(vnames,stepnames))
+		df = apply(abs(beta)>0,2,sum)
 	}
     else {
-        beta = zeromat(nvars, nalam, vnames, stepnames)
+        beta = matrix(0,nvars,nalam,dimnames=list(vnames,stepnames))
         df = rep(0, nalam)
     }
     b0 = fit$b0
@@ -167,16 +167,4 @@ nonzero = function(beta, bystep = FALSE) {
         }
         else which
     }
-} 
-
-
-
-zeromat = function(nvars, nalam, vnames, stepnames) {
-    ca = rep(0, nalam)
-    ia = seq(nalam + 1)
-    ja = rep(1, nalam)
-    dd = c(nvars, nalam)
-    new("dgCMatrix", Dim = dd, Dimnames = list(vnames, stepnames), 
-        x = as.vector(ca), p = as.integer(ia - 1), i = as.integer(ja - 
-            1))
-} 
+}

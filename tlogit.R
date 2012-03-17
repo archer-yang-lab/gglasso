@@ -1,7 +1,7 @@
-source("bmd.r")
+source("gglasso.r")
 source("model.r")
 source("utilities.r")
-dyn.load("bmd.so")
+dyn.load("gglasso.so")
 set.seed(1)
 x=matrix(rnorm(10*200),10,200) 
 set.seed(1)
@@ -9,14 +9,14 @@ y=sample(c(-1,1),10,replace=T)
 group<-rep(1:40,each=5)
 nobs=nrow(x)
 nvars=ncol(x)
-#m0 <-bmd.logit(y=y,x=x,group=group,eps=1e-6)
+#m0 <-gglasso.logit(y=y,x=x,group=group,eps=1e-6)
 
 bn=as.integer(max(group))
 bs=as.integer(as.numeric(table(group)))
 
 #pf<-1:10
 pf=rep(1,bn)
-system.time(m1 <-bmd(loss="logit",y=y,x=x,group=group,eps=1e-12,standardize=F,pf=pf))
+system.time(m1 <-gglasso(loss="logit",y=y,x=x,group=group,eps=1e-12,standardize=F,pf=pf))
 
 
 one=rep(1, nobs)

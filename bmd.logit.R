@@ -1,4 +1,4 @@
-bmd.logit<-function(x,y,group,
+gglasso.logit<-function(x,y,group,
 				nlambda=100,lambda.factor=ifelse(nobs<nvars,5e-2,1e-3),lambda, 
 				standardize=TRUE,eps=1e-4, 
 				dfmax=as.integer(max(group))+1,pmax=min(dfmax*1.2,as.integer(max(group))),
@@ -129,6 +129,6 @@ bmd.logit<-function(x,y,group,
 	names(b0)=stepnames
 	outlist=list(b0=b0,beta=beta,df=df,
 	lambda=lam,npasses=fit$npass,jerr=fit$jerr,dim=dd,call=this.call)
-	class(outlist)=c("bmd.logit","bmd")
+	class(outlist)=c("gglasso.logit","gglasso")
 	outlist
 }

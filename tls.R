@@ -1,7 +1,8 @@
-source("bmd.r")
+source("gglasso.r")
 source("model.r")
 source("utilities.r")
-dyn.load("bmd.so")
+source("plot.gglasso.r")
+dyn.load("gglasso.so")
 
 
 dl <- function(r)
@@ -22,12 +23,12 @@ y=sample(c(-1,1),10,replace=T)
 group<-rep(1:200,each=1)
 nobs=nrow(x)
 nvars=ncol(x)
-#m0 <-bmd.ls(y=y,x=x,group=group,eps=1e-6)
+#m0 <-gglasso.ls(y=y,x=x,group=group,eps=1e-6)
 
 bn=as.integer(max(group))
 bs=as.integer(as.numeric(table(group)))
 pf=rep(1,bn)
-m1 <-bmd(loss="ls",y=y,x=x,group=group,eps=1e-13,standardize=F,pf=pf)
+m1 <-gglasso(loss="ls",y=y,x=x,group=group,eps=1e-13,standardize=F,pf=pf)
 
 
 one=rep(1, nobs)

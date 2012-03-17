@@ -1,4 +1,4 @@
-bmd <-function(x,y,group=NULL,
+gglasso <-function(x,y,group=NULL,
 	           loss = c("ls","hreg","logit","sqsvm","hsvm"),
 				nlambda=100,lambda.factor=ifelse(nobs<nvars,5e-2,1e-3),lambda=NULL, 
 				pf=rep(1,as.integer(max(group))),
@@ -103,6 +103,6 @@ bmd <-function(x,y,group=NULL,
 	# output	
     if(is.null(lambda)) fit$lambda = lamfix(fit$lambda)
     fit$call = this.call
-    class(fit) = c("bmd", class(fit))
+    class(fit) = c("gglasso", class(fit))
     fit
 }
