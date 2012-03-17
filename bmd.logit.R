@@ -1,5 +1,5 @@
 bmd.logit<-function(x,y,group,
-				nlambda=100,lambda.min=ifelse(nobs<nvars,5e-2,1e-3),lambda, 
+				nlambda=100,lambda.factor=ifelse(nobs<nvars,5e-2,1e-3),lambda, 
 				standardize=TRUE,eps=1e-4, 
 				dfmax=as.integer(max(group))+1,pmax=min(dfmax*1.2,as.integer(max(group))),
 				pf=rep(1,as.integer(max(group))),maxit=100)
@@ -73,9 +73,9 @@ bmd.logit<-function(x,y,group,
 	nlam=as.integer(nlambda)
 	if(missing(lambda))
 	{
-		if(lambda.min>=1) stop("lambda.min should be less than 1")
-		if(lambda.min<1.0E-6) stop("lambda.min is too small")
-		flmin=as.double(lambda.min)
+		if(lambda.factor>=1) stop("lambda.factor should be less than 1")
+		if(lambda.factor<1.0E-6) stop("lambda.factor is too small")
+		flmin=as.double(lambda.factor)
 		ulam=double(1) #ulam=0 if lambda is missing
 	}
 	else

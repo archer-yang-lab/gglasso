@@ -1,9 +1,7 @@
-source("bmd.huber.r")
-source("err.r")
-source("lamfix.r")
-source("plot.bmd.r")
-source("plot.bmd.huber.r")
-dyn.load("bmdhuber.so")
+source("bmd.r")
+source("model.r")
+source("utilities.r")
+dyn.load("bmd.so")
 
 dl <- function(r,delta)
 {
@@ -32,7 +30,7 @@ bn=as.integer(max(group))
 bs=as.integer(as.numeric(table(group)))
 delta=0.4
 pf=rep(1,bn)
-m1 <-bmd.huber(y=y,x=x,group=group,eps=1e-13,standardize=T,pf=pf,delta=delta,option="regression")
+m1 <- bmd(loss="hreg",y=y,x=x,group=group,eps=1e-13,standardize=T,pf=pf,delta=delta)
 
 
 one=rep(1, nobs)
@@ -76,7 +74,7 @@ for (l in 1:length(m1$lambda))
 		if(Bnorm!=0)
 		{
 			AA<- -yxl+  B[ind,l]*m1$lambda[l]*pf[g]*sqrt(bs[g])/Bnorm
-			if(abs(sum(AA))<1e-10) MM[g,l] <- "."
+			if(abs(sum(AA))<1e-9) MM[g,l] <- "."
 			else{
 				MM[g,l] <- "F"
 				print(AA)

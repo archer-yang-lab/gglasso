@@ -1,9 +1,7 @@
-source("bmd.logit.r")
-source("err.r")
-source("lamfix.r")
-source("plot.bmd.r")
-source("plot.bmd.logit.r")
-dyn.load("bmdlogit.so")
+source("bmd.r")
+source("model.r")
+source("utilities.r")
+dyn.load("bmd.so")
 set.seed(1)
 x=matrix(rnorm(10*200),10,200) 
 set.seed(1)
@@ -18,7 +16,7 @@ bs=as.integer(as.numeric(table(group)))
 
 #pf<-1:10
 pf=rep(1,bn)
-system.time(m1 <-bmd.logit(y=y,x=x,group=group,eps=1e-12,standardize=F,pf=pf))
+system.time(m1 <-bmd(loss="logit",y=y,x=x,group=group,eps=1e-12,standardize=F,pf=pf))
 
 
 one=rep(1, nobs)
@@ -62,12 +60,11 @@ for (l in 1:length(m1$lambda))
 		if(Bnorm!=0)
 		{
 			AA<- yxl+  B[ind,l]*m1$lambda[l]*pf[g]*sqrt(bs[g])/Bnorm
-			if(abs(sum(AA))<1e-10) MM[g,l] <- "."
+			if(abs(sum(AA))<1e-9) MM[g,l] <- "."
 			else{
 				MM[g,l] <- "F"
 				print(AA)
-			} 
-			
+			}
 		}
 		else
 		{

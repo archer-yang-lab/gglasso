@@ -1,9 +1,8 @@
-source("bmd.ls.r")
-source("err.r")
-source("lamfix.r")
-source("plot.bmd.r")
-source("plot.bmd.ls.r")
-dyn.load("bmdls.so")
+source("bmd.r")
+source("model.r")
+source("utilities.r")
+dyn.load("bmd.so")
+
 
 dl <- function(r)
 {
@@ -28,7 +27,7 @@ nvars=ncol(x)
 bn=as.integer(max(group))
 bs=as.integer(as.numeric(table(group)))
 pf=rep(1,bn)
-m1 <-bmd.ls(y=y,x=x,group=group,eps=1e-13,standardize=F,pf=pf)
+m1 <-bmd(loss="ls",y=y,x=x,group=group,eps=1e-13,standardize=F,pf=pf)
 
 
 one=rep(1, nobs)
