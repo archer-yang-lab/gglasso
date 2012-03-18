@@ -69,7 +69,7 @@ for (l in 1:length(m1$lambda))
 		ind=(group==g)
 		ri <- y*(x%*%B[,l]+m1$b0[l])
  		L = dl(ri,delta)
-		yxl <- t(x[,ind])%*%(L*y)
+		yxl <- t(x[,ind])%*%(L*y)/nobs
 		yxlnorm <- sqrt(crossprod(yxl,yxl))
 		Bnorm<-sqrt(crossprod(B[ind,l],B[ind,l]))
 		

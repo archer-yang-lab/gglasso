@@ -61,7 +61,7 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 					if(pf(g)>0.0D0) then
 				      	allocate(u(bs(g)),stat=ierr)  
 					    if(ierr/=0) return
-						u=matmul(dl,x(:,ix(g):iy(g)))
+						u=matmul(dl,x(:,ix(g):iy(g)))/nobs
 			    		al=max(al,sqrt(dot_product(u,u))/pf(g))
 						deallocate(u)
 					endif
@@ -95,7 +95,7 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 				    if(jerr/=0) return                
 		      		oldb=b(start:end)      
                     dl = 2.0 * sign(min(abs(r) , delta) , r)
-					u=matmul(dl,x(:,start:end))
+					u=matmul(dl,x(:,start:end))/nobs
 					u=gam(g)*b(start:end)+u
 					unorm=sqrt(dot_product(u,u)) 
 					t=unorm-pf(g)*al
@@ -144,7 +144,7 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 					    if(jerr/=0) return                                              
 			      		oldb=b(start:end)      
 	                    dl = 2.0 * sign(min(abs(r) , delta) , r)
-						u=matmul(dl,x(:,start:end))
+						u=matmul(dl,x(:,start:end))/nobs
 						u=gam(g)*b(start:end)+u
 						unorm=sqrt(dot_product(u,u)) 
 						t=unorm-pf(g)*al

@@ -3,6 +3,7 @@ ls<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 {
 	#################################################################################	
 	# call Fortran core
+	gamma = gamma / nobs
 	gamma = as.double(gamma)
 	fit=.Fortran("ls_f",bn,bs,ix,iy,gamma,
 								nobs,nvars,as.double(x),as.double(y),
@@ -29,7 +30,7 @@ hreg<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 {
 	#################################################################################	
 	# call Fortran core
-	gamma = 4 * gamma
+	gamma = 4 * gamma / nobs
 	gamma = as.double(gamma)
 	fit=.Fortran("hreg_f",delta,bn,bs,ix,iy,gamma,
 								nobs,nvars,as.double(x),as.double(y),
@@ -55,7 +56,7 @@ logit<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 {
 	#################################################################################	
 	# call Fortran core
-	gamma = 0.25 * gamma
+	gamma = 0.25 * gamma / nobs
 	gamma = as.double(gamma)
 	fit=.Fortran("log_f",bn,bs,ix,iy,gamma,
 								nobs,nvars,as.double(x),as.double(y),
@@ -82,7 +83,7 @@ hsvm<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 {
 	#################################################################################	
 	# call Fortran core
-	gamma = 2 * gamma / delta
+	gamma = 2 * gamma / (delta * nobs)
 	gamma = as.double(gamma)
 	fit=.Fortran("hsvm_f",delta,bn,bs,ix,iy,gamma,
 								nobs,nvars,as.double(x),as.double(y),
@@ -108,7 +109,7 @@ sqsvm<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 {
 	#################################################################################	
 	# call Fortran core
-	gamma = 4 * gamma
+	gamma = 4 * gamma / nobs
 	gamma = as.double(gamma)
 	fit=.Fortran("sqsvm_f",bn,bs,ix,iy,gamma,
 								nobs,nvars,as.double(x),as.double(y),

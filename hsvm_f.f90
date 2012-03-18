@@ -69,7 +69,7 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 					if(pf(g)>0.0D0) then
 				      	allocate(u(bs(g)),stat=ierr)  
 					    if(ierr/=0) return
-						u=matmul(y*dl,x(:,ix(g):iy(g)))
+						u=matmul(y*dl,x(:,ix(g):iy(g)))/nobs
 			    		al=max(al,sqrt(dot_product(u,u))/pf(g))
 						deallocate(u)
 					endif
@@ -111,7 +111,7 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 					 	else 
 							dl(i) = (1.0D0 - r(i)) / delta
 						endif
-						u = u + dl(i)*y(i)*x(i,start:end)
+						u = u + dl(i)*y(i)*x(i,start:end)/nobs
 					enddo
 					u=gam(g)*b(start:end) + u
 					unorm=sqrt(dot_product(u,u)) 
@@ -178,7 +178,7 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 						 	else 
 								dl(i) = (1.0D0 - r(i)) / delta
 							endif
-							u = u + dl(i)*y(i)*x(i,start:end)
+							u = u + dl(i)*y(i)*x(i,start:end)/nobs
 						enddo
 						u=gam(g)*b(start:end) + u
 						unorm=sqrt(dot_product(u,u)) 

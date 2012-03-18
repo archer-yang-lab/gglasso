@@ -61,7 +61,7 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
 					if(pf(g)>0.0D0) then
 				      	allocate(u(bs(g)),stat=ierr)  
 					    if(ierr/=0) return
-						u=matmul(y*dl,x(:,ix(g):iy(g)))
+						u=matmul(y*dl,x(:,ix(g):iy(g)))/nobs
 			    		al=max(al,sqrt(dot_product(u,u))/pf(g))
 						deallocate(u)
 					endif
@@ -95,7 +95,7 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
 				    if(jerr/=0) return                
 		      		oldb=b(start:end)
 		            dl = 2.0 * dim(1.0, r)      
-					u=matmul(y*dl,x(:,start:end))
+					u=matmul(y*dl,x(:,start:end))/nobs
 					u=gam(g)*b(start:end)+u
 					unorm=sqrt(dot_product(u,u)) 
 					t=unorm-pf(g)*al
@@ -144,7 +144,7 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
 					    if(jerr/=0) return                                              
 			      		oldb=b(start:end)      
 					    dl = 2.0 * dim(1.0, r)      
-						u=matmul(y*dl,x(:,start:end))
+						u=matmul(y*dl,x(:,start:end))/nobs
 						u=gam(g)*b(start:end)+u
 						unorm=sqrt(dot_product(u,u)) 
 						t=unorm-pf(g)*al

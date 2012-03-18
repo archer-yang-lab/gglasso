@@ -60,7 +60,7 @@ subroutine log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 					if(pf(g)>0.0D0) then
 				      	allocate(u(bs(g)),stat=ierr)  
 					    if(ierr/=0) return
-						u=matmul(y/(1.0D0+exp(r)),x(:,ix(g):iy(g)))
+						u=matmul(y/(1.0D0+exp(r)),x(:,ix(g):iy(g)))/nobs
 			    		al=max(al,sqrt(dot_product(u,u))/pf(g))
 						deallocate(u)
 					endif
@@ -93,7 +93,7 @@ subroutine log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 				    jerr=jerr+ierr				                                                                                                                                                              
 				    if(jerr/=0) return                
 		      		oldb=b(start:end)      
-					u=matmul(y/(1.0D0+exp(r)),x(:,start:end))
+					u=matmul(y/(1.0D0+exp(r)),x(:,start:end))/nobs
 					u=gam(g)*b(start:end)+u
 					unorm=sqrt(dot_product(u,u)) 
 					t=unorm-pf(g)*al
@@ -140,7 +140,7 @@ subroutine log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 					    jerr=jerr+ierr				                                                                                                                                                              
 					    if(jerr/=0) return                                              
 			      		oldb=b(start:end)      
-						u=matmul(y/(1.0D0+exp(r)),x(:,start:end))
+						u=matmul(y/(1.0D0+exp(r)),x(:,start:end))/nobs
 						u=gam(g)*b(start:end)+u
 						unorm=sqrt(dot_product(u,u)) 
 						t=unorm-pf(g)*al
