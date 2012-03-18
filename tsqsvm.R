@@ -2,63 +2,46 @@ source("gglasso.r")
 source("model.r")
 source("utilities.r")
 dyn.load("gglasso.so")
-
-dl <- function(r,delta)
-{
-	d=rep(0,length(r))
-	for (i in 1:length(r))
-	{
-		if (r[i]>1) d[i]=0
-		else 
-		{
-			if (r[i]<=(1-delta)) d[i]=-1
-			else d[i]=(r[i]-1)/delta
-		}
-	}
-	return (d)
-}
-
-
-
-set.seed(11)
+set.seed(1)
 x=matrix(rnorm(100*200),100,200) 
-set.seed(11)
+set.seed(1)
 y=sample(c(-1,1),100,replace=T)
 group<-rep(1:40,each=5)
 nobs=nrow(x)
 nvars=ncol(x)
+#m0 <-gglasso.logit(y=y,x=x,group=group,eps=1e-6)
 
 bn=as.integer(max(group))
 bs=as.integer(as.numeric(table(group)))
-delta = 0.1
+
 #pf<-1:10
 pf=rep(1,bn)
-m1 <- gglasso(loss="hsvm",y=y,x=x,group=group,eps=1e-11,standardize=T,pf=pf,delta=delta)
+system.time(m1 <-gglasso(loss="sqsvm",y=y,x=x,group=group,eps=1e-14,standardize=F,pf=pf))
 
 
 one=rep(1, nobs)
 meanx=drop(one %*% x)/nobs
 x=scale(x, meanx, FALSE)
 
-ix=rep(0,bn)
-iy=rep(0,bn)
-j=1
-for(g in 1:bn)
-{
-	ix[g]=j
-	iy[g]=j+bs[g]-1
-	j=j+bs[g]
-}
-ix=as.integer(ix)
-iy=as.integer(iy)
-for (g in 1:bn)
-{
-	ind=ix[g]:iy[g]
-	decomp <- qr(x[,ind])
-	if(decomp$rank < bs[g]) stop("Block belonging to columns ",  ## Warn if block has not full rank
-	paste(ind, collapse = ", ")," has not full rank! \n")
-	x[,ind] <- qr.Q(decomp)
-}
+# ix=rep(0,bn)
+# iy=rep(0,bn)
+# j=1
+# for(g in 1:bn)
+# {
+# 	ix[g]=j
+# 	iy[g]=j+bs[g]-1
+# 	j=j+bs[g]
+# }
+# ix=as.integer(ix)
+# iy=as.integer(iy)
+# for (g in 1:bn)
+# {
+# 	ind=ix[g]:iy[g]
+# 	decomp <- qr(x[,ind])
+# 	if(decomp$rank < bs[g]) stop("Block belonging to columns ",  ## Warn if block has not full rank
+# 	paste(ind, collapse = ", ")," has not full rank! \n")
+# 	x[,ind] <- qr.Q(decomp)
+# }
 
 pf=pf*bn/sum(pf) 
 B <- as.matrix(m1$beta)
@@ -68,7 +51,7 @@ for (l in 1:length(m1$lambda))
 	{	
 		ind=(group==g)
 		ri <- y*(x%*%B[,l]+m1$b0[l])
- 		L = dl(ri,delta)
+ 		L= -2*ifelse(ri<=1,(1-ri),0)
 		yxl <- t(x[,ind])%*%(L*y)
 		yxlnorm <- sqrt(crossprod(yxl,yxl))
 		Bnorm<-sqrt(crossprod(B[ind,l],B[ind,l]))

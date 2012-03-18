@@ -17,9 +17,9 @@ dl <- function(r)
 
 
 set.seed(11)
-x=matrix(rnorm(100*200),100,200) 
+x=matrix(rnorm(1000*200),1000,200) 
 set.seed(11)
-y=sample(c(-1,1),100,replace=T)
+y=sample(c(-1,1),1000,replace=T)
 group<-rep(1:40,each=5)
 nobs=nrow(x)
 nvars=ncol(x)
@@ -57,7 +57,6 @@ x=scale(x, meanx, FALSE)
 
 pf=pf*bn/sum(pf) 
 B <- as.matrix(m1$beta)
-MM <- matrix(0,bn,length(m1$lambda))
 for (l in 1:length(m1$lambda))
 {
 	for (g in 1:bn)
@@ -72,24 +71,14 @@ for (l in 1:length(m1$lambda))
 		if(Bnorm!=0)
 		{
 			AA<- -yxl+  B[ind,l]*m1$lambda[l]*pf[g]/Bnorm
-			if(abs(sum(AA))<1e-10) MM[g,l] <- "."
-			else{
-				MM[g,l] <- "F"
-				print(AA)
-			} 
-			
+			if(abs(sum(AA)) >= 1e-9) print(abs(sum(AA)))
 		}
 		else
 		{
 			BB <- yxlnorm - pf[g] * m1$lambda[l]
-			if (BB<=0) MM[g,l] <- "."
-			else {
-					MM[g,l] <- "f"
-					print(paste("this is",BB))
-				}
+			if (BB > 0) print(paste("this is",BB))
 		}
 	}
 }
-print(MM)
 
 
