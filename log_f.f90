@@ -94,11 +94,11 @@ subroutine log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 				    if(jerr/=0) return                
 		      		oldb=b(start:end)      
 					u=matmul(y/(1.0D0+exp(r)),x(:,start:end))
-					u=0.25D0*gam(g)*b(start:end)+u
+					u=gam(g)*b(start:end)+u
 					unorm=sqrt(dot_product(u,u)) 
 					t=unorm-pf(g)*al
 					if(t>0.0D0) then
-		      			b(start:end)=4.0D0*u*t/(gam(g)*unorm)                                                                                                                    
+		      			b(start:end)=u*t/(gam(g)*unorm)                                                                                                                    
 					else           
 						b(start:end)=0.0D0
 					endif
@@ -141,11 +141,11 @@ subroutine log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 					    if(jerr/=0) return                                              
 			      		oldb=b(start:end)      
 						u=matmul(y/(1.0D0+exp(r)),x(:,start:end))
-						u=0.25D0*gam(g)*b(start:end)+u
+						u=gam(g)*b(start:end)+u
 						unorm=sqrt(dot_product(u,u)) 
 						t=unorm-pf(g)*al
 						if(t>0.0D0) then
-			      			b(start:end)=4.0D0*u*t/(gam(g)*unorm)                                                                                                                    
+			      			b(start:end)=u*t/(gam(g)*unorm)                                                                                                                    
 						else           
 							b(start:end)=0.0D0
 						endif

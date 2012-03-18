@@ -21,19 +21,19 @@ dl <- function(r,delta)
 
 
 set.seed(11)
-x=matrix(rnorm(10*200),10,200) 
+x=matrix(rnorm(100*200),100,200) 
 set.seed(11)
-y=sample(c(-1,1),10,replace=T)
+y=sample(c(-1,1),100,replace=T)
 group<-rep(1:40,each=5)
 nobs=nrow(x)
 nvars=ncol(x)
 
 bn=as.integer(max(group))
 bs=as.integer(as.numeric(table(group)))
-delta=0.6
+delta = 0.1
 #pf<-1:10
 pf=rep(1,bn)
-m1 <- gglasso(loss="hsvm",y=y,x=x,group=group,eps=1e-13,standardize=T,pf=pf,delta=delta)
+m1 <- gglasso(loss="hsvm",y=y,x=x,group=group,eps=1e-11,standardize=T,pf=pf,delta=delta)
 
 
 one=rep(1, nobs)
@@ -76,8 +76,8 @@ for (l in 1:length(m1$lambda))
 		
 		if(Bnorm!=0)
 		{
-			AA<- yxl+  B[ind,l]*m1$lambda[l]*pf[g]*sqrt(bs[g])/Bnorm
-			if(abs(sum(AA))<1e-10) MM[g,l] <- "."
+			AA<- yxl+  B[ind,l]*m1$lambda[l]*pf[g]/Bnorm
+			if(abs(sum(AA))<1e-9) MM[g,l] <- "."
 			else{
 				MM[g,l] <- "F"
 				print(AA)
@@ -86,7 +86,7 @@ for (l in 1:length(m1$lambda))
 		}
 		else
 		{
-			BB <- yxlnorm - pf[g] * m1$lambda[l] * sqrt(bs[g])
+			BB <- yxlnorm - pf[g] * m1$lambda[l]
 			if (BB<=0) MM[g,l] <- "."
 			else {
 					MM[g,l] <- "f"

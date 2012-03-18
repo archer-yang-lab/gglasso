@@ -56,15 +56,7 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 				al=big
 			else if(l==2) then  
 				al=0.0D0
-				do i = 1,nobs
-					if (abs(r(i))<=delta) then
-						dl(i)= r(i)
-					elseif (r(i)>delta) then
-						dl(i)= delta
-	 				else 
-						dl(i)=-delta
-					endif
-				enddo
+                dl = 2.0 * sign(min(abs(r) , delta) , r)
 				do g = 1,bn
 					if(pf(g)>0.0D0) then
 				      	allocate(u(bs(g)),stat=ierr)  
@@ -74,7 +66,7 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 						deallocate(u)
 					endif
 				end do
-				al=2.0D0*al*alf
+				al=al*alf
 			endif
 		endif
 		ctr=0     
@@ -102,20 +94,11 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 				    jerr=jerr+ierr				                                                                                                                                                              
 				    if(jerr/=0) return                
 		      		oldb=b(start:end)      
-					u=0.0D0
-					do i = 1,nobs
-						if (abs(r(i))<=delta) then
-							dl(i)= r(i)
-						elseif (r(i)>delta) then
-							dl(i)= delta
-		 				else 
-							dl(i)=-delta
-						endif
-						u = u + dl(i)*x(i,start:end)
-					enddo
+                    dl = 2.0 * sign(min(abs(r) , delta) , r)
+					u=matmul(dl,x(:,start:end))
 					u=gam(g)*b(start:end)+u
 					unorm=sqrt(dot_product(u,u)) 
-					t=unorm-0.5D0*pf(g)*al
+					t=unorm-pf(g)*al
 					if(t>0.0D0) then
 		      			b(start:end)=u*t/(gam(g)*unorm)                                                                                                                    
 					else           
@@ -135,18 +118,9 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 					deallocate(u,dd,oldb)
 				enddo  
 				if(ni>pmax) exit	                                            
-			    d = 0.0D0
-				do i = 1,nobs
-					if (abs(r(i))<=delta) then
-						dl(i)= r(i)
-					elseif (r(i)>delta) then
-						dl(i)= delta
-	 				else 
-						dl(i)=-delta
-					endif
-					d = d + dl(i)
-				enddo                                           
-				d = d/nobs                                                   
+                dl = 2.0 * sign(min(abs(r) , delta) , r)
+				d = sum(dl)                                         
+				d = 0.25*d/nobs                                                   
 			    if(d/=0.0D0) then                                            
 			      	b(0)=b(0)+d    
 			   		r=r-d                                                                                                                    
@@ -169,20 +143,11 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 					    jerr=jerr+ierr				                                                                                                                                                              
 					    if(jerr/=0) return                                              
 			      		oldb=b(start:end)      
-						u=0.0D0
-						do i = 1,nobs
-							if (abs(r(i))<=delta) then
-								dl(i)= r(i)
-							elseif (r(i)>delta) then
-								dl(i)= delta
-			 				else 
-								dl(i)=-delta
-							endif
-							u = u + dl(i)*x(i,start:end)
-						enddo
+	                    dl = 2.0 * sign(min(abs(r) , delta) , r)
+						u=matmul(dl,x(:,start:end))
 						u=gam(g)*b(start:end)+u
 						unorm=sqrt(dot_product(u,u)) 
-						t=unorm-0.5D0*pf(g)*al
+						t=unorm-pf(g)*al
 						if(t>0.0D0) then
 			      			b(start:end)=u*t/(gam(g)*unorm)                                                                                                                    
 						else           
@@ -195,18 +160,9 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 						endif
 						deallocate(u,dd,oldb)                          
 					enddo                           
-			   	    d = 0.0D0
-					do i = 1,nobs
-						if (abs(r(i))<=delta) then
-							dl(i)= r(i)
-						elseif (r(i)>delta) then
-							dl(i)= delta
-		 				else 
-							dl(i)=-delta
-						endif
-						d = d + dl(i)
-					enddo                                           
-					d = d/nobs                                                   
+	                dl = 2.0 * sign(min(abs(r) , delta) , r)
+					d = sum(dl)                                         
+					d = 0.25*d/nobs                                                   
 				    if(d/=0.0D0) then                                            
 				      	b(0)=b(0)+d    
 				   		r=r-d                                                                                                                    

@@ -65,7 +65,7 @@ subroutine ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 						deallocate(u)
 					endif
 				end do
-				al=2.0D0*al*alf
+				al=al*alf
 			endif
 		endif
 		ctr=0     
@@ -96,7 +96,7 @@ subroutine ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 					u=matmul(r,x(:,start:end))
 					u=gam(g)*b(start:end)+u
 					unorm=sqrt(dot_product(u,u)) 
-					t=unorm-0.5D0*pf(g)*al
+					t=unorm-pf(g)*al
 					if(t>0.0D0) then
 		      			b(start:end)=u*t/(gam(g)*unorm)                                                                                                                    
 					else           
@@ -142,7 +142,7 @@ subroutine ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 						u=matmul(r,x(:,start:end))
 						u=gam(g)*b(start:end)+u
 						unorm=sqrt(dot_product(u,u)) 
-						t=unorm-0.5D0*pf(g)*al
+						t=unorm-pf(g)*al
 						if(t>0.0D0) then
 			      			b(start:end)=u*t/(gam(g)*unorm)                                                                                                                    
 						else           

@@ -57,12 +57,12 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 			else if(l==2) then  
 				al=0.0D0
 				do i = 1,nobs
-					if (r(i)>1.0D0) then
+					if (r(i) > 1.0D0) then
 						dl(i) = 0.0D0
-					elseif (r(i)>(1-delta) .and. r(i)<=1.0D0) then
-						dl(i) = (r(i)-1.0D0)/delta
+					elseif (r(i) <= (1-delta)) then
+						dl(i) = 1.0D0
 				 	else 
-						dl(i) = -1.0D0
+						dl(i) = (1.0D0 - r(i)) / delta
 					endif
 				enddo
 				do g = 1,bn
@@ -104,16 +104,16 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 		      		oldb=b(start:end)      
 					u = 0.0D0
 					do i = 1,nobs
-						if (r(i)>1.0D0) then
+						if (r(i) > 1.0D0) then
 							dl(i) = 0.0D0
-						elseif (r(i)>(1-delta) .and. r(i)<=1.0D0) then
-							dl(i) = (r(i)-1.0D0)/delta
+						elseif (r(i) <= (1-delta)) then
+							dl(i) = 1.0D0
 					 	else 
-							dl(i) = -1.0D0
+							dl(i) = (1.0D0 - r(i)) / delta
 						endif
 						u = u + dl(i)*y(i)*x(i,start:end)
 					enddo
-					u=gam(g)*b(start:end)-u
+					u=gam(g)*b(start:end) + u
 					unorm=sqrt(dot_product(u,u)) 
 					t=unorm-pf(g)*al
 					if(t>0.0D0) then
@@ -128,7 +128,7 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 		      			if(oidx(g)==0) then                                           
 		      				ni=ni+1      
 		      				if(ni>pmax) exit                                             
-		      				oidx(g)=ni                                                            
+		      				oidx(g)=ni
 		      				idx(ni)=g      
 		                endif
 					endif
@@ -137,16 +137,16 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 				if(ni>pmax) exit	                                            
 			 	d = 0.0D0
 				do i = 1,nobs
-					if (r(i)>1.0D0) then
+					if (r(i) > 1.0D0) then
 						dl(i) = 0.0D0
-					elseif (r(i)>(1-delta) .and. r(i)<=1.0D0) then
-						dl(i) = (r(i)-1.0D0)/delta
+					elseif (r(i) <= (1-delta)) then
+						dl(i) = 1.0D0
 				 	else 
-						dl(i) = -1.0D0
+						dl(i) = (1.0D0 - r(i)) / delta
 					endif
 					d = d + dl(i)*y(i)
 				enddo                                           
-				d = -d/nobs                                                   
+				d = 0.5 * delta * d / nobs                                                   
 			    if(d/=0.0D0) then                                            
 			      	b(0)=b(0)+d    
 			   		r=r+y*d                                                                                                                    
@@ -171,16 +171,16 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 			      		oldb=b(start:end)      
 						u = 0.0D0
 						do i = 1,nobs
-							if (r(i)>1.0D0) then
+							if (r(i) > 1.0D0) then
 								dl(i) = 0.0D0
-							elseif (r(i)>(1-delta) .and. r(i)<=1.0D0) then
-								dl(i) = (r(i)-1.0D0)/delta
+							elseif (r(i) <= (1-delta)) then
+								dl(i) = 1.0D0
 						 	else 
-								dl(i) = -1.0D0
+								dl(i) = (1.0D0 - r(i)) / delta
 							endif
 							u = u + dl(i)*y(i)*x(i,start:end)
 						enddo
-						u=gam(g)*b(start:end)-u
+						u=gam(g)*b(start:end) + u
 						unorm=sqrt(dot_product(u,u)) 
 						t=unorm-pf(g)*al
 						if(t>0.0D0) then
@@ -197,16 +197,16 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 					enddo                           
 			   	    d = 0.0D0
 					do i = 1,nobs
-						if (r(i)>1.0D0) then
+						if (r(i) > 1.0D0) then
 							dl(i) = 0.0D0
-						elseif (r(i)>(1-delta) .and. r(i)<=1.0D0) then
-							dl(i) = (r(i)-1.0D0)/delta
+						elseif (r(i) <= (1-delta)) then
+							dl(i) = 1.0D0
 					 	else 
-							dl(i) = -1.0D0
+							dl(i) = (1.0D0 - r(i)) / delta
 						endif
 						d = d + dl(i)*y(i)
 					enddo                                           
-					d = -d/nobs                                                   
+					d = 0.5 * delta * d / nobs                                                   
 				    if(d/=0.0D0) then                                            
 				      	b(0)=b(0)+d    
 				   		r=r+y*d                                                                                                                    

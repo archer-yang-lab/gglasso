@@ -3,9 +3,9 @@ source("model.r")
 source("utilities.r")
 dyn.load("gglasso.so")
 set.seed(1)
-x=matrix(rnorm(10*200),10,200) 
+x=matrix(rnorm(100*200),100,200) 
 set.seed(1)
-y=sample(c(-1,1),10,replace=T)
+y=sample(c(-1,1),100,replace=T)
 group<-rep(1:40,each=5)
 nobs=nrow(x)
 nvars=ncol(x)
@@ -59,7 +59,7 @@ for (l in 1:length(m1$lambda))
 		
 		if(Bnorm!=0)
 		{
-			AA<- yxl+  B[ind,l]*m1$lambda[l]*pf[g]*sqrt(bs[g])/Bnorm
+			AA<- yxl+  B[ind,l]*m1$lambda[l]*pf[g]/Bnorm
 			if(abs(sum(AA))<1e-9) MM[g,l] <- "."
 			else{
 				MM[g,l] <- "F"
@@ -68,7 +68,7 @@ for (l in 1:length(m1$lambda))
 		}
 		else
 		{
-			BB <- yxlnorm - pf[g] * m1$lambda[l] * sqrt(bs[g])
+			BB <- yxlnorm - pf[g] * m1$lambda[l]
 			if (BB<=0) MM[g,l] <- "."
 			else {
 					MM[g,l] <- "f"
