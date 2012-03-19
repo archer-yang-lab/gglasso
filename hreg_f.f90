@@ -13,7 +13,7 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flm
     double precision :: b0(nlam),beta(nvars,nlam),alam(nlam) 
 ! - - - local declarations - - -
 ! - - - local declarations - - -                    
-    double precision :: d,t,dif,unorm,al,alf,dl(nobs)
+    double precision :: max_gam,d,t,dif,unorm,al,alf,dl(nobs)
  	double precision, dimension (:), allocatable :: b,oldbeta,r,oldb,u,dd
  	integer, dimension (:), allocatable :: oidx
     integer :: g,j,l,ctr,ierr,ni,me,start,end
@@ -173,7 +173,8 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flm
 			enddo                                                      
 		    if(ni>pmax) exit  
 !--- final check ------------------------
-		    if(all(abs(b-oldbeta)<eps)) exit
+		    max_gam = maxval(gam)
+		    if(all(max_gam*(b-oldbeta)**2 < eps)) exit
 			ctr=ctr+1                                                                                                                
 		  	if(ctr > maxit) then                                         
 		    	jerr=-l                                                            
