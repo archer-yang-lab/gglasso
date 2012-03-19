@@ -30,32 +30,8 @@ bn=as.integer(max(group))
 bs=as.integer(as.numeric(table(group)))
 delta=0.4
 pf=rep(1,bn)
-m1 <- gglasso(loss="hreg",y=y,x=x,group=group,eps=1e-13,standardize=T,pf=pf,delta=delta)
+m1 <- gglasso(loss="hreg",y=y,x=x,group=group,eps=1e-13,pf=pf,delta=delta)
 
-
-one=rep(1, nobs)
-meanx=drop(one %*% x)/nobs
-x=scale(x, meanx, FALSE)
-
-ix=rep(0,bn)
-iy=rep(0,bn)
-j=1
-for(g in 1:bn)
-{
-	ix[g]=j
-	iy[g]=j+bs[g]-1
-	j=j+bs[g]
-}
-ix=as.integer(ix)
-iy=as.integer(iy)
-for (g in 1:bn)
-{
-	ind=ix[g]:iy[g]
-	decomp <- qr(x[,ind])
-	if(decomp$rank < bs[g]) stop("Block belonging to columns ",  ## Warn if block has not full rank
-	paste(ind, collapse = ", ")," has not full rank! \n")
-	x[,ind] <- qr.Q(decomp)
-}
 
 pf=pf*bn/sum(pf) 
 B <- as.matrix(m1$beta)

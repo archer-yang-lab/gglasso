@@ -4,7 +4,7 @@ gglasso <-function(x,y,group=NULL,
 				weights,
 				pf=rep(1,as.integer(max(group))),
 				dfmax=as.integer(max(group))+1,pmax=min(dfmax*1.2,as.integer(max(group))),
-				standardize=FALSE,eps=1e-8, maxit=100,delta)
+				eps=1e-8, maxit=100,delta)
 {
 	#################################################################################	
 	#	Design matrix setup, error checking
@@ -58,31 +58,9 @@ gglasso <-function(x,y,group=NULL,
 	ix=as.integer(ix)
 	iy=as.integer(iy)
 	#################################################################################	
-	#    centering input variable
-	one=rep(1, nobs)
-	meanx=drop(one %*% x)/nobs
-	x=scale(x, meanx, FALSE)
+	#  get upper bound
 	gamma <- rep(NA,bn)
-	if(standardize==TRUE) 
-	{
-		gamma = rep(1,bn)
-		for (g in 1:bn)
-		{
-			ind=ix[g]:iy[g]
-			xind=as.matrix(x[,ind])
-			px=ncol(xind)
-			if(px>nobs) 
-			stop("Too much variables to orthogonalize for each group")
-			decomp <- qr(xind)
-			if(decomp$rank < bs[g]) 
-			stop("Block belonging to columns ",  ## Warn if block has not full rank
-			paste(ind, collapse = ", ")," has not full rank! \n")
-			x[,ind] <- qr.Q(decomp)
-		}
-	}
-	else{
-		for(g in 1:bn) gamma[g] <- max(eigen(crossprod(x[,ix[g]:iy[g]]))$values)
-	}
+	for(g in 1:bn) gamma[g] <- max(eigen(crossprod(x[,ix[g]:iy[g]]))$values)
 	#################################################################################	
 	#parameter setup
 	if(missing(delta)) delta = 1
