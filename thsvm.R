@@ -49,7 +49,7 @@ for (l in 1:length(m1$lambda))
 		if(Bnorm!=0)
 		{
 			AA<- yxl+  B[ind,l]*m1$lambda[l]*pf[g]/Bnorm
-			if(abs(sum(AA)) >= 1e-7) print(abs(sum(AA)))
+			if(abs(sum(AA)) >= 1e-5) print(abs(sum(AA)))
 		}
 		else
 		{
