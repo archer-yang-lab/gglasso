@@ -106,7 +106,7 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ul
 					endif
                     dd=b(start:end)-oldb     		      		                                                                                           
 		      		if(any(abs(dd)>0.0D0)) then                                         
-		      			dif=max(dif,maxval(abs(dd)))                                                  
+		      			dif=max(dif,gam(g)*dot_product(dd,dd))                                                  
 						r=r+y*matmul(x(:,start:end),dd)
 		      			if(oidx(g)==0) then                                           
 		      				ni=ni+1      
@@ -119,7 +119,7 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ul
 				enddo  
 				if(ni>pmax) exit
 				dl = 2.0 * dim(1.0, r)	                                            
-			    d = sum(y*dl)  
+			    d = dot_product(y,dl)  
 				d = 0.25*d/nobs                                                     
 			    if(d /= 0.0D0) then                                            
 			      	b(0)=b(0)+d    
@@ -155,13 +155,13 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ul
 						endif
 	                    dd=b(start:end)-oldb     		      		                                                                                           
 			      		if(any(abs(dd)>0.0D0)) then                                         
-			      			dif=max(dif,maxval(abs(dd)))                                                  
+			      			dif=max(dif,gam(g)*dot_product(dd,dd))                                                  
 							r=r+y*matmul(x(:,start:end),dd)
 						endif
 						deallocate(u,dd,oldb)                          
 					enddo                           
 				    dl = 2.0 * dim(1.0, r)	                                            
-				    d = sum(y*dl)  
+				    d = dot_product(y,dl)  
 					d = 0.25*d/nobs                                                        
 				    if(d/=0.0D0) then                                            
 				      	b(0)=b(0)+d    

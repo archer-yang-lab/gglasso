@@ -17,8 +17,7 @@ bs=as.integer(as.numeric(table(group)))#
 #
 #pf<-1:10#
 pf=rep(1,bn)#
-system.time(m1 <-gglasso(loss="sqsvm",y=y,x=x,group=group,eps=1e-14,pf=pf))#
-#
+system.time(m1 <-gglasso(loss="logit",y=y,x=x,group=group,eps=1e-8,pf=pf))#
 #
 pf=pf*bn/sum(pf) #
 B <- as.matrix(m1$beta)#
@@ -28,14 +27,15 @@ for (l in 1:length(m1$lambda))#
 	{	#
 		ind=(group==g)#
 		ri <- y*(x%*%B[,l]+m1$b0[l])#
- 		L= -2*ifelse(ri<=1,(1-ri),0)#
+ 		L = -1/(1+exp(ri))#
 		yxl <- t(x[,ind])%*%(L*y)/nobs#
 		yxlnorm <- sqrt(crossprod(yxl,yxl))#
 		Bnorm<-sqrt(crossprod(B[ind,l],B[ind,l]))#
+		#
 		if(Bnorm!=0)#
 		{#
 			AA<- yxl+  B[ind,l]*m1$lambda[l]*pf[g]/Bnorm#
-			if(abs(sum(AA)) >= 1e-9) print(abs(sum(AA)))#
+			if(abs(sum(AA)) >= 1e-7) print(abs(sum(AA)))#
 		}#
 		else#
 		{#

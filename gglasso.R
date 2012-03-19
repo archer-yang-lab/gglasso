@@ -4,7 +4,7 @@ gglasso <-function(x,y,group=NULL,
 				weights,
 				pf=rep(1,as.integer(max(group))),
 				dfmax=as.integer(max(group))+1,pmax=min(dfmax*1.2,as.integer(max(group))),
-				eps=1e-8, maxit=100,delta)
+				eps=1e-8, maxit=3e8, delta)
 {
 	#################################################################################	
 	#	Design matrix setup, error checking

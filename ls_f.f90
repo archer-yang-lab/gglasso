@@ -104,7 +104,7 @@ subroutine ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,
 					endif
                     dd=b(start:end)-oldb     		      		                                                                                           
 		      		if(any(dd/=0.0D0)) then                                         
-		      			dif=max(dif,maxval(abs(dd)))                                                  
+		      			dif=max(dif,gam(g)*dot_product(dd,dd))                                                  
 						r=r-matmul(x(:,start:end),dd)
 		      			if(oidx(g)==0) then                                           
 		      				ni=ni+1      
@@ -150,7 +150,7 @@ subroutine ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,
 						endif
 	                    dd=b(start:end)-oldb     		      		                                                                                           
 			      		if(any(dd/=0.0D0)) then                                         
-			      			dif=max(dif,maxval(abs(dd)))                                                  
+			      			dif=max(dif,gam(g)*dot_product(dd,dd))                                                  
 							r=r-matmul(x(:,start:end),dd)
 						endif
 						deallocate(u,dd,oldb)                          
