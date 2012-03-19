@@ -5,6 +5,9 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flm
 	implicit none
 ! - - - arg types - - -
 	double precision, parameter :: big=9.9e30
+	DOUBLE PRECISION, PARAMETER :: mfl = 1.0E-6
+    INTEGER, PARAMETER :: mnlam = 6
+      INTEGER :: mnl
 	integer :: bn,bs(bn),ix(bn),iy(bn)                      
 	integer :: nobs,nvars,dfmax,pmax,nlam,nalam,npass,jerr,maxit
 	integer :: idx(pmax),nbeta(nlam)                   
@@ -35,6 +38,7 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flm
 	pf=max(0.0D0,pf)                                                       
 	pf=pf*bn/sum(pf)
 ! - - - some initial setup - - -   
+	mnl = Min (mnlam, nlam)
 	r = 0.0D0
 	b=0.0D0                                                           
 	oldbeta=0.0D0
@@ -43,7 +47,8 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flm
 	npass=0                                                                
 	ni=npass  
 ! --------- lambda loop ----------------------------                                                                                                                                                                 
-	if(flmin < 1.0D0) then             
+	if(flmin < 1.0D0) then
+		flmin = Max (mfl, flmin)             
 		alf=flmin**(1.0D0/(nlam-1.0D0))                                                                                              
 	endif
 	do l=1,nlam   
@@ -239,7 +244,8 @@ subroutine hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flm
 		nbeta(l)=ni                                                         
 	   	b0(l)=b(0)                                                         
 	   	alam(l)=al                                                          
-	   	nalam=l   
+	   	nalam=l
+	    IF (l < mnl) CYCLE   
 	    me=0
 		do j=1,ni   
 		  	g=idx(j) 
