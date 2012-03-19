@@ -1,5 +1,5 @@
 ls<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
-				pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
+				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
 {
 	#################################################################################	
 	# call Fortran core
@@ -7,7 +7,7 @@ ls<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 	gamma = as.double(gamma)
 	fit=.Fortran("ls_f",bn,bs,ix,iy,gamma,
 								nobs,nvars,as.double(x),as.double(y),
-								pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
+								w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
 								nalam=integer(1),
 								b0=double(nlam),
 								beta=double(nvars*nlam),
@@ -26,7 +26,7 @@ ls<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 
 
 hreg<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
-				pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
+				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
 {
 	#################################################################################	
 	# call Fortran core
@@ -34,7 +34,7 @@ hreg<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 	gamma = as.double(gamma)
 	fit=.Fortran("hreg_f",delta,bn,bs,ix,iy,gamma,
 								nobs,nvars,as.double(x),as.double(y),
-								pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
+								w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
 								nalam=integer(1),
 								b0=double(nlam),
 								beta=double(nvars*nlam),
@@ -52,7 +52,7 @@ hreg<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 }
 
 logit<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
-				pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
+				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
 {
 	#################################################################################	
 	# call Fortran core
@@ -60,7 +60,7 @@ logit<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 	gamma = as.double(gamma)
 	fit=.Fortran("log_f",bn,bs,ix,iy,gamma,
 								nobs,nvars,as.double(x),as.double(y),
-								pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
+								w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
 								nalam=integer(1),
 								b0=double(nlam),
 								beta=double(nvars*nlam),
@@ -79,7 +79,7 @@ logit<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 
 
 hsvm<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
-				pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
+				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
 {
 	#################################################################################	
 	# call Fortran core
@@ -87,7 +87,7 @@ hsvm<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 	gamma = as.double(gamma)
 	fit=.Fortran("hsvm_f",delta,bn,bs,ix,iy,gamma,
 								nobs,nvars,as.double(x),as.double(y),
-								pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
+								w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
 								nalam=integer(1),
 								b0=double(nlam),
 								beta=double(nvars*nlam),
@@ -105,7 +105,7 @@ hsvm<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 }
 
 sqsvm<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
-				pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
+				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
 {
 	#################################################################################	
 	# call Fortran core
@@ -113,7 +113,7 @@ sqsvm<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 	gamma = as.double(gamma)
 	fit=.Fortran("sqsvm_f",bn,bs,ix,iy,gamma,
 								nobs,nvars,as.double(x),as.double(y),
-								pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
+								w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,
 								nalam=integer(1),
 								b0=double(nlam),
 								beta=double(nvars*nlam),

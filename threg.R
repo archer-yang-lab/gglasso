@@ -69,7 +69,6 @@ for (l in 1:length(m1$lambda))
 		yxl <- t(x[,ind])%*%L/nobs
 		yxlnorm <- sqrt(crossprod(yxl,yxl))
 		Bnorm<-sqrt(crossprod(B[ind,l],B[ind,l]))
-		
 		if(Bnorm!=0)
 		{
 			AA<- -yxl+  B[ind,l]*m1$lambda[l]*pf[g]/Bnorm

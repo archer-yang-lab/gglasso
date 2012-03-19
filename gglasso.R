@@ -1,33 +1,51 @@
 gglasso <-function(x,y,group=NULL,
 	           loss = c("ls","hreg","logit","sqsvm","hsvm"),
 				nlambda=100,lambda.factor=ifelse(nobs<nvars,5e-2,1e-3),lambda=NULL, 
+				weights,
 				pf=rep(1,as.integer(max(group))),
 				dfmax=as.integer(max(group))+1,pmax=min(dfmax*1.2,as.integer(max(group))),
-				standardize=FALSE,eps=1e-8, maxit=100,delta=1)
+				standardize=FALSE,eps=1e-8, maxit=100,delta)
 {
 	#################################################################################	
-	#data setup
-	loss = match.arg(loss)
+	#	Design matrix setup, error checking
 	this.call=match.call()
+	loss = match.arg(loss)
+    
+    if(!is.matrix(x))
+    stop("x has to be a matrix")
+    
+    if(any(is.na(x)))
+    stop("Missing values in x not allowed!")
+	
 	y = drop(y)
-	x = as.matrix(x)
 	np=dim(x)
   	nobs=as.integer(np[1])
   	nvars=as.integer(np[2])
   	vnames=colnames(x)
-  	if(is.null(vnames))vnames=paste("V",seq(nvars),sep="")
+
+  	if(is.null(vnames)) vnames=paste("V",seq(nvars),sep="")
+
 	if(length(y)!=nobs) stop("x and y have different number of rows")
-	if(!is.numeric(y)) stop("The response must be numeric. Factors must be converted to numeric")
+
+	if(!is.numeric(y)) 
+	stop("The response y must be numeric. Factors must be converted to numeric")
+	
     c1 = loss %in% c("logit","sqsvm","hsvm")
     c2 = any(y %in% c(-1,1) == FALSE)
-    if(c1 && c2) stop("Classification requires the response to be in {-1,1}")
+    if(c1 && c2) 
+    stop("Classification method requires the response y to be in {-1,1}")
 	#################################################################################	
-	#group setup
+	#    group setup
 	if(is.null(group)){group=1:nvars
-	}else if (length(group)!=nvars) stop("group length does not match the number of predictors in x")
+	}else if (length(group)!=nvars) 
+	stop("group length does not match the number of predictors in x")
+
     bn=as.integer(max(group))
     bs=as.integer(as.numeric(table(group)))
-    if(!identical(as.integer(sort(unique(group))),as.integer(1:bn))) stop("Groups must be consecutively numbered 1,2,3,...")
+
+    if(!identical(as.integer(sort(unique(group))),as.integer(1:bn))) 
+    stop("Groups must be consecutively numbered 1,2,3,...")
+
 	ix=rep(NA,bn)
 	iy=rep(NA,bn)
 	j=1
@@ -40,7 +58,7 @@ gglasso <-function(x,y,group=NULL,
 	ix=as.integer(ix)
 	iy=as.integer(iy)
 	#################################################################################	
-	#centering input variable
+	#    centering input variable
 	one=rep(1, nobs)
 	meanx=drop(one %*% x)/nobs
 	x=scale(x, meanx, FALSE)
@@ -53,9 +71,11 @@ gglasso <-function(x,y,group=NULL,
 			ind=ix[g]:iy[g]
 			xind=as.matrix(x[,ind])
 			px=ncol(xind)
-			if(px>nobs) stop("Too much variables to orthogonalize for each group")
+			if(px>nobs) 
+			stop("Too much variables to orthogonalize for each group")
 			decomp <- qr(xind)
-			if(decomp$rank < bs[g]) stop("Block belonging to columns ",  ## Warn if block has not full rank
+			if(decomp$rank < bs[g]) 
+			stop("Block belonging to columns ",  ## Warn if block has not full rank
 			paste(ind, collapse = ", ")," has not full rank! \n")
 			x[,ind] <- qr.Q(decomp)
 		}
@@ -65,9 +85,17 @@ gglasso <-function(x,y,group=NULL,
 	}
 	#################################################################################	
 	#parameter setup
+	if(missing(delta)) delta = 1
 	if(delta<0) stop("delta must be non-negtive")
 	delta=as.double(delta)
-	if(length(pf)!=bn) stop("The size of penalty factor must be same as the number of groups")
+	if(missing(weights)) weights=rep(1,nobs)
+    if(length(weights) != length(y))
+    stop("length(weights) not equal length(y)")  
+    if(any(weights < 0))
+    stop("Negative weights not allowed")
+    w = as.double(weights)
+	if(length(pf)!=bn) 
+	stop("The size of penalty factor must be same as the number of groups")
 	maxit=as.integer(maxit)
 	pf=as.double(pf)
 	eps=as.double(eps)
@@ -93,11 +121,11 @@ gglasso <-function(x,y,group=NULL,
 	#################################################################################	
 	# call Fortran core
 	 fit=switch(loss,
-		ls = ls(bn,bs,ix,iy,gamma,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
-		hreg = hreg(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
-		logit = logit(bn,bs,ix,iy,gamma,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
-		sqsvm = sqsvm(bn,bs,ix,iy,gamma,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
-		hsvm = hsvm(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames))
+		ls = ls(bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
+		hreg = hreg(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
+		logit = logit(bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
+		sqsvm = sqsvm(bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
+		hsvm = hsvm(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames))
 	#################################################################################	
 	# output	
     if(is.null(lambda)) fit$lambda = lamfix(fit$lambda)

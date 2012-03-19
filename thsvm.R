@@ -18,8 +18,6 @@ dl <- function(r,delta)
 	return (d)
 }
 
-
-
 set.seed(11)
 x=matrix(rnorm(100*200),100,200) 
 set.seed(11)
@@ -65,14 +63,13 @@ B <- as.matrix(m1$beta)
 for (l in 1:length(m1$lambda))
 {
 	for (g in 1:bn)
-	{	
+	{
 		ind=(group==g)
 		ri <- y*(x%*%B[,l]+m1$b0[l])
  		L = dl(ri,delta)
 		yxl <- t(x[,ind])%*%(L*y)/nobs
 		yxlnorm <- sqrt(crossprod(yxl,yxl))
 		Bnorm<-sqrt(crossprod(B[ind,l],B[ind,l]))
-		
 		if(Bnorm!=0)
 		{
 			AA<- yxl+  B[ind,l]*m1$lambda[l]*pf[g]/Bnorm

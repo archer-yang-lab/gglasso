@@ -60,7 +60,6 @@ for (l in 1:length(m1$lambda))
 		{
 			AA<- yxl+  B[ind,l]*m1$lambda[l]*pf[g]/Bnorm
 			if(abs(sum(AA)) >= 1e-9) print(abs(sum(AA)))
-
 		}
 		else
 		{

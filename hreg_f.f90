@@ -1,5 +1,5 @@
 ! --------------------------------------------------
-subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
+subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,&
 					eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! --------------------------------------------------
 	implicit none
@@ -9,14 +9,14 @@ subroutine hreg_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 	integer :: nobs,nvars,dfmax,pmax,nlam,nalam,npass,jerr,maxit
 	integer :: idx(pmax),nbeta(nlam)                   
 	double precision :: flmin,eps,delta
-    double precision :: x(nobs,nvars),y(nobs),pf(bn),ulam(nlam),gam(bn)           
+    double precision :: x(nobs,nvars),y(nobs),w(nobs),pf(bn),ulam(nlam),gam(bn)           
     double precision :: b0(nlam),beta(nvars,nlam),alam(nlam) 
 ! - - - local declarations - - -
 ! - - - local declarations - - -                    
     double precision :: d,t,dif,unorm,al,alf,dl(nobs)
  	double precision, dimension (:), allocatable :: b,oldbeta,r,oldb,u,dd
  	integer, dimension (:), allocatable :: oidx
-    integer :: i,g,j,l,ctr,ierr,ni,me,start,end
+    integer :: g,j,l,ctr,ierr,ni,me,start,end
 ! - - - begin - - -           	    
 ! - - - allocate variables - - -
 	allocate(b(0:nvars),stat=jerr)                                                                                                
