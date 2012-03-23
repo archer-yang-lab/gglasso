@@ -17,10 +17,12 @@ dl <- function(r)
 
 
 set.seed(11)
-x=matrix(rnorm(1000*200),1000,200) 
+n = 100
+p = 5000
+x=matrix(rnorm(n*p),n,p) 
 set.seed(11)
-y=sample(c(-1,1),1000,replace=T)
-group<-rep(1:40,each=5)
+y=sample(c(-1,1),n,replace=T)
+group<-rep(1:p/5,each=5)
 nobs=nrow(x)
 nvars=ncol(x)
 #m0 <-gglasso.ls(y=y,x=x,group=group,eps=1e-6)
