@@ -15,11 +15,17 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ul
     double precision :: x(nobs,nvars),y(nobs),w(nobs),pf(bn),ulam(nlam),gam(bn)           
     double precision :: b0(nlam),beta(nvars,nlam),alam(nlam) 
 ! - - - local declarations - - -
-! - - - local declarations - - -                    
     double precision :: max_gam,d,t,dif,unorm,al,alf,dl(nobs)
  	double precision, dimension (:), allocatable :: b,oldbeta,r,oldb,u,dd
  	integer, dimension (:), allocatable :: oidx
-    integer :: g,j,l,ctr,ierr,ni,me,start,end
+    integer :: g,j,l,ierr,ni,me,start,end
+! - - - local declarations - - -                    
+	DOUBLE PRECISION :: tlam
+	INTEGER :: jx
+	INTEGER :: jxx(bn)
+	double precision :: ga(bn)
+	double precision :: vl(nvars)
+	DOUBLE PRECISION :: al0
 ! - - - begin - - -           	    
 ! - - - allocate variables - - -
 	allocate(b(0:nvars),stat=jerr)                                                                                                
@@ -38,6 +44,8 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ul
 	pf=max(0.0D0,pf)                                                       
 	pf=pf*bn/sum(pf)
 ! - - - some initial setup - - -
+    jxx = 0
+    al = 0.0D0
 	mnl = Min (mnlam, nlam)   
 	r = 0.0D0
 	b=0.0D0                                                           
@@ -51,7 +59,17 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ul
 		flmin = Max (mfl, flmin)             
 		alf=flmin**(1.0D0/(nlam-1.0D0))                                                                                              
 	endif
-	do l=1,nlam   
+	dl = 2.0D0 * dim (1.0D0, r)
+	vl = matmul(dl*y, x) / nobs
+    do g = 1,bn
+	      	allocate(u(bs(g)),stat=ierr)  
+		    if(ierr/=0) return
+			u = vl(ix(g):iy(g))
+    		ga(g) = sqrt(dot_product(u,u))
+			deallocate(u)
+	end do
+	do l=1,nlam
+		al0 = al   
 		if(flmin>=1.0D0) then                             
 	    	al=ulam(l)                                                         
 	    else 
@@ -60,21 +78,21 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ul
 	        else if(l==1) then
 				al=big
 			else if(l==2) then  
-				al=0.0D0
-				dl = 2.0 * dim(1.0, r)
+				al0 = 0.0D0
 				do g = 1,bn
 					if(pf(g)>0.0D0) then
-				      	allocate(u(bs(g)),stat=ierr)  
-					    if(ierr/=0) return
-						u=matmul(y*dl,x(:,ix(g):iy(g)))/nobs
-			    		al=max(al,sqrt(dot_product(u,u))/pf(g))
-						deallocate(u)
+			    		al0 = max(al0, ga(g) / pf(g))
 					endif
 				end do
-				al=al*alf
+				al = al0 * alf
 			endif
 		endif
-		ctr=0     
+		tlam = (2.0*al-al0)                                   
+        do g = 1, bn
+	        if(jxx(g) == 1) cycle
+	        if(ga(g) > pf(g) * tlam) jxx(g) = 1
+        enddo
+!         call intpr("jxx",-1,jxx,nvars)     
 ! --------- outer loop ----------------------------                                                                                                        
 		do  
 		    oldbeta(0)=b(0)                                                           
@@ -88,7 +106,8 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ul
 			do
 			    npass=npass+1                       
 			    dif=0.0D0                                                              
-			 	do g=1,bn    
+			 	do g=1,bn
+					if(jxx(g) == 0) cycle    
 					start=ix(g)
 					end=iy(g)
 			      	allocate(u(bs(g)),stat=ierr)  
@@ -122,16 +141,20 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ul
 					endif
 					deallocate(u,dd,oldb)
 				enddo  
-				if(ni>pmax) exit
 				dl = 2.0 * dim(1.0, r)	                                            
 			    d = dot_product(y,dl)  
 				d = 0.25*d/nobs                                                     
 			    if(d /= 0.0D0) then                                            
 			      	b(0)=b(0)+d    
 			   		r=r+y*d                                                                                                                    
-			      	dif=max(dif,abs(d))                                                  
+			      	dif=max(dif,d**2)                                                  
 				endif
-			    if(dif<eps) exit    
+			    IF (ni > pmax) EXIT  
+				if (dif < eps) exit
+				if(npass > maxit) then                               
+		      		jerr=-l                                                  
+		      		return
+		        endif    
 ! --inner loop----------------------                                                       	
 				do                                   
 				    npass=npass+1
@@ -171,21 +194,39 @@ subroutine sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ul
 				    if(d/=0.0D0) then                                            
 				      	b(0)=b(0)+d    
 				   		r=r+y*d                                                                                                                    
-				      	dif=max(dif,abs(d))                                                  
+				      	dif=max(dif,d**2)                                                  
 					endif  
-					if(dif<eps) exit   
+					if(dif<eps) exit
+					if(npass > maxit) then                               
+		      		 jerr=-l                                                  
+		      		 return
+		          endif   
 				enddo
 			enddo                                                      
 		    if(ni>pmax) exit  
 !--- final check ------------------------
+		    jx = 0
 		    max_gam = maxval(gam)
-		    if(all(max_gam*(b-oldbeta)**2 < eps)) exit
-			ctr=ctr+1                                                                                                                
-		  	if(ctr > maxit) then                                         
-		    	jerr=-l                                                            
-		      	return        
-		    endif                
-		enddo     
+		    if(any(max_gam*(b-oldbeta)**2 >= eps)) jx = 1     
+            IF (jx /= 0) cycle
+            dl = 2.0D0 * dim (1.0D0, r)
+		    vl = matmul(dl*y, x) / nobs
+			do g = 1, bn                                            
+	            if(jxx(g) == 1) cycle
+		      	allocate(u(bs(g)),stat=ierr)  
+			    if(ierr/=0) return
+				u = vl(ix(g):iy(g))
+	    		ga(g) = sqrt(dot_product(u,u))
+	            if(ga(g) > al*pf(g))then                          
+	      	        jxx(g) = 1
+		            jx = 1
+!  					call intpr("jx",-1,jx,1)
+	            endif              
+				deallocate(u)
+            enddo 
+            if(jx == 1) cycle
+            exit                                                                                       
+		enddo   
 !---------- final update variable and save results------------                             	                                             
 	 	if(ni>pmax) then                                            
 	    	jerr=-10000-l                                                      

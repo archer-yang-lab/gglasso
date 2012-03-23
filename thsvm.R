@@ -31,7 +31,7 @@ bs=as.integer(as.numeric(table(group)))
 delta = 0.1
 #pf<-1:10
 pf=rep(1,bn)
-m1 <- gglasso(loss="hsvm",y=y,x=x,group=group,eps=1e-8,pf=pf,delta=delta)
+m1 <- gglasso(loss="hsvm",y=y,x=x,group=group,eps=1e-12,pf=pf,delta=delta)
 
 
 pf=pf*bn/sum(pf) 
@@ -59,4 +59,5 @@ for (l in 1:length(m1$lambda))
 	}
 }
 
+m1$df
 

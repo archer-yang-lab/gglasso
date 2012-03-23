@@ -30,7 +30,7 @@ bn=as.integer(max(group))
 bs=as.integer(as.numeric(table(group)))
 delta=0.4
 pf=rep(1,bn)
-m1 <- gglasso(loss="hreg",y=y,x=x,group=group,eps=1e-8,pf=pf,delta=delta)
+system.time(m1 <- gglasso(loss="hreg",y=y,x=x,group=group,eps=1e-12,pf=pf,delta=delta))
 
 
 pf=pf*bn/sum(pf) 
@@ -48,7 +48,7 @@ for (l in 1:length(m1$lambda))
 		if(Bnorm!=0)
 		{
 			AA<- -yxl+  B[ind,l]*m1$lambda[l]*pf[g]/Bnorm
-			if(abs(sum(AA)) >= 1e-6) print(abs(sum(AA)))
+			if(abs(sum(AA)) >= 1e-5) print(abs(sum(AA)))
 		}
 		else
 		{
@@ -58,4 +58,5 @@ for (l in 1:length(m1$lambda))
 	}
 }
 
+m1$df
 

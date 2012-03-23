@@ -18,11 +18,11 @@ dl <- function(r)
 
 set.seed(11)
 n = 100
-p = 5000
+p = 200
 x=matrix(rnorm(n*p),n,p) 
 set.seed(11)
 y=sample(c(-1,1),n,replace=T)
-group<-rep(1:p/5,each=5)
+group<-rep(1:(p/5),each=5)
 nobs=nrow(x)
 nvars=ncol(x)
 #m0 <-gglasso.ls(y=y,x=x,group=group,eps=1e-6)
@@ -30,7 +30,7 @@ nvars=ncol(x)
 bn=as.integer(max(group))
 bs=as.integer(as.numeric(table(group)))
 pf=rep(1,bn)
-m1 <-gglasso(loss="ls",y=y,x=x,group=group,eps=1e-8,pf=pf)
+system.time(m1 <-gglasso(loss="ls",y=y,x=x,group=group,eps=1e-12,pf=pf))
 
 
 
@@ -61,3 +61,4 @@ for (l in 1:length(m1$lambda))
 }
 
 
+m1$df
