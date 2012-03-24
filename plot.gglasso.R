@@ -1,41 +1,53 @@
-plot.gglasso=function(x, xvar=c("norm","lambda"),label=FALSE,...)
-{
-	beta=x$beta
-	lambda=x$lambda
-	df=x$df
-	xvar=match.arg(xvar)
-	which=nonzero(beta)
-	beta=as.matrix(beta[which,])
-	xvar=match.arg(xvar)
-	switch(xvar,
-	"norm"={
-				index=apply(abs(beta),2,sum)
-				iname="L1 Norm"
-			},
-	"lambda"={
-				index=log(lambda)
-				iname="Log Lambda"
-			 })
-	xlab=iname
-	ylab="Coefficients"
-	dotlist=list(...)
-	type=dotlist$type
-	if(is.null(type))
-	matplot(index,t(beta),lty=1,xlab=xlab,ylab=ylab,type="l",...)
-	else matplot(index,t(beta),lty=1,xlab=xlab,ylab=ylab,...)
-	atdf=pretty(index)
-	prettydf=trunc(approx(x=index,y=df,xout=atdf,rule=2)$y)
-	axis(3,at=atdf,labels=prettydf,cex.axis=.5,tcl=NA)
-	if(label){
-	nnz=length(which)
-	xpos=max(index)
-	pos=4
-	if(xvar=="lambda"){
-	xpos=min(index)
-	pos=2
+plot.gglasso <- function(x, alpha=1, legend.loc, log.l=FALSE, ...)
+  {
+	xb = x$beta
+	if(nrow(xb)==1){
+		if (any(abs(xb) > 0)) {nonzeros = 1
+		}else nonzeros = NULL
 	}
-	xpos=rep(xpos,nnz)
-	ypos=beta[,ncol(beta)]
-	text(xpos,ypos,paste(which),cex=.5,pos=pos)
+	else{
+		nonzeros <- which(apply(abs(xb),1,sum) > 0)
 	}
-}
+    beta <- xb[nonzeros,,drop=FALSE]
+    g <- as.numeric(as.factor(x$group[nonzeros]))
+    p <- nrow(beta)
+    l <- x$lambda
+    n.g <- max(g)
+
+    if (log.l)
+      {
+        l <- log(l)
+        xlab <- expression(log(lambda))
+      }
+    else xlab <- expression(lambda)
+
+    plot.args <- list(x=l, y=1:length(l), ylim=range(beta), xlab=xlab, ylab=expression(hat(beta)), type="n", xlim=rev(range(l)))
+    new.args <- list(...)
+    if (length(new.args))
+      {
+        new.plot.args <- new.args[names(new.args) %in% c(names(par()),names(formals(plot.default)))]
+        plot.args[names(new.plot.args)] <- new.plot.args
+      }
+    do.call("plot", plot.args)
+
+    line.args <- list(col=hcl(h=seq(0,360,len=(n.g+1)),l=70,c=100,alpha=alpha)[1:n.g],lwd=1+1.2^(-p/20),lty=1)
+    if (length(new.args)) line.args[names(new.args)] <- new.args
+    line.args$x <- l
+    line.args$y <- t(beta)
+    line.args$col <- rep(line.args$col,table(g))
+    do.call("matlines",line.args)
+
+    abline(h=0,lwd=line.args$lwd)
+    
+    if(!missing(legend.loc))
+      {
+        legend.args <- list(col=hcl(h=seq(0,360,len=(n.g+1)),l=70,c=100,alpha=alpha)[1:n.g],lwd=1+1.2^(-p/20),lty=1,legend=unique(g))
+        if (length(new.args))
+          {
+            new.legend.args <- new.args[names(new.args) %in% names(formals(legend))]
+            legend.args[names(new.legend.args)] <- new.legend.args
+          }
+        legend.args$x <- legend.loc
+        do.call("legend",legend.args)
+      }
+  }

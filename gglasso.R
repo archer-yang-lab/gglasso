@@ -57,6 +57,7 @@ gglasso <-function(x,y,group=NULL,
 	}
 	ix=as.integer(ix)
 	iy=as.integer(iy)
+	group = as.integer(group)
 	#################################################################################	
 	#  get upper bound
 	gamma <- rep(NA,bn)
@@ -99,11 +100,11 @@ gglasso <-function(x,y,group=NULL,
 	#################################################################################	
 	# call Fortran core
 	 fit=switch(loss,
-		ls = ls(bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
-		hreg = hreg(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
-		logit = logit(bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
-		sqsvm = sqsvm(bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames),
-		hsvm = hsvm(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames))
+		ls = ls(bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames,group),
+		hreg = hreg(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames,group),
+		logit = logit(bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames,group),
+		sqsvm = sqsvm(bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames,group),
+		hsvm = hsvm(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames,group))
 	#################################################################################	
 	# output	
     if(is.null(lambda)) fit$lambda = lamfix(fit$lambda)

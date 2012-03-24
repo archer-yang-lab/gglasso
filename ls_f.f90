@@ -42,7 +42,6 @@ subroutine ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,
 		return
 	endif
 	pf=max(0.0D0,pf)                                                       
-	pf=pf*bn/sum(pf)
 ! - - - some initial setup - - -
     jxx = 0
     al = 0.0D0

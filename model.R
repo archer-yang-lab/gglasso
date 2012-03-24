@@ -1,5 +1,5 @@
 ls<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
-				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
+				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames,group)
 {
 	#################################################################################	
 	# call Fortran core
@@ -19,14 +19,14 @@ ls<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 	#################################################################################	
 	# output		
     outlist = getoutput(fit, maxit, pmax, nvars, vnames)
-    outlist = c(outlist, list(npasses = fit$npass, jerr = fit$jerr))
+    outlist = c(outlist, list(npasses = fit$npass, jerr = fit$jerr, group = group))
     class(outlist) = c("ls")
     outlist
 }
 
 
 hreg<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
-				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
+				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames,group)
 {
 	#################################################################################	
 	# call Fortran core
@@ -46,13 +46,13 @@ hreg<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 	#################################################################################	
 	# output
     outlist = getoutput(fit, maxit, pmax, nvars, vnames)
-    outlist = c(outlist, list(npasses = fit$npass, jerr = fit$jerr))
+    outlist = c(outlist, list(npasses = fit$npass, jerr = fit$jerr, group = group))
     class(outlist) = c("hreg")
     outlist
 }
 
 logit<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
-				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
+				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames,group)
 {
 	#################################################################################	
 	# call Fortran core
@@ -72,14 +72,14 @@ logit<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 	#################################################################################	
 	# output
     outlist = getoutput(fit, maxit, pmax, nvars, vnames)
-    outlist = c(outlist, list(npasses = fit$npass, jerr = fit$jerr))
+    outlist = c(outlist, list(npasses = fit$npass, jerr = fit$jerr, group = group))
     class(outlist) = c("logit")
     outlist
 }
 
 
 hsvm<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
-				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
+				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames,group)
 {
 	#################################################################################	
 	# call Fortran core
@@ -99,13 +99,13 @@ hsvm<-function(delta,bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 	#################################################################################	
 	# output
     outlist = getoutput(fit, maxit, pmax, nvars, vnames)
-    outlist = c(outlist, list(npasses = fit$npass, jerr = fit$jerr))
+    outlist = c(outlist, list(npasses = fit$npass, jerr = fit$jerr, group = group))
     class(outlist) = c("hsvm")
     outlist
 }
 
 sqsvm<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
-				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames)
+				w,pf,dfmax,pmax,nlam,flmin,ulam,eps,maxit,vnames,group)
 {
 	#################################################################################	
 	# call Fortran core
@@ -125,7 +125,7 @@ sqsvm<-function(bn,bs,ix,iy,gamma,nobs,nvars,x,y,
 	#################################################################################	
 	# output
     outlist = getoutput(fit, maxit, pmax, nvars, vnames)
-    outlist = c(outlist, list(npasses = fit$npass, jerr = fit$jerr))
+    outlist = c(outlist, list(npasses = fit$npass, jerr = fit$jerr, group = group))
     class(outlist) = c("sqsvm")
     outlist
 }
