@@ -1,7 +1,6 @@
 source("gglasso.r")
 source("plot.gglasso.r")
 source("loglik.r")
-library(grpreg)
 library(grplasso)
 source("model.r")
 source("utilities.r")
@@ -32,14 +31,13 @@ bs=as.integer(as.numeric(table(group)))
 #pf<-1:10
 pf=rep(1,bn)
 system.time(m1 <-gglasso(loss="logit",y=y,x=xx,group=group,eps=1e-8,pf=sqrt(bs)))
-# system.time(m2 <-grpreg(y=yy,X=x,group=group,family="binomial",alpha=1,penalty="gLasso",eps=1e-4,max.iter=1e8))
 
 xxx = cbind(1,xx)
 ggroup = c(NA,group)
 
 
 # lambda = lambdamax(y=yy,x=xxx,index=ggroup, center = F, standardize = F)* 0.5^(0:100)
-system.time(m3 <-grplasso(y=yy,x=xxx,index=ggroup, center = F, standardize = F, lambda = m1$lambda*n))
+system.time(m3 <-grplasso(y=yy,x=xxx,index=ggroup, center = F, standardize = F, lambda = m1$lambda*n,control = grpl.control(tol=1e-8)))
 
 # lambda[1]/m1$lambda[1]
 
