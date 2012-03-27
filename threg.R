@@ -1,7 +1,7 @@
-source("gglasso.r")
-source("model.r")
-source("utilities.r")
-dyn.load("gglasso.so")
+source("./source/gglasso.r")
+source("./source/model.r")
+source("./source/utilities.r")
+dyn.load("./source/gglasso.so")
 
 dl <- function(r,delta)
 {

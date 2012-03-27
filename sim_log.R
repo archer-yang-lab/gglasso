@@ -15,11 +15,6 @@ yy = y
 yy[y == -1] = 0
 
 
-meanx <- apply(x,2,mean)
-normx <- sqrt(apply((t(x)-meanx)^2,1,sum))/sqrt(n)
-xx = scale(x,meanx,normx)
-
-
 group<-rep(1:20,each=100)
 nobs=nrow(x)
 nvars=ncol(x)
@@ -30,14 +25,12 @@ bs=as.integer(as.numeric(table(group)))
 
 #pf<-1:10
 pf=rep(1,bn)
-system.time(m1 <-gglasso(loss="logit",y=y,x=xx,group=group,eps=1e-8,pf=sqrt(bs)))
+system.time(m1 <-gglasso(loss="logit",y=y,x=x,group=group,eps=1e-8,pf=sqrt(bs)))
 
-xxx = cbind(1,xx)
+
+xx = cbind(1,x)
 ggroup = c(NA,group)
-
-
-# lambda = lambdamax(y=yy,x=xxx,index=ggroup, center = F, standardize = F)* 0.5^(0:100)
-system.time(m3 <-grplasso(y=yy,x=xxx,index=ggroup, center = F, standardize = F, lambda = m1$lambda*n,control = grpl.control(tol=1e-8)))
+system.time(m3 <-grplasso(y=yy,x=xx,index=ggroup, center = F, standardize = F, lambda = m1$lambda*n,control = grpl.control(tol=1e-8)))
 
 # lambda[1]/m1$lambda[1]
 
