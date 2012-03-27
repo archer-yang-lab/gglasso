@@ -199,7 +199,7 @@ subroutine ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,w,pf,dfmax,pmax,nlam,flmin,ulam,
 !--- final check ------------------------
 		    jx = 0
 		    max_gam = maxval(gam)
-		    if(any((max_gam*(b-oldbeta))**2 >= eps)) jx = 1     
+		    if(any((max_gam*(b-oldbeta)/(1+abs(b)))**2 >= eps)) jx = 1     
             IF (jx /= 0) cycle
             vl = matmul(r, x)/nobs
 			do g = 1, bn                                            
