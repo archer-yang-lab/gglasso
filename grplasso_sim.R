@@ -1,41 +1,59 @@
+source("source.R") # R code for generating the FHT data
+require(MASS)   
+
 library(grplasso)
-data(splice)
+source("./source/gglasso.r")
+source("./source/plot.gglasso.r")
+source("./source/model.r")
+source("./source/utilities.r")
+source("./source/auxiliary.r")
+dyn.load("./source/gglasso.so")
+
+n=100 # the number of observations
+q=1000 # the number of predictors
+rho = 0.5
+x=genx2(n,q,rho)
+z=genz(x,n,q)
+y=genjerry(x,3)
+y=as.vector(1*(runif(n)< 1/(1+exp(-y))))
+yy = y
+yy[y==0]=-1
 
 
-contr <- rep(list("contr.sum"), ncol(splice) - 1)
 
-names(contr) <- names(splice)[-1]
+group<-rep(1:1000,each=3)
+nobs=nrow(z)
+nvars=ncol(z)
 
-fit.splice <- grplasso(y ~ ., data = splice, model = LogReg(), lambda = 20,
-contrasts = contr, center = TRUE, standardize = TRUE)
-
-
-set.seed(79)
-
-n <- 50 ## observations 
-p <- 4	## variables
-
-index <- c(NA, 2, 2, 3, 3)
-
-x <- cbind(1, matrix(rnorm(p * n), nrow = n)) 
-
-colnames(x) <- c("Intercept", paste("X", 1:4, sep = ""))
-
-par <- c(0, 2.1, -1.8, 0, 0)
-
-prob <- 1 / (1 + exp(-x %*% par))
-
-mean(pmin(prob, 1 - prob)) ## Bayes risk
-
-y <- rbinom(n, size = 1, prob = prob) ## binary response vector
+bn=as.integer(max(group))
+bs=as.integer(as.numeric(table(group)))
+pf=rep(1,bn)
 
 
-lambda <- lambdamax(x, y = y, index = index, penscale = sqrt,
-model = LogReg()) * 0.5^(0:5)
+
+system.time(m1 <-gglasso(loss="logit",y=yy,x=z,group=group,eps=1e-12,pf=sqrt(bs)))
 
 
-fit <- grplasso(x, y = y, index = index, lambda = lambda, model = LogReg(),
-penscale = sqrt, control = grpl.control(update.hess = "lambda", trace = 0))
+zz = cbind(1,z)
+ggroup = c(NA,group)
+system.time(m2 <-grplasso(y=y,x=zz,index=ggroup, center = F, standardize = F, lambda = m1$lambda*n,control = grpl.control(tol=1e-12)))
+
+m=m1
+m$beta = m2$coef[-1,]
+m$group = m2$index[-1]
+m$lambda = m2$lambda
+m$b0 = m2$coef[1,]
+max(m1$beta - m2$coef[-1,])
 
 
-plot(fit)
+par(mfrow=c(2,1))
+plot(m1)
+plot(m)
+
+
+
+thr = 1e-4
+loss = class(m1)[[2]]
+
+k1 = KKT(b0 = m1$b0, m1$beta, yy, z, m1$lambda, pf, group, thr, delta, loss = loss)
+k2 = KKT(b0 = m$b0, m$beta, yy, z, m1$lambda, pf, group, thr, delta, loss = loss)
