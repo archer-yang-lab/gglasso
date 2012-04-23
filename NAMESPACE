@@ -1,5 +1,5 @@
 useDynLib("gglasso")
-
+importFrom(utils,head,tail,packageDescription)
 export(gglasso,
 cv.gglasso,
 cv.hsvm,
