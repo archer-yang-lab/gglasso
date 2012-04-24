@@ -1,5 +1,5 @@
 plot.gglasso <- function(x, alpha = 1, type = c("indiv", "group"), 
-    legend.loc, log.l = FALSE, ...) {
+    legend.loc, log.l = TRUE, ...) {
     type <- match.arg(type)
     xb <- x$beta
     if (nrow(xb) == 1) {

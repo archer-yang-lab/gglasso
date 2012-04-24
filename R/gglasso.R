@@ -1,6 +1,6 @@
 gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm", 
     "hsvm"), nlambda = 100, lambda.factor = ifelse(nobs < nvars, 0.05, 0.001), 
-    lambda = NULL, pf = rep(1, as.integer(max(group))), dfmax = as.integer(max(group)) + 
+    lambda = NULL, pf = sqrt(bs), dfmax = as.integer(max(group)) + 
         1, pmax = min(dfmax * 1.2, as.integer(max(group))), eps = 1e-08, maxit = 3e+08, 
     delta) {
     #################################################################################
@@ -69,7 +69,7 @@ gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm",
         stop("delta must be non-negtive")
     delta <- as.double(delta)
     if (length(pf) != bn) 
-        stop("The size of penalty factor must be same as the number of groups")
+        stop("The size of group-lasso penalty factor must be same as the number of groups")
     maxit <- as.integer(maxit)
     pf <- as.double(pf)
     eps <- as.double(eps)

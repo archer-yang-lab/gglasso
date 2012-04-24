@@ -1,21 +1,21 @@
-\name{predict.gcdnet}
-\alias{predict.gcdnet}
+\name{predict.gglasso}
+\alias{predict.gglasso}
 \alias{predict.hsvmpath}
 \alias{predict.sqsvmpath}
 \alias{predict.logitpath}
-\title{make predictions from a "gcdnet" object.}
+\title{make predictions from a "gglasso" object.}
 
 \description{
-Similar to other predict methods, this functions predicts fitted values and class labels from a fitted \code{\link{gcdnet}} object.
+Similar to other predict methods, this functions predicts fitted values and class labels from a fitted \code{\link{gglasso}} object.
 }
 
 \usage{
-\method{predict}{gcdnet}(object, newx, s = NULL,
+\method{predict}{gglasso}(object, newx, s = NULL,
 type=c("class","link"), ...)
 }
 
 \arguments{
-		\item{object}{fitted \code{\link{gcdnet}} model object.}
+		\item{object}{fitted \code{\link{gglasso}} model object.}
 		\item{newx}{matrix of new values for \code{x} at which predictions are
 		to be made. Must be a matrix.}
 		\item{s}{value(s) of the penalty parameter \code{lambda} at which
@@ -36,18 +36,13 @@ type=c("class","link"), ...)
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yiyang@umn.edu>}
 \references{
-Yang, Y. and Zou, H. (2012), "An Efficient Algorithm for Computing The HHSVM and Its Generalizations," \emph{Journal of Computational and Graphical Statistics}. Accepted\cr
-BugReport: \url{http://code.google.com/p/gcdnet/}\cr
-
-
-Friedman, J., Hastie, T., and Tibshirani, R. (2010), "Regularization paths for generalized
-linear models via coordinate descent," \emph{Journal of Statistical Software, 33, 1.}\cr
-\url{http://www.jstatsoft.org/v33/i01/}}
-
+Yang, Y. and Zou, H. (2012), "A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems," \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+BugReport: \url{http://code.google.com/p/gglasso/}\cr
+}
 \seealso{\code{\link{coef}} method}
 \examples{
 data(FHT)
-m1 = gcdnet(x=FHT$x,y=FHT$y)
+m1 = gglasso(x=FHT$x,y=FHT$y)
 print(predict(m1,type="class",newx=FHT$x[2:5,]))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -1,0 +1,9 @@
+load("/Users/emeryyi/Documents/Research/googleproject/gglasso/data/FHT.rda")
+library(FHT)
+library(gglasso)
+setwd('/Users/emeryyi/Documents/Research/googleproject/gglasso/man')
+data(FHT)
+m1 <- gglasso(x=FHT$x_cls,y=FHT$y_cls,loss="logit")
+FHT
+x_cls
+dim(x_cls)

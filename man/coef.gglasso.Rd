@@ -1,18 +1,18 @@
-\name{coef.gcdnet}
-\alias{coef.gcdnet}
+\name{coef.gglasso}
+\alias{coef.gglasso}
 \alias{coef.hsvmpath}
 \alias{coef.sqsvmpath}
 \alias{coef.logitpath}
-\title{get coefficients or make coefficient predictions from an "gcdnet" object.}
+\title{get coefficients or make coefficient predictions from an "gglasso" object.}
 \description{
-Computes the coefficients or returns a list of the indices of the nonzero coefficients at the requested values for \code{lambda} from a fitted \code{\link{gcdnet}} object.
+Computes the coefficients or returns a list of the indices of the nonzero coefficients at the requested values for \code{lambda} from a fitted \code{\link{gglasso}} object.
 }
 \usage{
-\method{coef}{gcdnet}(object, s = NULL,
+\method{coef}{gglasso}(object, s = NULL,
 type=c("coefficients","nonzero"), ...)
 }
 \arguments{
-		\item{object}{fitted \code{\link{gcdnet}} model object.}
+		\item{object}{fitted \code{\link{gglasso}} model object.}
 		\item{s}{value(s) of the penalty parameter \code{lambda} at which
 		predictions are required. Default is the entire sequence used to
 		create the model.}
@@ -32,18 +32,13 @@ type=c("coefficients","nonzero"), ...)
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yiyang@umn.edu>}
 \references{
-Yang, Y. and Zou, H. (2012), "An Efficient Algorithm for Computing The HHSVM and Its Generalizations," \emph{Journal of Computational and Graphical Statistics}. Accepted\cr
-BugReport: \url{http://code.google.com/p/gcdnet/}\cr
-
-
-Friedman, J., Hastie, T., and Tibshirani, R. (2010), "Regularization paths for generalized
-linear models via coordinate descent," \emph{Journal of Statistical Software, 33, 1.}\cr
-\url{http://www.jstatsoft.org/v33/i01/}}
-
-\seealso{\code{\link{predict.gcdnet}} method}
+Yang, Y. and Zou, H. (2012), "A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems," \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+BugReport: \url{http://code.google.com/p/gglasso/}\cr
+}
+\seealso{\code{\link{predict.gglasso}} method}
 \examples{
 data(FHT)
-fit1=gcdnet(x=FHT$x,y=FHT$y)
+fit1=gglasso(x=FHT$x,y=FHT$y)
 coef(fit1,type="coef",s=c(0.1,0.005))
 coef(fit1,type="nonzero")
 }

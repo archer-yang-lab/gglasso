@@ -1,9 +1,9 @@
-\name{gcdnet}
-\alias{gcdnet}
+\name{gglasso}
+\alias{gglasso}
 \title{Fits the regularization paths for large margin classifiers}
 \description{Fits a regularization path for large margin classifiers at a sequence of regularization parameters lambda.}
 \usage{
-gcdnet(x, y, nlambda = 100, 
+gglasso(x, y, nlambda = 100, 
 		method = c("hhsvm", "logit", "sqsvm"),
 		lambda.factor = ifelse(nobs < nvars, 0.01, 1e-04), lambda = NULL, lambda2 = 0, 
 		pf = rep(1, nvars), exclude, dfmax = nvars + 1, pmax = min(dfmax * 1.2, 
@@ -60,7 +60,7 @@ gcdnet(x, y, nlambda = 100,
 }
 
 \details{
-Note that the objective function in \code{gcdnet} is
+Note that the objective function in \code{gglasso} is
 \deqn{Loss(y, X, beta))/N + lambda1 * |beta| + 0.5 * lambda2 * beta^2}
 where the penalty is a combination of L1 and L2 term. Users can specify the loss function to use, options include Huberized squared hinge loss, Squared hinge loss and logistic regression. Users can also tweak the penalty by choosing different \eqn{lambda2} and penalty factor. 
 
@@ -71,7 +71,7 @@ For computing speed reason, if models are not converging or running slow, consid
 
 
 \value{
-An object with S3 class \code{\link{gcdnet}}.
+An object with S3 class \code{\link{gglasso}}.
 		\item{call}{the call that produced this object}
 		\item{b0}{intercept sequence of length \code{length(lambda)}}
 		\item{beta}{a \code{p*length(lambda)} matrix of coefficients, stored as a sparse matrix (\code{dgCMatrix} class, the standard class for sparse numeric matrices in the \code{Matrix} package.). To convert it into normal type matrix use \code{as.matrix()}.}
@@ -86,22 +86,22 @@ An object with S3 class \code{\link{gcdnet}}.
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yiyang@umn.edu>}
 \references{
-Yang, Y. and Zou, H. (2012), "An Efficient Algorithm for Computing The HHSVM and Its Generalizations," \emph{Journal of Computational and Graphical Statistics}. Accepted\cr
-BugReport: \url{http://code.google.com/p/gcdnet/}\cr
+Yang, Y. and Zou, H. (2012), "A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems," \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+BugReport: \url{http://code.google.com/p/gglasso/}\cr
 }
 
 
-\seealso{\code{plot.gcdnet}}
+\seealso{\code{plot.gglasso}}
 \examples{
 data(FHT)
 # solution paths for the HHSVM
-m1 <- gcdnet(x=FHT$x,y=FHT$y,delta=1,lambda2=1,method="hhsvm")
+m1 <- gglasso(x=FHT$x,y=FHT$y,delta=1,lambda2=1,method="hhsvm")
 plot(m1)
 # solution paths for the penalized SVM with the squared hinge loss
-m2 <- gcdnet(x=FHT$x,y=FHT$y,lambda2=0.1,method="sqsvm")
+m2 <- gglasso(x=FHT$x,y=FHT$y,lambda2=0.1,method="sqsvm")
 plot(m2)
 # solution paths for the penalized logistic regression
-m3 <- gcdnet(x=FHT$x,y=FHT$y,lambda2=0.01,method="logit")
+m3 <- gglasso(x=FHT$x,y=FHT$y,lambda2=0.01,method="logit")
 plot(m3)
 }
 \keyword{models}
