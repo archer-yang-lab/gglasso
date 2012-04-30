@@ -1,5 +1,6 @@
 \name{cv.gglasso}
 \alias{cv.gglasso}
+\alias{cv.ls}
 \alias{cv.logit}
 \alias{cv.hsvm}
 \alias{cv.sqsvm}
