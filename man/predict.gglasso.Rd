@@ -1,8 +1,5 @@
 \name{predict.gglasso}
 \alias{predict.gglasso}
-\alias{predict.hsvmpath}
-\alias{predict.sqsvmpath}
-\alias{predict.logitpath}
 \title{make predictions from a "gglasso" object.}
 
 \description{
@@ -22,11 +19,11 @@ type=c("class","link"), ...)
 		predictions are required. Default is the entire sequence used to
 		create the model. }
 		\item{type}{
-		type of prediction required. 
+		type of prediction required:
 		\itemize{
-				\item Type \code{"link"} gives the
-				linear predictors for classification problems.
-				\item Type \code{"class"} produces the class label corresponding to the maximum probability.}
+				\item Type \code{"link"}, for regression it returns the fitted response; for classification it gives the linear predictors.
+				\item Type \code{"class"}, only valid for classification, it produces the predicted class label corresponding to the maximum probability.}
+		
 		}
 		\item{\dots}{Not used. Other arguments to predict. } }
 \details{\code{s} is the new vector at which predictions are requested. If \code{s} is not in the lambda sequence used for fitting the model, the \code{predict} function will use linear interpolation to make predictions. The new values are interpolated using a fraction of predicted values from both left and right \code{lambda} indices. }
@@ -36,14 +33,28 @@ type=c("class","link"), ...)
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yiyang@umn.edu>}
 \references{
-Yang, Y. and Zou, H. (2012), "A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems," \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
 BugReport: \url{http://code.google.com/p/gglasso/}\cr
 }
 \seealso{\code{\link{coef}} method}
 \examples{
-data(FHT)
-m1 = gglasso(x=FHT$x,y=FHT$y)
-print(predict(m1,type="class",newx=FHT$x[2:5,]))
+# load gglasso library
+library(gglasso)
+
+# load data set
+data(colon)
+
+# define group index
+group <- rep(1:2000,each=5)
+
+# fit group lasso
+m1 <- gglasso(x=colon$x,y=colon$y,group=group,loss="logit")
+
+# predicted class label at x[10,]
+print(predict(m1,type="class",newx=colon$x[10,]))
+
+# predicted linear predictors at x[1:5,]
+print(predict(m1,type="link",newx=colon$x[1:5,]))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

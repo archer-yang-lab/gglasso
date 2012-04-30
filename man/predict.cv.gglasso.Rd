@@ -2,7 +2,7 @@
 \alias{predict.cv.gglasso}
 \title{make predictions from a "cv.gglasso" object.}
 \description{
-This function makes predictions from a cross-validated gglasso model,
+This function makes predictions from a cross-validated \code{gglasso} model,
 using the stored \code{"gglasso.fit"} object, and the optimal value
 chosen for \code{lambda}.
 }
@@ -21,25 +21,35 @@ chosen for \code{lambda}.
 		\item{\dots}{not used. Other arguments to predict. } }
 \details{This function makes it easier to use the results of
   cross-validation to make a prediction.}
-\value{The object returned depends the \dots argument which is passed on
+\value{The returned object depends on the \dots argument which is passed on
 to the \code{\link{predict}} method for \code{\link{gglasso}} objects.}
 
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yiyang@umn.edu>}
 \references{
-Yang, Y. and Zou, H. (2012), "A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems," \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
 BugReport: \url{http://code.google.com/p/gglasso/}\cr
 }
 
 \seealso{\code{\link{cv.gglasso}}, and \code{\link{coef.cv.gglasso}} methods.}
 \examples{
-data(FHT)
-set.seed(2011)
-cv=cv.gglasso(FHT$x, FHT$y,
-lambda2 = 1, pred.loss="misclass", 
-lambda.factor=0.05,nfolds=5)
-pre = predict(cv$gglasso.fit, newx = FHT$x, 
-s = cv$lambda.1se, type = "class")
+# load gglasso library
+library(gglasso)
+
+# load data set
+data(colon)
+
+# define group index
+group <- rep(1:2000,each=5)
+
+# 5-fold cross validation using group lasso 
+# penalized logisitic regression
+cv <- cv.gglasso(x=colon$x, y=colon$y, group=group, loss="logit",
+pred.loss="misclass", lambda.factor=0.05, nfolds=5)
+
+# the coefficients at lambda = lambda.min, newx = x[1,]
+pre = predict(cv$gglasso.fit, newx = colon$x[1:10,], 
+s = cv$lambda.min, type = "class")
 }
 \keyword{models}
 \keyword{regression}

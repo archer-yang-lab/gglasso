@@ -2,7 +2,7 @@
 \alias{coef.cv.gglasso}
 \title{get coefficients or make coefficient predictions from a "cv.gglasso" object.}
 \description{
-This function gets coefficients or makes coefficient predictions from a cross-validated gglasso model,
+This function gets coefficients or makes coefficient predictions from a cross-validated \code{gglasso} model,
 using the stored \code{"gglasso.fit"} object, and the optimal value
 chosen for \code{lambda}.
 }
@@ -22,12 +22,11 @@ chosen for \code{lambda}.
 }
 \details{This function makes it easier to use the results of
 cross-validation to get coefficients or make coefficient predictions.}
-\value{The object returned depends the \dots argument which is passed on
-to the \code{\link{predict}} method for \code{\link{gglasso}} objects.}
+\value{The coefficients at the requested values for \code{lambda}.}
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yiyang@umn.edu>}
 \references{
-Yang, Y. and Zou, H. (2012), "An Efficient Algorithm for Computing The HHSVM and Its Generalizations," \emph{Journal of Computational and Graphical Statistics}. Accepted\cr
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
 BugReport: \url{http://code.google.com/p/gglasso/}\cr
 
 Friedman, J., Hastie, T., and Tibshirani, R. (2010), "Regularization paths for generalized
@@ -36,11 +35,22 @@ linear models via coordinate descent," \emph{Journal of Statistical Software, 33
 
 \seealso{\code{\link{cv.gglasso}}, and \code{\link{predict.cv.gglasso}} methods.}
 \examples{
-data(FHT)
-set.seed(2011)
-cv=cv.gglasso(FHT$x, FHT$y, 
-	lambda2 = 1,nfolds=5)
-coef(cv,s="lambda.min")
+# load gglasso library
+library(gglasso)
+
+# load data set
+data(colon)
+
+# define group index
+group <- rep(1:2000,each=5)
+
+# 5-fold cross validation using group lasso 
+# penalized logisitic regression
+cv <- cv.gglasso(x=colon$x, y=colon$y, group=group, loss="logit",
+pred.loss="misclass", lambda.factor=0.05, nfolds=5)
+
+# the coefficients at lambda = lambda.1se
+pre = coef(cv$gglasso.fit, s = cv$lambda.1se)
 }
 \keyword{models}
 \keyword{regression}

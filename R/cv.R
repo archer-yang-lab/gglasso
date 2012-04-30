@@ -1,10 +1,14 @@
 cv.gglasso <- function(x, y, group, lambda = NULL, pred.loss = c("misclass", 
-    "loss", "L1", "L2"), nfolds = 5, foldid, delta = 2, ...) {
+    "loss", "L1", "L2"), nfolds = 5, foldid, delta, ...) {
     if (missing(pred.loss)) 
         pred.loss <- "default" else pred.loss <- match.arg(pred.loss)
     N <- nrow(x)
     ###Fit the model once to get dimensions etc of output
     y <- drop(y)
+    if (missing(delta)) 
+        delta <- 1
+    if (delta < 0) 
+        stop("delta must be non-negtive")
     gglasso.object <- gglasso(x, y, group, lambda = lambda, delta = delta, ...)
     lambda <- gglasso.object$lambda
     # predict -> coef

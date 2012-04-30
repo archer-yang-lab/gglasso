@@ -1,31 +1,37 @@
 \name{cv.gglasso}
 \alias{cv.gglasso}
-\alias{cv.hsvmpath}
-\alias{cv.sqsvmpath}
-\alias{cv.logitpath}
+\alias{cv.logit}
+\alias{cv.hsvm}
+\alias{cv.sqsvm}
 \title{Cross-validation for gglasso}
 \description{Does k-fold cross-validation for gglasso, produces a plot,
 and returns a value for \code{lambda}. This function is modified based on the \code{cv} function from the \code{glmnet} package.}
 \usage{
-cv.gglasso(x, y, lambda, pred.loss, nfolds, foldid, delta,...)
+cv.gglasso(x, y, group, lambda = NULL, 
+	pred.loss = c("misclass", "loss", "L1", "L2"), 
+	nfolds = 5, foldid, delta, ...)
 }
 \arguments{
-		\item{x}{\code{x} matrix as in \code{\link{gglasso}}.}
-		\item{y}{class label \code{y} as in \code{\link{gglasso}}.}
+\item{x}{matrix of predictors, of dimension \eqn{n \times p}{n*p}; each row is an observation vector.}
+\item{y}{response variable. This argument should be quantitative for regression (least squares), and a two-level factor for classification (logistic model, huberized SVM, squared SVM).}
+\item{group}{a vector of consecutive integers describing the grouping of the coefficients (see example below).}
 		\item{lambda}{optional user-supplied lambda sequence; default is
 		\code{NULL}, and \code{\link{gglasso}} chooses its own sequence.}
+		\item{pred.loss}{loss to use for cross-validation error. Valid options are:
+		\itemize{
+		\item \code{"loss"} for classification, margin based loss function. 
+		\item \code{"misclass"} for classification, it gives misclassification error.
+		\item \code{"L1"} for regression, mean square error used by least squares regression \code{loss="ls"}, it measure the deviation from the fitted mean to the response.
+		\item \code{"L2"} for regression, mean absolute error used by least squares regression \code{loss="ls"}, it measure the deviation from the fitted mean to the response.
+		}
+		Default is \code{"loss"}.}
 		\item{nfolds}{number of folds - default is 5. Although \code{nfolds}
 		can be as large as the sample size (leave-one-out CV), it is not
 		recommended for large datasets. Smallest value allowable is \code{nfolds=3}.}
 		\item{foldid}{an optional vector of values between 1 and \code{nfold}
 		identifying what fold each observation is in. If supplied,
 		\code{nfold} can be missing.}
-		\item{pred.loss}{loss to use for cross-validation error. Valid options are:
-		\itemize{
-		\item \code{"loss"} Margin based loss function. 
-		\item \code{"misclass"} gives misclassification error for classification.}
-		Default is \code{"loss"}.}
-		\item{delta}{parameter \eqn{\delta}{delta} only used in HHSVM for computing margin based loss function, only available with \code{pred.loss = "misclass"}.}
+		\item{delta}{parameter \eqn{\delta}{delta} only used in huberized SVM for computing log-likelihood on validation set, only available with \code{pred.loss = "loss"}, \code{loss = "hsvm"}.}
 		\item{\dots}{other arguments that can be passed to gglasso.}
 
 }
@@ -42,7 +48,6 @@ list with the ingredients of the cross-validation fit.
 		\item{cvsd}{estimate of standard error of \code{cvm}.}
 		\item{cvupper}{upper curve = \code{cvm+cvsd}.}
 		\item{cvlower}{lower curve = \code{cvm-cvsd}.}
-		\item{nzero}{number of non-zero coefficients at each \code{lambda}.}
 		\item{name}{a text string indicating type of measure (for plotting
 		purposes).}
 		\item{gglasso.fit}{a fitted \code{\link{gglasso}} object for the full data.}
@@ -55,17 +60,25 @@ list with the ingredients of the cross-validation fit.
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yiyang@umn.edu>}
 \references{
-Yang, Y. and Zou, H. (2012), "A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems," \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
 BugReport: \url{http://code.google.com/p/gglasso/}\cr
 }
 
 \seealso{\code{\link{gglasso}}, \code{\link{plot.cv.gglasso}}, \code{\link{predict.cv.gglasso}}, and \code{\link{coef.cv.gglasso}} methods.}
 \examples{
-data(FHT)
-set.seed(2011)
-cv=cv.gglasso(FHT$x,FHT$y,
-lambda2=0.1,pred.loss="loss", nfolds=5)
-plot(cv)
+# load gglasso library
+library(gglasso)
+
+# load data set
+data(bardet)
+
+# define group index
+group <- rep(1:200,each=5)
+
+# 5-fold cross validation using group lasso 
+# penalized logisitic regression
+cv <- cv.gglasso(x=bardet$x, y=bardet$y, group=group, loss="ls",
+pred.loss="L2", lambda.factor=0.05, nfolds=5)
 }
 \keyword{models}
 \keyword{regression}

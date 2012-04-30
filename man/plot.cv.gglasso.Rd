@@ -18,15 +18,30 @@ curves, as a function of the \code{lambda} values used. This function is modifie
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yiyang@umn.edu>}
 \references{
-Yang, Y. and Zou, H. (2012), "A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems," \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
 BugReport: \url{http://code.google.com/p/gglasso/}\cr
+
+Friedman, J., Hastie, T., and Tibshirani, R. (2010), ``Regularization paths for generalized
+linear models via coordinate descent,'' \emph{Journal of Statistical Software}, 33, 1.\cr
+\url{http://www.jstatsoft.org/v33/i01/}
 }
 \seealso{\code{\link{cv.gglasso}}.}
 \examples{
-data(FHT)
-set.seed(2011)
-cv=cv.gglasso(FHT$x, FHT$y,
-lambda2 = 1, pred.loss="loss", nfolds=5)
+# load gglasso library
+library(gglasso)
+
+# load data set
+data(colon)
+
+# define group index
+group <- rep(1:2000,each=5)
+
+# 5-fold cross validation using group lasso 
+# penalized logisitic regression
+cv <- cv.gglasso(x=colon$x, y=colon$y, group=group, loss="logit",
+pred.loss="misclass", lambda.factor=0.05, nfolds=5)
+
+# make a CV plot
 plot(cv)
 }
 \keyword{models}

@@ -1,0 +1,57 @@
+\name{colon}
+\alias{colon}
+
+\title{Gene expression data from Alon et al. (1999)}
+\usage{
+data(colon)
+}
+
+\description{
+  Gene expression data (2000 genes for 62 samples) from the
+ microarray experiments of colon tissue samples of Alon et al. (1999). 
+  
+}
+
+\details{ This data set contains 62 samples 
+ with 10000 predictors (expanded from 2000 genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2012)): 40 tumor tissues, coded 1 and 22 normal tissues, coded -1.  
+}
+
+\value{
+A list with the following elements:
+  \item{x}{a [62 x 10000] matrix (expanded from a [62 x 2000] matrix) giving the expression levels of 2000 
+  genes for the 62 colon tissue samples. Each row corresponds to a patient, each 5 consecutive columns to a grouped
+  gene.}
+  \item{y}{a numeric vector of length 62 giving the type of tissue sample (tumor or normal).}
+}
+
+\source{The data are described in Alon et al. (1999) and can be freely
+downloaded from 
+\url{http://microarray.princeton.edu/oncology/affydata/index.html}.}
+
+\references{
+Alon, U. and Barkai, N. and Notterman, D.A. and Gish, K. and Ybarra, S. and Mack, D. and Levine, A.J. (1999).
+``Broad patterns of gene expression revealed by clustering analysis of tumor and normal colon tissues probed by oligonucleotide arrays'',
+\emph{Proc. Natl. Acad. Sci. USA}, \bold{96}(12), 6745--6750.\cr
+
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+BugReport: \url{http://code.google.com/p/gglasso/}\cr
+}
+
+
+\examples{
+# load gglasso library
+library(gglasso)
+
+# load data set
+data(colon)
+
+# how many samples and how many predictors ?
+dim(colon$x)
+
+# how many samples of class -1 and 1 respectively ?
+sum(colon$y==-1)
+sum(colon$y==1)
+}
+
+
+\keyword{datasets}

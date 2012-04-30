@@ -1,6 +1,4 @@
-plot.gglasso <- function(x, alpha = 1, type = c("indiv", "group"), 
-    legend.loc, log.l = TRUE, ...) {
-    type <- match.arg(type)
+plot.gglasso <- function(x, group = FALSE, log.l = TRUE, ...) {
     xb <- x$beta
     if (nrow(xb) == 1) {
         if (any(abs(xb) > 0)) {
@@ -15,7 +13,7 @@ plot.gglasso <- function(x, alpha = 1, type = c("indiv", "group"),
     l <- x$lambda
     n.g <- max(g)
     
-    switch(type, group = {
+    if(group){
         bs <- as.integer(as.numeric(table(g)))
         ix <- rep(NA, n.g)
         iy <- rep(NA, n.g)
@@ -30,10 +28,8 @@ plot.gglasso <- function(x, alpha = 1, type = c("indiv", "group"),
             crossp <- apply(tmp[ix[g]:iy[g], ], 2, crossprod)
             beta[g, ] <- sqrt(crossp)
         }
-    }, indiv = {
-        beta <- tmp
-    })
-    
+    } else beta <- tmp
+
     if (log.l) {
         l <- log(l)
         xlab <- "Log Lambda"
@@ -58,16 +54,4 @@ plot.gglasso <- function(x, alpha = 1, type = c("indiv", "group"),
     do.call("matlines", line.args)
     
     abline(h = 0, lwd = line.args$lwd)
-    
-    if (!missing(legend.loc)) {
-        legend.args <- list(col = hcl(h = seq(0, 360, len = (n.g + 1)), l = 70, 
-            c = 100, alpha = alpha)[1:n.g], lwd = 1 + 1.2^(-p/20), lty = 1, 
-            legend = unique(g))
-        if (length(new.args)) {
-            new.legend.args <- new.args[names(new.args) %in% names(formals(legend))]
-            legend.args[names(new.legend.args)] <- new.legend.args
-        }
-        legend.args$x <- legend.loc
-        do.call("legend", legend.args)
-    }
 } 

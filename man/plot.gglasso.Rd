@@ -1,20 +1,19 @@
 \name{plot.gglasso}
 \alias{plot.gglasso}
-\title{Plot coefficients from a "gglasso" object}
+\title{Plot solution paths from a "gglasso" object}
 \description{
 Produces a coefficient profile plot of the coefficient paths for a
-fitted \code{\link{gglasso}} object. This function is modified based on the \code{plot} function from the \code{glmnet} package.
+fitted \code{\link{gglasso}} object.
 }
 \usage{
-\method{plot}{gglasso}(x, xvar = c("norm", "lambda"), color = FALSE, label = FALSE, ...)
+\method{plot}{gglasso}(x, group = FALSE, log.l = TRUE, ...)
 }
 \arguments{
 		\item{x}{fitted \code{\link{gglasso}} model}
-		\item{xvar}{what is on the X-axis. \code{"norm"} plots against the
-		L1-norm of the coefficients, \code{"lambda"} against the log-lambda
-		sequence.}
-		\item{color}{if \code{TRUE}, plot the curves with rainbow colors. \code{FALSE} is gray colors. Default is \code{FALSE}}
-		\item{label}{if \code{TRUE}, label the curves with variable sequence numbers. Default is \code{FALSE}}
+		\item{group}{what is on the Y-axis. Plot the norm of each group
+		 if \code{TRUE}. Plot each coefficient if \code{FALSE}.}
+		\item{log.l}{what is on the X-axis. Plot against the log-lambda
+		sequence if \code{TRUE}. Plot against the lambda sequence if \code{FALSE}.}
 		\item{\dots}{other graphical parameters to plot}
 }
 \details{
@@ -23,16 +22,27 @@ A coefficient profile plot is produced.
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yiyang@umn.edu>}
 \references{
-Yang, Y. and Zou, H. (2012), "A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems," \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
 BugReport: \url{http://code.google.com/p/gglasso/}\cr
 }
 \examples{
-data(FHT)
-m1 = gglasso(x=FHT$x,y=FHT$y)
+# load gglasso library
+library(gglasso)
+
+# load data set
+data(bardet)
+
+# define group index
+group <- rep(1:200,each=5)
+
+# fit group lasso
+m1 <- gglasso(x=bardet$x,y=bardet$y,group=group,loss="ls")
+
+# make plots
 par(mfrow=c(1,3))
-plot(m1) # plots against the L1-norm of the coefficients
-plot(m1,xvar="lambda",label=TRUE) # plots against the log-lambda sequence
-plot(m1,color=TRUE)
+plot(m1) # plots the coefficients against the log-lambda sequence 
+plot(m1,group=TRUE) # plots group norm against the log-lambda sequence 
+plot(m1,log.l=FALSE) # plots against the lambda sequence
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

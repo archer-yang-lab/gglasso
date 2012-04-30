@@ -31,6 +31,7 @@ predict.gglasso <- function(object, newx, s = NULL, type = c("class",
             lamlist$right, drop = FALSE] * (1 - lamlist$frac)
         dimnames(nbeta) <- list(vnames, paste(seq(along = s)))
     }
+    if (is.null(dim(newx))) newx = matrix(newx, nrow = 1)
     nfit <- as.matrix(as.matrix(cbind2(1, newx)) %*% nbeta)
     if (loss %in% c("logit", "sqsvm", "hsvm")) {
         switch(type, link = nfit, class = ifelse(nfit > 0, 1, -1))

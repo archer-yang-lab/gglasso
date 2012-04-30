@@ -1,9 +1,25 @@
-load("/Users/emeryyi/Documents/Research/googleproject/gglasso/data/FHT.rda")
-library(FHT)
-library(gglasso)
+library(gglasso)#
+#
+# load data set#
+data(colon)#
+#
+# define group index#
+group <- rep(1:2000,each=5)#
+#
+# 5-fold cross validation using group lasso #
+# penalized logisitic regression#
+cv <- cv.gglasso(x=colon$x, y=colon$y, group=group, loss="logit",#
+pred.loss="misclass", lambda.factor=0.05, nfolds=5)#
+#
+# the coefficients at lambda = lambda.min, newx = x[1,]#
+pre = predict(cv$gglasso.fit, newx = colon$x[1:10,], #
+s = cv$lambda.min, type = "class")
+load("/Users/emeryyi/Documents/Research/googleproject/gglasso/data/bardet.rda")
+library(gglasso)#
+#
+# load data set#
+data(bardet)
+dim(bardet$x)
+m1 <- gglasso(x=colon$x,y=colon$y,group=group,loss="ls")
 setwd('/Users/emeryyi/Documents/Research/googleproject/gglasso/man')
-data(FHT)
-m1 <- gglasso(x=FHT$x_cls,y=FHT$y_cls,loss="logit")
-FHT
-x_cls
-dim(x_cls)
+plot(m1) # plots against the L1-norm of the coefficients

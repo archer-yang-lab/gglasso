@@ -1,0 +1,56 @@
+\name{bardet}
+\alias{bardet}
+
+\title{Gene expression data from Scheetz et al. (2006)}
+\usage{
+data(bardet)
+}
+
+\description{
+Gene expression data (200 genes for 120 samples) from the
+ microarray experiments of mammalian eye tissue samples of Scheetz et al. (2006). 
+  
+}
+
+\details{ This data set contains 120 samples 
+ with 1000 predictors (expanded from 200 genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2012)).
+}
+
+\value{
+A list with the following elements:
+  \item{x}{a [120 x 1000] matrix (expanded from a [120 x 200] matrix) giving the expression levels of 200 filtered
+  genes (as described in Huang et al. (2010)) for the 120 samples. Each row corresponds to a subject, each 5 consecutive columns to a grouped
+  gene.}
+  \item{y}{a numeric vector of length 120 giving expression level of gene TRIM32, which causes Bardet-Biedl syndrome.}
+}
+
+
+
+\references{
+Scheetz, T., Kim, K., Swiderski, R., Philp, A., Braun, T., Knudtson, K., Dorrance, A., DiBona, G., Huang, J., Casavant, T. et al. (2006), ``Regulation of gene expression in the mammalian eye and its relevance to eye disease'', \emph{Proceedings of the National Academy of Sciences} \bold{103}(39), 14429-14434. \cr
+
+Huang, J., S. Ma, and C.-H. Zhang (2008). ``Adaptive Lasso for sparse high-dimensional
+regression models''. \emph{Statistica Sinica} 18, 1603-1618.\cr
+
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+BugReport: \url{http://code.google.com/p/gglasso/}\cr
+}
+
+
+
+\examples{
+# load gglasso library
+library(gglasso)
+
+# load data set
+data(bardet)
+
+# how many samples and how many predictors ?
+dim(bardet$x)
+
+# repsonse y
+bardet$y
+}
+
+
+\keyword{datasets}

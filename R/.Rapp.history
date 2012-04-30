@@ -1,0 +1,17 @@
+dim(newx)
+c = c(1,2)
+dim(c)
+setwd('/Users/emeryyi/Documents/Research/googleproject/gglasso/man')
+library(gglasso)#
+#
+# load data set#
+data(colon)#
+#
+# define group index#
+group <- rep(1:2000,each=5)
+newx=colon$x[1,]
+    if (is.null(newx)) newx = matrix(newx, nrow = 1)
+    if (is.null(dim(newx))) newx = matrix(newx, nrow = 1)
+newx
+setwd('/Users/emeryyi/Documents/Research/googleproject/gglasso/R')
+    nfit <- as.matrix(as.matrix(cbind2(1, newx)) %*% nbeta)

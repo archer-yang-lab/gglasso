@@ -1,5 +1,5 @@
 Package: gglasso
-Title: Group-Lasso Penalized Learning Using A Unified BMD Algorithm
+Title: Group Lasso Penalized Learning Using A Unified BMD Algorithm
 Version: 1.0.0
 Date: 2012-4-23
 Author: Yi Yang <yiyang@umn.edu>, Hui Zou <hzou@stat.umn.edu>
