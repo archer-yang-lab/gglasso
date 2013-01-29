@@ -18,7 +18,7 @@ chosen for \code{lambda}.
 	used, it is the optimal value of \code{lambda} that gives minimum
 	cross validation error \code{cvm}. If \code{s} is numeric, it is taken as the value(s) of
 	\code{lambda} to be used.}
-	\item{\dots}{not used. Other arguments to predict. } 
+	\item{\dots}{not used. Other arguments to predict.} 
 }
 \details{This function makes it easier to use the results of
 cross-validation to get coefficients or make coefficient predictions.}
@@ -42,7 +42,7 @@ library(gglasso)
 data(colon)
 
 # define group index
-group <- rep(1:2000,each=5)
+group <- rep(1:20,each=5)
 
 # 5-fold cross validation using group lasso 
 # penalized logisitic regression

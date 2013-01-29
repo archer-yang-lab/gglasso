@@ -40,7 +40,7 @@ library(gglasso)
 data(colon)
 
 # define group index
-group <- rep(1:2000,each=5)
+group <- rep(1:20,each=5)
 
 # 5-fold cross validation using group lasso 
 # penalized logisitic regression

@@ -1,24 +1,24 @@
 \name{colon}
 \alias{colon}
 
-\title{Gene expression data from Alon et al. (1999)}
+\title{Simplified gene expression data from Alon et al. (1999)}
 \usage{
 data(colon)
 }
 
 \description{
-  Gene expression data (2000 genes for 62 samples) from the
+  Gene expression data (20 genes for 62 samples) from the
  microarray experiments of colon tissue samples of Alon et al. (1999). 
   
 }
 
 \details{ This data set contains 62 samples 
- with 10000 predictors (expanded from 2000 genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2012)): 40 tumor tissues, coded 1 and 22 normal tissues, coded -1.  
+ with 100 predictors (expanded from 20 genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2012)): 40 tumor tissues, coded 1 and 22 normal tissues, coded -1.  
 }
 
 \value{
 A list with the following elements:
-  \item{x}{a [62 x 10000] matrix (expanded from a [62 x 2000] matrix) giving the expression levels of 2000 
+  \item{x}{a [62 x 100] matrix (expanded from a [62 x 20] matrix) giving the expression levels of 20 
   genes for the 62 colon tissue samples. Each row corresponds to a patient, each 5 consecutive columns to a grouped
   gene.}
   \item{y}{a numeric vector of length 62 giving the type of tissue sample (tumor or normal).}

@@ -33,7 +33,7 @@ library(gglasso)
 data(bardet)
 
 # define group index
-group <- rep(1:200,each=5)
+group <- rep(1:20,each=5)
 
 # fit group lasso
 m1 <- gglasso(x=bardet$x,y=bardet$y,group=group,loss="ls")

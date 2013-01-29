@@ -32,7 +32,7 @@ library(gglasso)
 data(colon)
 
 # define group index
-group <- rep(1:2000,each=5)
+group <- rep(1:20,each=5)
 
 # fit group lasso
 m1 <- gglasso(x=colon$x,y=colon$y,group=group,loss="logit")

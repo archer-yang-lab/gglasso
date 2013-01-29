@@ -94,7 +94,7 @@ library(gglasso)
 data(bardet)
 
 # define group index
-group1 <- rep(1:200,each=5)
+group1 <- rep(1:20,each=5)
 
 # fit group lasso penalized least squares
 m1 <- gglasso(x=bardet$x,y=bardet$y,group=group1,loss="ls")
@@ -103,7 +103,7 @@ m1 <- gglasso(x=bardet$x,y=bardet$y,group=group1,loss="ls")
 data(colon)
 
 # define group index
-group2 <- rep(1:2000,each=5)
+group2 <- rep(1:20,each=5)
 
 # fit group lasso penalized logistic regression
 m2 <- gglasso(x=colon$x,y=colon$y,group=group2,loss="logit")

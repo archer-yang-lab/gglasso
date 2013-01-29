@@ -1,25 +1,24 @@
 \name{bardet}
 \alias{bardet}
 
-\title{Gene expression data from Scheetz et al. (2006)}
+\title{Simplified gene expression data from Scheetz et al. (2006)}
 \usage{
 data(bardet)
 }
 
 \description{
-Gene expression data (200 genes for 120 samples) from the
+Gene expression data (20 genes for 120 samples) from the
  microarray experiments of mammalian eye tissue samples of Scheetz et al. (2006). 
   
 }
 
 \details{ This data set contains 120 samples 
- with 1000 predictors (expanded from 200 genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2012)).
+ with 100 predictors (expanded from 20 genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2012)).
 }
 
 \value{
 A list with the following elements:
-  \item{x}{a [120 x 1000] matrix (expanded from a [120 x 200] matrix) giving the expression levels of 200 filtered
-  genes (as described in Huang et al. (2010)) for the 120 samples. Each row corresponds to a subject, each 5 consecutive columns to a grouped
+  \item{x}{a [120 x 100] matrix (expanded from a [120 x 20] matrix) giving the expression levels of 20 filtered genes for the 120 samples. Each row corresponds to a subject, each 5 consecutive columns to a grouped
   gene.}
   \item{y}{a numeric vector of length 120 giving expression level of gene TRIM32, which causes Bardet-Biedl syndrome.}
 }
