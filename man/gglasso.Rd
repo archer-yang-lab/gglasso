@@ -33,10 +33,10 @@ gglasso	(x, y, group = NULL,
 		\code{nlambda} and \code{lambda.factor}. Supplying a value of
 		\code{lambda} overrides this. It is better to supply
 		a decreasing sequence of \code{lambda} values than a single (small) value, if not, the program will sort user-defined \code{lambda} sequence in decreasing order automatically.}
-		\item{pf}{penalty factor of length \code{bs} (group size). Separate penalty weights can be applied to each group of \eqn{\beta}{beta's}s to allow
+		\item{pf}{penalty factor, a vector in length of bn (bn is the total number of groups). Separate penalty weights can be applied to each group of \eqn{\beta}{beta's}s to allow
 		differential shrinkage. Can be 0 for some groups, which implies
 		no shrinkage, and results in that group always being included in the
-		model. Default is 1 for all group.}
+		model. Default value for each entry is the square-root of the corresponding size of each group.}
 		
 		\item{dfmax}{limit the maximum number of groups in the
 		model. Useful for very large \code{bs} (group size), if a partial path is desired. Default is \code{bs+1}.}
