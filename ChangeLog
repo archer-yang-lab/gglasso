@@ -1,5 +1,8 @@
 CHANGELOG - Record of Changes for gglasso
 Please find below the list of the various changes and improvements that were part of each successive update.
 
+1.1:
+* [fixed] In the manual corrected the default value of the penalty factor "pf".
+
 1.0:
 * Initial release.
