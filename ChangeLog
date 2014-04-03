@@ -2,7 +2,8 @@ CHANGELOG - Record of Changes for gglasso
 Please find below the list of the various changes and improvements that were part of each successive update.
 
 1.2:
-* [improved] improved the cross-validation procedure.
+* [improved] Improved the cross-validation implementation.
+* [fixed] Fixed a lambda interpolation bug in predict and coef functions.
  
 1.1:
 * [fixed] In the manual corrected the default value of the penalty factor "pf".
