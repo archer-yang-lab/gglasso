@@ -33,7 +33,7 @@ err <- function(n, maxit, pmax) {
                 pmax, " at ", -n - 10000, "th lambda value; solutions for larger lambdas returned", 
                 sep = "")
         n <- -1
-        msg <- paste("from cmd fortran code -", msg)
+        msg <- paste("from gglasso fortran code -", msg)
     }
     list(n = n, msg = msg)
 }
