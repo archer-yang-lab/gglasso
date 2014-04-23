@@ -20,7 +20,7 @@ err <- function(n, maxit, pmax) {
         if (n == 10000) 
             msg <- "All penalty factors are <= 0"
         n <- 1
-        msg <- paste("in cmd fortran code -", msg)
+        msg <- paste("in gglasso fortran code -", msg)
     }
     if (n < 0) {
         #non fatal error
