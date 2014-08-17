@@ -11,7 +11,7 @@ gglasso	(x, y, group = NULL,
 		pf = sqrt(bs), 
 		dfmax = as.integer(max(group)) + 1, 
 		pmax = min(dfmax * 1.2, as.integer(max(group))), 
-		eps = 1e-08, maxit = 3e+08, delta)
+		eps = 1e-08, maxit = 3e+08, delta, intercept=TRUE)
 }
 \arguments{
 		\item{x}{matrix of predictors, of dimension \eqn{n \times p}{n*p}; each row is an observation vector.}
@@ -48,6 +48,8 @@ gglasso	(x, y, group = NULL,
 		\item{maxit}{maximum number of outer-loop iterations allowed at fixed lambda value. Default is 3e8. If models do not converge, consider increasing \code{maxit}.}
 
 		\item{delta}{the parameter \eqn{\delta}{delta} in \code{"hsvm"} (Huberized squared hinge loss). Default is 1.}
+	 
+	\item{intercept}{Whether to include intercept in the model. Default is TRUE.}
 }
 
 \details{
@@ -80,7 +82,7 @@ An object with S3 class \code{\link{gglasso}}.
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yiyang@umn.edu>}
 \references{
-Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. Accepted.\cr
 BugReport: \url{http://code.google.com/p/gglasso/}\cr
 }
 

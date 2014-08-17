@@ -5,16 +5,16 @@
 ! USAGE:
 ! 
 ! SUBROUTINE ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
-!                     eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
+!                     eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! 
 ! SUBROUTINE log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
-!                     eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
+!                     eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! 
 ! SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
-!                     eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
+!                     eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! 
 ! SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
-!                     eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
+!                     eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! 
 ! INPUT ARGUMENTS:
 !    delta = delta parameter in Huberized hinge loss, only available in HSVM case (hsvm_f).
@@ -46,7 +46,9 @@
 !          until the relative change in any coefficient is less than eps.
 !    maxit = maximum number of outer-loop iterations allowed at fixed lambda value. 
 !            (suggested values, maxit = 100000)
+!    intr = whether to include the intercept in the model
 ! 
+!
 ! OUTPUT:
 ! 
 !    nalam = actual number of lambda values (solutions)
@@ -82,7 +84,7 @@
 
 ! --------------------------------------------------
 SUBROUTINE ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
-                    eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
+                    eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! --------------------------------------------------
     IMPLICIT NONE
     ! - - - arg types - - -
@@ -103,6 +105,7 @@ SUBROUTINE ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
     INTEGER::npass
     INTEGER::jerr
     INTEGER::maxit
+    INTEGER::intr
     INTEGER:: idx(pmax)
     INTEGER::nbeta(nlam)
     DOUBLE PRECISION:: flmin
@@ -256,12 +259,14 @@ SUBROUTINE ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
                     ENDIF
                     DEALLOCATE(u,dd,oldb)
                 ENDDO
-                d=sum(r)/nobs
-                IF(d/=0.0D0) THEN
-                    b(0)=b(0)+d
-                    r=r-d
-                    dif=max(dif,d**2)
-                ENDIF
+				IF(intr /= 0) THEN
+	                d=sum(r)/nobs
+	                IF(d/=0.0D0) THEN
+	                    b(0)=b(0)+d
+	                    r=r-d
+	                    dif=max(dif,d**2)
+	                ENDIF
+				ENDIF
                 IF (ni > pmax) EXIT
                 IF (dif < eps) EXIT
                 IF(npass > maxit) THEN
@@ -300,12 +305,14 @@ SUBROUTINE ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
                         ENDIF
                         DEALLOCATE(u,dd,oldb)
                     ENDDO
-                    d=sum(r)/nobs
-                    IF(d/=0.0D0) THEN
-                        b(0)=b(0)+d
-                        r=r-d
-                        dif=max(dif,d**2)
-                    ENDIF
+					IF(intr /= 0) THEN
+	                    d=sum(r)/nobs
+	                    IF(d/=0.0D0) THEN
+	                        b(0)=b(0)+d
+	                        r=r-d
+	                        dif=max(dif,d**2)
+	                    ENDIF
+				    ENDIF
                     IF(dif<eps) EXIT
                     IF(npass > maxit) THEN
                         jerr=-l
@@ -366,7 +373,7 @@ END SUBROUTINE ls_f
 
 ! --------------------------------------------------
 SUBROUTINE log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
-                    eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
+                    eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! --------------------------------------------------
     IMPLICIT NONE
     ! - - - arg types - - -
@@ -387,6 +394,7 @@ SUBROUTINE log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
     INTEGER::npass
     INTEGER::jerr
     INTEGER::maxit
+    INTEGER::intr
     INTEGER:: idx(pmax)
     INTEGER::nbeta(nlam)
     DOUBLE PRECISION:: flmin
@@ -540,13 +548,15 @@ SUBROUTINE log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
                     ENDIF
                     DEALLOCATE(u,dd,oldb)
                 ENDDO
-                d = sum(y/(1.0D0+exp(r)))
-                d = 4.0D0*d/nobs
-                IF(d /= 0.0D0) THEN
-                    b(0)=b(0)+d
-                    r=r+y*d
-                    dif=max(dif,d**2)
-                ENDIF
+				IF(intr /= 0) THEN
+	                d = sum(y/(1.0D0+exp(r)))
+	                d = 4.0D0*d/nobs
+	                IF(d /= 0.0D0) THEN
+	                    b(0)=b(0)+d
+	                    r=r+y*d
+	                    dif=max(dif,d**2)
+	                ENDIF
+				ENDIF
                 IF (ni > pmax) EXIT
                 IF (dif < eps) EXIT
                 IF(npass > maxit) THEN
@@ -585,13 +595,15 @@ SUBROUTINE log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
                         ENDIF
                         DEALLOCATE(u,dd,oldb)
                     ENDDO
-                    d = sum(y/(1.0D0+exp(r)))
-                    d = 4.0D0*d/nobs
-                    IF(d/=0.0D0) THEN
-                        b(0)=b(0)+d
-                        r=r+y*d
-                        dif=max(dif, d**2)
-                    ENDIF
+					IF(intr /= 0) THEN
+	                    d = sum(y/(1.0D0+exp(r)))
+	                    d = 4.0D0*d/nobs
+	                    IF(d/=0.0D0) THEN
+	                        b(0)=b(0)+d
+	                        r=r+y*d
+	                        dif=max(dif, d**2)
+	                    ENDIF
+					ENDIF
                     IF(dif<eps) EXIT
                     IF(npass > maxit) THEN
                         jerr=-l
@@ -650,7 +662,7 @@ END SUBROUTINE log_f
 
 ! --------------------------------------------------
 SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
-                    eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
+                    eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! --------------------------------------------------
     IMPLICIT NONE
     ! - - - arg types - - -
@@ -671,7 +683,8 @@ SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
     INTEGER::npass
     INTEGER::jerr
     INTEGER::maxit
-    INTEGER:: idx(pmax)
+    INTEGER::intr
+    INTEGER::idx(pmax)
     INTEGER::nbeta(nlam)
     DOUBLE PRECISION:: flmin
     DOUBLE PRECISION::eps
@@ -838,23 +851,25 @@ SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
                     ENDIF
                     DEALLOCATE(u,dd,oldb)
                 ENDDO
-                d = 0.0D0
-                DO i = 1,nobs
-                    IF (r(i) > 1.0D0) THEN
-                        dl(i) = 0.0D0
-                    ELSEIF (r(i) <= (1-delta)) THEN
-                        dl(i) = 1.0D0
-                    ELSE
-                        dl(i) = (1.0D0 - r(i)) / delta
-                    ENDIF
-                    d = d + dl(i)*y(i)
-                ENDDO
-                d = 0.5 * delta * d / nobs
-                IF(d/=0.0D0) THEN
-                    b(0)=b(0)+d
-                    r=r+y*d
-                    dif=max(dif, d**2)
-                ENDIF
+				IF(intr /= 0) THEN
+	                d = 0.0D0
+	                DO i = 1,nobs
+	                    IF (r(i) > 1.0D0) THEN
+	                        dl(i) = 0.0D0
+	                    ELSEIF (r(i) <= (1-delta)) THEN
+	                        dl(i) = 1.0D0
+	                    ELSE
+	                        dl(i) = (1.0D0 - r(i)) / delta
+	                    ENDIF
+	                    d = d + dl(i)*y(i)
+	                ENDDO
+	                d = 0.5 * delta * d / nobs
+	                IF(d/=0.0D0) THEN
+	                    b(0)=b(0)+d
+	                    r=r+y*d
+	                    dif=max(dif, d**2)
+	                ENDIF
+				ENDIF
                 IF (ni > pmax) EXIT
                 IF (dif < eps) EXIT
                 IF(npass > maxit) THEN
@@ -903,23 +918,25 @@ SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
                         ENDIF
                         DEALLOCATE(u,dd,oldb)
                     ENDDO
-                    d = 0.0D0
-                    DO i = 1,nobs
-                        IF (r(i) > 1.0D0) THEN
-                            dl(i) = 0.0D0
-                        ELSEIF (r(i) <= (1-delta)) THEN
-                            dl(i) = 1.0D0
-                        ELSE
-                            dl(i) = (1.0D0 - r(i)) / delta
-                        ENDIF
-                        d = d + dl(i)*y(i)
-                    ENDDO
-                    d = 0.5 * delta * d / nobs
-                    IF(d/=0.0D0) THEN
-                        b(0)=b(0)+d
-                        r=r+y*d
-                        dif=max(dif, d**2)
-                    ENDIF
+					IF(intr /= 0) THEN
+	                    d = 0.0D0
+	                    DO i = 1,nobs
+	                        IF (r(i) > 1.0D0) THEN
+	                            dl(i) = 0.0D0
+	                        ELSEIF (r(i) <= (1-delta)) THEN
+	                            dl(i) = 1.0D0
+	                        ELSE
+	                            dl(i) = (1.0D0 - r(i)) / delta
+	                        ENDIF
+	                        d = d + dl(i)*y(i)
+	                    ENDDO
+	                    d = 0.5 * delta * d / nobs
+	                    IF(d/=0.0D0) THEN
+	                        b(0)=b(0)+d
+	                        r=r+y*d
+	                        dif=max(dif, d**2)
+	                    ENDIF
+					ENDIF
                     IF(dif<eps) EXIT
                     IF(npass > maxit) THEN
                      jerr=-l
@@ -1006,7 +1023,7 @@ END SUBROUTINE hsvmdrv
 
 ! --------------------------------------------------
 SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
-                    eps,maxit,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
+                    eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! --------------------------------------------------
     IMPLICIT NONE
     ! - - - arg types - - -
@@ -1027,6 +1044,7 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
     INTEGER::npass
     INTEGER::jerr
     INTEGER::maxit
+    INTEGER::intr
     INTEGER:: idx(pmax)
     INTEGER::nbeta(nlam)
     DOUBLE PRECISION:: flmin
@@ -1183,14 +1201,16 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
                     ENDIF
                     DEALLOCATE(u,dd,oldb)
                 ENDDO
-                dl = 2.0 * dim(1.0, r)
-                d = dot_product(y,dl)
-                d = 0.25*d/nobs
-                IF(d /= 0.0D0) THEN
-                    b(0)=b(0)+d
-                    r=r+y*d
-                    dif=max(dif,d**2)
-                ENDIF
+				IF(intr /= 0) THEN
+	                dl = 2.0 * dim(1.0, r)
+	                d = dot_product(y,dl)
+	                d = 0.25*d/nobs
+	                IF(d /= 0.0D0) THEN
+	                    b(0)=b(0)+d
+	                    r=r+y*d
+	                    dif=max(dif,d**2)
+	                ENDIF
+				ENDIF
                 IF (ni > pmax) EXIT
                 IF (dif < eps) EXIT
                 IF(npass > maxit) THEN
@@ -1230,14 +1250,16 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
                         ENDIF
                         DEALLOCATE(u,dd,oldb)
                     ENDDO
-                    dl = 2.0 * dim(1.0, r)
-                    d = dot_product(y,dl)
-                    d = 0.25*d/nobs
-                    IF(d/=0.0D0) THEN
-                        b(0)=b(0)+d
-                        r=r+y*d
-                        dif=max(dif,d**2)
-                    ENDIF
+					IF(intr /= 0) THEN
+	                    dl = 2.0 * dim(1.0, r)
+	                    d = dot_product(y,dl)
+	                    d = 0.25*d/nobs
+	                    IF(d/=0.0D0) THEN
+	                        b(0)=b(0)+d
+	                        r=r+y*d
+	                        dif=max(dif,d**2)
+	                    ENDIF
+					ENDIF
                     IF(dif<eps) EXIT
                     IF(npass > maxit) THEN
                      jerr=-l

@@ -31,7 +31,7 @@ Scheetz, T., Kim, K., Swiderski, R., Philp, A., Braun, T., Knudtson, K., Dorranc
 Huang, J., S. Ma, and C.-H. Zhang (2008). ``Adaptive Lasso for sparse high-dimensional
 regression models''. \emph{Statistica Sinica} 18, 1603-1618.\cr
 
-Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. Accepted.\cr
 BugReport: \url{http://code.google.com/p/gglasso/}\cr
 }
 

@@ -2,7 +2,7 @@ gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm",
     "hsvm"), nlambda = 100, lambda.factor = ifelse(nobs < nvars, 0.05, 0.001), 
     lambda = NULL, pf = sqrt(bs), dfmax = as.integer(max(group)) + 
         1, pmax = min(dfmax * 1.2, as.integer(max(group))), eps = 1e-08, maxit = 3e+08, 
-    delta) {
+    delta,intercept=TRUE) {
     #################################################################################
     #\tDesign matrix setup, error checking
     this.call <- match.call()
@@ -91,19 +91,20 @@ gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm",
         ulam <- as.double(rev(sort(lambda)))
         nlam <- as.integer(length(lambda))
     }
+    intr <- as.integer(intercept)
     #################################################################################
     # call Fortran core
     fit <- switch(loss, 
 	ls = ls(bn, bs, ix, iy, gamma, nobs, nvars, x, y, pf, 
-        dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group), 
+        dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group, intr), 
 	logit = logit(bn, 
         bs, ix, iy, gamma, nobs, nvars, x, y, pf, dfmax, pmax, nlam, flmin, 
-        ulam, eps, maxit, vnames, group), 
+        ulam, eps, maxit, vnames, group, intr), 
 	sqsvm = sqsvm(bn, bs, ix, iy, gamma, 
         nobs, nvars, x, y, pf, dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, 
-        group), 
+        group, intr), 
 	hsvm = hsvm(delta, bn, bs, ix, iy, gamma, nobs, nvars, x, y, 
-        pf, dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group))
+        pf, dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group, intr))
     #################################################################################
     # output
     if (is.null(lambda)) 

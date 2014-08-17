@@ -33,7 +33,7 @@ Alon, U. and Barkai, N. and Notterman, D.A. and Gish, K. and Ybarra, S. and Mack
 ``Broad patterns of gene expression revealed by clustering analysis of tumor and normal colon tissues probed by oligonucleotide arrays'',
 \emph{Proc. Natl. Acad. Sci. USA}, \bold{96}(12), 6745--6750.\cr
 
-Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' submitted to \emph{Journal of Computational and Graphical Statistics}. Under review.\cr
+Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. Accepted.\cr
 BugReport: \url{http://code.google.com/p/gglasso/}\cr
 }
 

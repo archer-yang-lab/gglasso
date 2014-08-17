@@ -1,7 +1,11 @@
 CHANGELOG - Record of Changes for gglasso
 Please find below the list of the various changes and improvements that were part of each successive update.
 
+1.3:
+* [updated] updated the reference.
+
 1.2:
+* [added] Added an option for specifying whether to include the intercept in the model.
 * [improved] Improved the cross-validation implementation.
 * [fixed] Fixed a lambda interpolation bug in predict and coef functions.
  
