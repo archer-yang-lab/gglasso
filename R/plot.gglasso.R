@@ -43,7 +43,7 @@ plot.gglasso <- function(x, group = FALSE, log.l = TRUE, ...) {
         plot.args[names(new.plot.args)] <- new.plot.args
     }
     do.call("plot", plot.args)
-    line.args <- list(col = gray.colors(n.g + 1, start = 0.05, end = 0.7, gamma = 2.2)[1:n.g], 
+    line.args <- list(col = rainbow(n.g + 1, start = 0.7, end = 0.95)[1:n.g], 
         lwd = 1 + 1.2^(-p/20), lty = 1)
     
     if (length(new.args)) 
