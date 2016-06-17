@@ -713,7 +713,7 @@ SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
     DOUBLE PRECISION, DIMENSION (:), ALLOCATABLE ::u
     DOUBLE PRECISION, DIMENSION (:), ALLOCATABLE ::dd
     INTEGER, DIMENSION (:), ALLOCATABLE :: oidx
-    INTEGER:: i
+    INTEGER::i
     INTEGER::g
     INTEGER::j
     INTEGER::l
