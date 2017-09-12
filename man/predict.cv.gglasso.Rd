@@ -25,10 +25,10 @@ chosen for \code{lambda}.
 to the \code{\link{predict}} method for \code{\link{gglasso}} objects.}
 
 \author{Yi Yang and Hui Zou\cr
-Maintainer: Yi Yang  <yiyang@umn.edu>}
+Maintainer: Yi Yang  <yi.yang6@mcgill.ca>}
 \references{
-Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. Accepted.\cr
-BugReport: \url{http://code.google.com/p/gglasso/}\cr
+Yang, Y. and Zou, H. (2014), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. 25(6), 1129-1141.\cr
+BugReport: \url{https://github.com/emeryyi/gglasso}\cr
 }
 
 \seealso{\code{\link{cv.gglasso}}, and \code{\link{coef.cv.gglasso}} methods.}

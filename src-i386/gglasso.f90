@@ -71,7 +71,7 @@
 ! LICENSE: GNU GPL (version 2 or later)
 ! 
 ! AUTHORS:
-!    Yi Yang (yiyang@umn.edu) and Hui Zou (hzou@stat.umn.edu), 
+!    Yi Yang (yi.yang6@mcgill.ca) and Hui Zou (hzou@stat.umn.edu), 
 !    School of Statistics, University of Minnesota.
 ! 
 ! REFERENCES:

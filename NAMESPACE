@@ -1,4 +1,4 @@
-useDynLib("gglasso")
+useDynLib(gglasso, .registration = TRUE)
 importFrom(utils,head,tail,packageDescription)
 export(gglasso,
 cv.gglasso,
@@ -17,4 +17,8 @@ S3method("plot","cv.gglasso")
 S3method("predict","gglasso")
 S3method("predict","cv.gglasso")
 
-
+importFrom("grDevices", "rainbow")
+importFrom("graphics", "abline", "axis", "par", "plot.default",
+"points", "segments")
+importFrom("methods", "cbind2", "rbind2")
+importFrom("stats", "approx", "coef", "predict")

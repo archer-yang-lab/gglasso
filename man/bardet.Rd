@@ -13,7 +13,7 @@ Gene expression data (20 genes for 120 samples) from the
 }
 
 \details{ This data set contains 120 samples 
- with 100 predictors (expanded from 20 genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2012)).
+ with 100 predictors (expanded from 20 genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2014)).
 }
 
 \value{
@@ -31,8 +31,8 @@ Scheetz, T., Kim, K., Swiderski, R., Philp, A., Braun, T., Knudtson, K., Dorranc
 Huang, J., S. Ma, and C.-H. Zhang (2008). ``Adaptive Lasso for sparse high-dimensional
 regression models''. \emph{Statistica Sinica} 18, 1603-1618.\cr
 
-Yang, Y. and Zou, H. (2012), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. Accepted.\cr
-BugReport: \url{http://code.google.com/p/gglasso/}\cr
+Yang, Y. and Zou, H. (2014), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. 25(6), 1129-1141.\cr
+BugReport: \url{https://github.com/emeryyi/gglasso}\cr
 }
 
 

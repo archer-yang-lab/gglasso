@@ -73,14 +73,15 @@
 ! LICENSE: GNU GPL (version 2 or later)
 ! 
 ! AUTHORS:
-!    Yi Yang (yiyang@umn.edu) and Hui Zou (hzou@stat.umn.edu), 
-!    School of Statistics, University of Minnesota.
+!    * Yi Yang (yi.yang6@mcgill.ca) and + Hui Zou (hzou@stat.umn.edu), 
+!    * Department of Mathematics and Statistics, McGill University
+!    + School of Statistics, University of Minnesota.
 ! 
 ! REFERENCES:
-!    Yang, Y. and Zou, H. (2012). 
+!    Yang, Y. and Zou, H. (2014). 
 !    A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems
-!    Journal of Computational and Graphical Statistics.
-!    Under review.
+!    Statistics and Computing.
+!    25(6), 1129-1141.
 
 ! --------------------------------------------------
 SUBROUTINE ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
@@ -259,14 +260,14 @@ SUBROUTINE ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
                     ENDIF
                     DEALLOCATE(u,dd,oldb)
                 ENDDO
-				IF(intr /= 0) THEN
+                               IF(intr /= 0) THEN
 	                d=sum(r)/nobs
 	                IF(d/=0.0D0) THEN
 	                    b(0)=b(0)+d
 	                    r=r-d
 	                    dif=max(dif,d**2)
 	                ENDIF
-				ENDIF
+                               ENDIF
                 IF (ni > pmax) EXIT
                 IF (dif < eps) EXIT
                 IF(npass > maxit) THEN
@@ -305,14 +306,14 @@ SUBROUTINE ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
                         ENDIF
                         DEALLOCATE(u,dd,oldb)
                     ENDDO
-					IF(intr /= 0) THEN
+                               	IF(intr /= 0) THEN
 	                    d=sum(r)/nobs
 	                    IF(d/=0.0D0) THEN
 	                        b(0)=b(0)+d
 	                        r=r-d
 	                        dif=max(dif,d**2)
 	                    ENDIF
-				    ENDIF
+                                   ENDIF
                     IF(dif<eps) EXIT
                     IF(npass > maxit) THEN
                         jerr=-l
@@ -548,7 +549,7 @@ SUBROUTINE log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
                     ENDIF
                     DEALLOCATE(u,dd,oldb)
                 ENDDO
-				IF(intr /= 0) THEN
+                               IF(intr /= 0) THEN
 	                d = sum(y/(1.0D0+exp(r)))
 	                d = 4.0D0*d/nobs
 	                IF(d /= 0.0D0) THEN
@@ -556,7 +557,7 @@ SUBROUTINE log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 	                    r=r+y*d
 	                    dif=max(dif,d**2)
 	                ENDIF
-				ENDIF
+                               ENDIF
                 IF (ni > pmax) EXIT
                 IF (dif < eps) EXIT
                 IF(npass > maxit) THEN
@@ -595,7 +596,7 @@ SUBROUTINE log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
                         ENDIF
                         DEALLOCATE(u,dd,oldb)
                     ENDDO
-					IF(intr /= 0) THEN
+                               	IF(intr /= 0) THEN
 	                    d = sum(y/(1.0D0+exp(r)))
 	                    d = 4.0D0*d/nobs
 	                    IF(d/=0.0D0) THEN
@@ -603,7 +604,7 @@ SUBROUTINE log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 	                        r=r+y*d
 	                        dif=max(dif, d**2)
 	                    ENDIF
-					ENDIF
+                               	ENDIF
                     IF(dif<eps) EXIT
                     IF(npass > maxit) THEN
                         jerr=-l
@@ -851,7 +852,7 @@ SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
                     ENDIF
                     DEALLOCATE(u,dd,oldb)
                 ENDDO
-				IF(intr /= 0) THEN
+                               IF(intr /= 0) THEN
 	                d = 0.0D0
 	                DO i = 1,nobs
 	                    IF (r(i) > 1.0D0) THEN
@@ -869,7 +870,7 @@ SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 	                    r=r+y*d
 	                    dif=max(dif, d**2)
 	                ENDIF
-				ENDIF
+                               ENDIF
                 IF (ni > pmax) EXIT
                 IF (dif < eps) EXIT
                 IF(npass > maxit) THEN
@@ -918,7 +919,7 @@ SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
                         ENDIF
                         DEALLOCATE(u,dd,oldb)
                     ENDDO
-					IF(intr /= 0) THEN
+                               	IF(intr /= 0) THEN
 	                    d = 0.0D0
 	                    DO i = 1,nobs
 	                        IF (r(i) > 1.0D0) THEN
@@ -936,7 +937,7 @@ SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
 	                        r=r+y*d
 	                        dif=max(dif, d**2)
 	                    ENDIF
-					ENDIF
+                               	ENDIF
                     IF(dif<eps) EXIT
                     IF(npass > maxit) THEN
                      jerr=-l
@@ -1201,7 +1202,7 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
                     ENDIF
                     DEALLOCATE(u,dd,oldb)
                 ENDDO
-				IF(intr /= 0) THEN
+                               IF(intr /= 0) THEN
 	                dl = 2.0 * dim(1.0, r)
 	                d = dot_product(y,dl)
 	                d = 0.25*d/nobs
@@ -1210,7 +1211,7 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
 	                    r=r+y*d
 	                    dif=max(dif,d**2)
 	                ENDIF
-				ENDIF
+                               ENDIF
                 IF (ni > pmax) EXIT
                 IF (dif < eps) EXIT
                 IF(npass > maxit) THEN
@@ -1250,7 +1251,7 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
                         ENDIF
                         DEALLOCATE(u,dd,oldb)
                     ENDDO
-					IF(intr /= 0) THEN
+                               	IF(intr /= 0) THEN
 	                    dl = 2.0 * dim(1.0, r)
 	                    d = dot_product(y,dl)
 	                    d = 0.25*d/nobs
@@ -1259,7 +1260,7 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
 	                        r=r+y*d
 	                        dif=max(dif,d**2)
 	                    ENDIF
-					ENDIF
+                               	ENDIF
                     IF(dif<eps) EXIT
                     IF(npass > maxit) THEN
                      jerr=-l
