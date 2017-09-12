@@ -1128,7 +1128,7 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
                     ALLOCATE(dd(bs(g)))
                     ALLOCATE(oldb(bs(g)))
                     oldb=b(start:end)
-                    dl = 2.0 * dim(1.0, r)
+                    dl = 2.0D0 * dim(1.0D0, r)
                     u=matmul(y*dl,x(:,start:end))/nobs
                     u=gam(g)*b(start:end)+u
                     unorm=sqrt(dot_product(u,u))
@@ -1152,7 +1152,7 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
                     DEALLOCATE(u,dd,oldb)
                 ENDDO
                 IF(intr /= 0) THEN
-                    dl = 2.0 * dim(1.0, r)
+                    dl = 2.0D0 * dim(1.0D0, r)
                     d = dot_product(y,dl)
                     d = 0.25*d/nobs
                     IF(d /= 0.0D0) THEN
@@ -1179,7 +1179,7 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
                         ALLOCATE(dd(bs(g)))
                         ALLOCATE(oldb(bs(g)))
                         oldb=b(start:end)
-                        dl = 2.0 * dim(1.0, r)
+                        dl = 2.0D0 * dim(1.0D0, r)
                         u=matmul(y*dl,x(:,start:end))/nobs
                         u=gam(g)*b(start:end)+u
                         unorm=sqrt(dot_product(u,u))
@@ -1197,7 +1197,7 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
                         DEALLOCATE(u,dd,oldb)
                     ENDDO
                     IF(intr /= 0) THEN
-                        dl = 2.0 * dim(1.0, r)
+                        dl = 2.0D0 * dim(1.0D0, r)
                         d = dot_product(y,dl)
                         d = 0.25*d/nobs
                         IF(d/=0.0D0) THEN
