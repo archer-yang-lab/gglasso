@@ -13,7 +13,7 @@ data(colon)
 }
 
 \details{ This data set contains 62 samples 
- with 100 predictors (expanded from 20 genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2014)): 40 tumor tissues, coded 1 and 22 normal tissues, coded -1.  
+ with 100 predictors (expanded from 20 genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2015)): 40 tumor tissues, coded 1 and 22 normal tissues, coded -1.  
 }
 
 \value{
@@ -33,7 +33,7 @@ Alon, U. and Barkai, N. and Notterman, D.A. and Gish, K. and Ybarra, S. and Mack
 ``Broad patterns of gene expression revealed by clustering analysis of tumor and normal colon tissues probed by oligonucleotide arrays'',
 \emph{Proc. Natl. Acad. Sci. USA}, \bold{96}(12), 6745--6750.\cr
 
-Yang, Y. and Zou, H. (2014), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. 25(6), 1129-1141.\cr
+Yang, Y. and Zou, H. (2015), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. 25(6), 1129-1141.\cr
 BugReport: \url{https://github.com/emeryyi/gglasso}\cr
 }
 

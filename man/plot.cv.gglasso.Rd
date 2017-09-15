@@ -18,7 +18,7 @@ curves, as a function of the \code{lambda} values used. This function is modifie
 \author{Yi Yang and Hui Zou\cr
 Maintainer: Yi Yang  <yi.yang6@mcgill.ca>}
 \references{
-Yang, Y. and Zou, H. (2014), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. 25(6), 1129-1141.\cr
+Yang, Y. and Zou, H. (2015), ``A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}. 25(6), 1129-1141.\cr
 BugReport: \url{https://github.com/emeryyi/gglasso}\cr
 
 Friedman, J., Hastie, T., and Tibshirani, R. (2010), ``Regularization paths for generalized

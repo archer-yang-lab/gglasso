@@ -78,7 +78,7 @@
 !    + School of Statistics, University of Minnesota.
 ! 
 ! REFERENCES:
-!    Yang, Y. and Zou, H. (2014). 
+!    Yang, Y. and Zou, H. (2015). 
 !    A Fast Unified Algorithm for Computing Group-Lasso Penalized Learning Problems
 !    Statistics and Computing.
 !    25(6), 1129-1141.
