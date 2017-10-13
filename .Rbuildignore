@@ -1,0 +1,27 @@
+^.*\.Rproj$         # Automatically added by RStudio,
+^\.Rproj\.user$     # used for temporary files.
+^README\.Rmd$       # An Rmarkdown file used to generate README.md
+^README\.md$       # An Rmarkdown file used to generate README.md
+^cran-comments\.md$ # Comments for CRAN submission
+^\.travis\.yml$
+^cr\.R$
+^exercises5\.R$
+^risksets\.R$
+^vignettes\/bmtcrr\.csv$
+^inst\/doc\/.*R$
+^inst\/doc\/.*md$
+^casebase\.Rproj$
+^_config\.yml$
+^test\.rds$
+
+^data-raw$
+^CONTRIBUTE_HOWTO$
+^docs/
+^images/$
+^docs/images/$
+^site/
+^CONDUCT\.md$
+^mkdocs\.yml$
+^references$
+^update_doc.R$
+^cran-comments\.md$
