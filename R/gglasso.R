@@ -1,6 +1,6 @@
 gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm", 
-    "hsvm"), nlambda = 100, lambda.factor = ifelse(nobs < nvars, 0.05, 0.001), 
-    lambda = NULL, pf = sqrt(bs), dfmax = as.integer(max(group)) + 
+    "hsvm","wls"), nlambda = 100, lambda.factor = ifelse(nobs < nvars, 0.05, 0.001), 
+    lambda = NULL, weight = NULL, pf = sqrt(bs), dfmax = as.integer(max(group)) + 
         1, pmax = min(dfmax * 1.2, as.integer(max(group))), eps = 1e-08, maxit = 3e+08, 
     delta,intercept=TRUE) {
     #################################################################################
@@ -33,6 +33,9 @@ gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm",
     c2 <- any(y %in% c(-1, 1) == FALSE)
     if (c1 && c2) 
         stop("Classification method requires the response y to be in {-1,1}")
+	
+    if (loss=="wls" & !is.matrix(weight)) 
+        stop("User must specify weight matrix for (loss='wls')")
     #################################################################################
     #    group setup
     if (is.null(group)) {
@@ -57,10 +60,6 @@ gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm",
     ix <- as.integer(ix)
     iy <- as.integer(iy)
     group <- as.integer(group)
-    #################################################################################
-    #  get upper bound
-    gamma <- rep(NA, bn)
-    for (g in 1:bn) gamma[g] <- max(eigen(crossprod(x[, ix[g]:iy[g]]))$values)
     #################################################################################
     #parameter setup
     if (missing(delta)) 
@@ -93,18 +92,21 @@ gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm",
     }
     intr <- as.integer(intercept)
     #################################################################################
-    # call Fortran core
+    # call R sub-functions
     fit <- switch(loss, 
-	ls = ls(bn, bs, ix, iy, gamma, nobs, nvars, x, y, pf, 
+	ls = ls(bn, bs, ix, iy, nobs, nvars, x, y, pf, 
         dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group, intr), 
 	logit = logit(bn, 
-        bs, ix, iy, gamma, nobs, nvars, x, y, pf, dfmax, pmax, nlam, flmin, 
+        bs, ix, iy, nobs, nvars, x, y, pf, dfmax, pmax, nlam, flmin, 
         ulam, eps, maxit, vnames, group, intr), 
-	sqsvm = sqsvm(bn, bs, ix, iy, gamma, 
+	sqsvm = sqsvm(bn, bs, ix, iy, 
         nobs, nvars, x, y, pf, dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, 
         group, intr), 
-	hsvm = hsvm(delta, bn, bs, ix, iy, gamma, nobs, nvars, x, y, 
-        pf, dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group, intr))
+	hsvm = hsvm(delta, bn, bs, ix, iy, nobs, nvars, x, y, 
+        pf, dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group, intr),
+	wls = wls(bn, bs, ix, iy, nobs, nvars, x, y, pf, weight, 
+        dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group, intr)
+		)
     #################################################################################
     # output
     if (is.null(lambda)) 
