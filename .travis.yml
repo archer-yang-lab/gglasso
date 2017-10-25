@@ -10,6 +10,12 @@ r_packages:
   - devtools
   - methods
 
+r_github_packages:
+  - jimhester/covr
+
+after_success:
+  - Rscript -e 'covr::codecov()'
+
 notifications:
   email:
     - yi.yang6@mcgill.ca

@@ -12,3 +12,4 @@ Packaged: 2017-9-12 11:11:11 UTC; yiyang
 Repository: CRAN
 Date/Publication: 2017-9-12 11:11:11
 RoxygenNote: 6.0.1
+Suggests: testthat
