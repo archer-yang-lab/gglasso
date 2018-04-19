@@ -22,7 +22,7 @@ dls <- function(r, delta) {
 }
 
 margin <- function(b0, beta, y, x, delta, loss = c("ls", "logit", 
-    "sqsvm", "hsvm")) {
+    "sqsvm", "hsvm", "wls"), weight) {
     loss <- match.arg(loss)
     nobs <- nrow(x)
     b0MAT <- matrix(rep(b0, nobs), nrow = nobs, byrow = TRUE)
@@ -34,7 +34,8 @@ margin <- function(b0, beta, y, x, delta, loss = c("ls", "logit",
     dMat <- apply(r, c(1, 2), eval(fun), delta = delta)
     if (loss %in% c("logit", "sqsvm", "hsvm")) {
         yxdMat <- t(x) %*% (dMat * y)/nobs
-    } else yxdMat <- t(x) %*% dMat/nobs
+    } else if(loss=="wls") yxdMat <- t(x) %*% dMat
+	else yxdMat <- t(x) %*% dMat/nobs
     yxdMat
 }
 
