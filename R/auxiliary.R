@@ -52,7 +52,7 @@ KKT <- function(b0, beta, y, x, lambda, pf, group, thr, delta, loss = c("ls",
             dl_norm <- sqrt(crossprod(dl[ind, l], dl[ind, l]))
             b_norm <- sqrt(crossprod(beta[ind, l], beta[ind, l]))
             if (b_norm != 0) {
-                AA <- dl[ind, l] + beta[ind, l] * lambda[l] * pf[g]/b_norm
+                AA <- dl[ind, l] + beta[ind, l] * lambda[l] * as.vector(pf[g]/b_norm)
                 if (sum(abs(AA)) >= thr) {
                   cat("violate at b != 0", sum(abs(AA)), "\n")
                   ctr <- ctr + 1
@@ -66,6 +66,6 @@ KKT <- function(b0, beta, y, x, lambda, pf, group, thr, delta, loss = c("ls",
             }
         }
     }
-    cat("# of violations", ctr/length(lambda), "\n")
+    # cat("# of violations", ctr/length(lambda), "\n")
     return(ctr/length(lambda))
 } 

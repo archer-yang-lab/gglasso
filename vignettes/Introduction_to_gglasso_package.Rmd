@@ -1,0 +1,55 @@
+---
+title: "Introduction to gglasso"
+author: "Yi Yang"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to gglasso}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+## Install the package
+
+```{r, eval=FALSE}
+# on CRAN
+install.packages("gglasso")
+
+# dev version on GitHub
+pacman::p_load_gh('emeryyi/gglasso')
+```
+
+
+## Quick Start
+
+### Least squares regression
+```{r}
+library(gglasso)
+
+# load bardet data set
+data(bardet)
+
+group1 <- rep(1:20, each = 5)
+
+fit_ls <- gglasso(x = bardet$x, y = bardet$y, group = group1, loss = "ls")
+
+plot(fit_ls)
+
+coef(fit_ls)[1:5,90:100]
+```
+
+#### Cross-Validation
+
+```{r}
+cvfit_ls <- cv.gglasso(x = bardet$x, y = bardet$y, group = group1, loss = "ls")
+
+plot(cvfit_ls)
+coef(cvfit_ls, s = "lambda.min")
+```
+
+
+
+
