@@ -84,7 +84,7 @@
 !    25(6), 1129-1141.
 
 ! --------------------------------------------------
-SUBROUTINE wls_f (bn,bs,ix,iy,wrs,wx,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
+SUBROUTINE wls_f (bn,bs,ix,iy,weight,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
                     eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! --------------------------------------------------
     IMPLICIT NONE
@@ -111,8 +111,7 @@ SUBROUTINE wls_f (bn,bs,ix,iy,wrs,wx,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
     INTEGER::nbeta(nlam)
     DOUBLE PRECISION:: flmin
     DOUBLE PRECISION:: eps
-    DOUBLE PRECISION:: wrs(nobs)
-    DOUBLE PRECISION:: wx(nobs,nvars)
+    DOUBLE PRECISION:: weight(nobs,nobs)
     DOUBLE PRECISION:: x(nobs,nvars)
     DOUBLE PRECISION::y(nobs)
     DOUBLE PRECISION::pf(bn)
@@ -129,6 +128,8 @@ SUBROUTINE wls_f (bn,bs,ix,iy,wrs,wx,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
     DOUBLE PRECISION::unorm
     DOUBLE PRECISION::al
     DOUBLE PRECISION::alf
+    DOUBLE PRECISION:: wrs(nobs)
+    DOUBLE PRECISION:: wx(nobs,nvars)
     DOUBLE PRECISION, DIMENSION (:), ALLOCATABLE :: b
     DOUBLE PRECISION, DIMENSION (:), ALLOCATABLE :: oldbeta
     DOUBLE PRECISION, DIMENSION (:), ALLOCATABLE :: r
@@ -163,6 +164,8 @@ SUBROUTINE wls_f (bn,bs,ix,iy,wrs,wx,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
     ENDIF
     pf=max(0.0D0,pf)
 ! - - - some initial setup - - -
+    wx = MATMUL(weight, x)
+    wrs = SUM(weight, DIM = 1)
     jxx = 0
     al = 0.0D0
     mnl = Min (mnlam, nlam)
