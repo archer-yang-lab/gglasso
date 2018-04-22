@@ -254,7 +254,7 @@ SUBROUTINE wls_f (bn,bs,ix,iy,wrs,wx,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
                     DEALLOCATE(u,dd,oldb)
                 ENDDO
                 IF(intr /= 0) THEN
-                    d=dot_product(r,wrs)
+                    d=dot_product(r,wrs)/sum(wrs)
                     IF(d/=0.0D0) THEN
                         b(0)=b(0)+d
                         r=r-d
@@ -296,7 +296,7 @@ SUBROUTINE wls_f (bn,bs,ix,iy,wrs,wx,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
                         DEALLOCATE(u,dd,oldb)
                     ENDDO
                     IF(intr /= 0) THEN
-                        d=dot_product(r,wrs)
+                        d=dot_product(r,wrs)/sum(wrs)
                         IF(d/=0.0D0) THEN
                             b(0)=b(0)+d
                             r=r-d
