@@ -1,0 +1,331 @@
+examples(HDtweedie)
+m2
+auto
+head(data)
+head(auto)
+crossprod
+crossprod(1:3,1:3)
+5*15,000
+5*15000
+rnorm(100, 0, 10)
+a = rnorm(100, 0, 10)
+a
+a = rnorm(10000, 0, 10)
+a = rnorm(1000000, 0, 10)
+hist(a)
+5210.87/7
+0.05/(0.05+0.009)
+17/1.5
+2/1.5
+0.5-0.4082
+pnorm
+pnorm(17,15,1.5,lower.tail=F)
+1-(1-0.0918)^20-20*0.0918*(1-0.0918)
+1-(1-0.0918)^20-20*0.0918*(1-0.0918)^19
+pnorm(1515,1500,sqrt(15000),lower.tail=F)
+15/sqrt(15000)
+0.5-0.1224
+0.5-0.01224
+0.5-0.0478
+300*5/11
+300*(5/11)*(1-5/11)
+-6/sqrt(74.38)
+pnorm(130,136,74.38,lower.tail=F)
+20 + 36*20/40 + 38 * 60 /60
+20 + 38 * 80 /60
+library(mgcv)
+require(mgcv)
+dat <- gamSim(3,n=400)
+b<-gam(y ~ s(x2,by=x1),data=dat)
+dat <- gamSim(4)
+dat
+s(x2,by=fac)
+library(KERE)
+N <- 200#
+X1 <- runif(N)#
+X2 <- 2*runif(N)#
+X3 <- 3*runif(N)#
+SNR <- 10 #
+Y <- X1**1.5 + 2 * (X2**.5) + X1*X3#
+sigma <- sqrt(var(Y)/SNR)#
+Y <- Y + X2*rnorm(N,0,sigma)#
+X <- cbind(X1,X2,X3)
+kern <- rbfdot(sigma=0.1)#
+lambda <- exp(seq(log(0.5),log(0.01),len=10))#
+m1 <- KERE(x=X, y=Y, kern=kern, lambda = lambda, omega = 0.5)
+269.72/5
+269.72/4
+67.43/2
+269.72-33.71
+236.01/3
+?pmax
+pmin(5:1, pi)
+load("/Users/yiyang/Dropbox/collaborator/Yanjia/FG/realdata/internel_model_ncvreg/adlasso_gamma2/colon_result.rda")
+res
+25+10+30+492+64+10
+631/2
+53.91+150.38+159.17
+363.46/2
+363.46/2+46
+315.5-227.73
+87.77+240
+library(stat4)
+library(stats4)
+set.seed(680)n=10; p=5; sigma.star=1
+qr.solve(t(X)%*%X) %*% t(X)%*%y
+beta.star
+qr.solve(crossprod(X)) %*% crossprod(X,y)
+qr.solve(crossprod(X), crossprod(X,y))
+set.seed(680)
+q=min(c(n,p))
+out=svd(X, nu=q, nv=q)
+X=cbind(X[,1],X)
+svd(X)
+out=svd(X, nu=10, nv=10)
+out=svd(X, nu=3, nv=3)
+?svd
+svd(X, nu=10, nv=3)
+svd(X, nu=6, nv=3)
+svd(X, nu=, nv=3)
+X=matrix(rnorm(n*p), nrow=n, ncol=p)
+svd(X, nu=,5 nv=3)
+svd(X, nu=5 nv=3)
+svd(X, nu=5, nv=3)
+X
+svd(X, nu=4, nv=4)
+svd(X, nu=5, nv=\5)
+svd(X, nu=5, nv=5)
+set.seed(5701)n=5; p=10X=cbind(1, matrix(rnorm(n*(p-1)), nrow=n, ncol=(p-1)))beta.star=rep(1,p)y=X%*%beta.star + 1*rnorm(n)xbar=apply(X[,-1], 2, mean); ybar=mean(y)Xtilde=scale(X[,-1], center=xbar, scale=FALSE); ytilde=y-ybarq=min(c(n-1, p-1))out=svd(Xtilde, nu=q, nv=q)
+lam.vec=10^seq(from=-8, to=8, by=0.5) beta.hat.matrix=matrix(NA, nrow=p, ncol=length(lam.vec)) for(j in 1:length(lam.vec)){  H=diag(out$d[1:q]/(out$d[1:q]^2 + lam.vec[j]))  bhatm1=out$v%*%H%*%t(out$u)%*%ytilde  bhat1=ybar - sum(xbar*bhatm1)  beta.hat.matrix[,j]=c(bhat1, bhatm1)}
+lam.vec=10^seq(from=-8, to=8, by=0.5)
+beta.hat.matrix=matrix(NA, nrow=p, ncol=length(lam.vec)) for(j in 1:length(lam.vec)){  H=diag(out$d[1:q]/(out$d[1:q]^2 + lam.vec[j]))  bhatm1=out$v%*%H%*%t(out$u)%*%ytilde  bhat1=ybar - sum(xbar*bhatm1)  beta.hat.matrix[,j]=c(bhat1, bhatm1)}
+library(glmvsd)
+example(glmvsd)
+b_AIC
+v1_BIC
+getwd()
+library(gglasso)
+data(Bardet)
+data(bardet)
+load("/Users/yiyang/Dropbox/Teaching/MATH680/Topic4/note/Bardet.rda")
+library(glmnet)#
+load("Bardet.rda")
+library(e1071)
+hamming.window(10)#
+#
+x<-rnorm(500)#
+y<-stft(x, wtype="hamming.window")
+plot(x)
+plot(y)
+145+85.83
+List <- c(0,0,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,5,5,6,6,7,7,7,7,8,8,9)#
+#
+stripchart(List, xlim = c(0,10), ylim = c(0,8), method = "stack", offset = 1)
+18*5
+?bs
+library(spline)
+library(splines)
+?bs()
+111-3.99
+1-0.0918
+(1-0.0918)^20
+(1-0.0918)^19
+1920.55+684.30
+90.61+94.73+143.43
+2604.85+328.77
+library(cplm)#
+data(AutoClaim)#
+da <- AutoClaim #
+da <- transform(da, CLM_AMT5 = CLM_AMT5/5000,	INCOME = INCOME/10000)#
+hist(da$CLM_AMT5, col ="grey", breaks = 50, main =NA,#
+xlab = "Total Insurance Claim Amount (in $1000) Per Policy Year",cex.lab=1.3,cex.axis=1.3, ylim = c(0,7500))
+install.packages("tufte")
+install.packages("rmarkdown")
+library(cplm)
+load(AutoClaim)
+head(Autoclaim)
+head(AutoClaim)
+example(HDtweedie)
+m1
+m1$beta
+plot(m1)
+library(parallel)#
+library(Matrix)#
+library(igraph)#
+gamma0 <- 0.0025#
+ggratio <- 10#
+gamma1 <- ggratio * gamma0#
+#
+ratio <- 0.4999 #
+#
+graph_size <- 10#
+step_size <- 10500#
+#
+repetition <- 10#
+#
+average_degree <- 5
+average_degree/2*graph_size
+setwd('/Users/yiyang/Dropbox/collaborator/Bofan/code/zheng's version')
+g <- sample_fitness_pl (graph_size, average_degree/2*graph_size, exponent.in = -1, exponent.out = Inf)
+g
+plot(g)
+tools::package_native_routine_registration_skeleton
+tools::package_native_routine_registration_skeleton(".")
+example(dlstats)
+?dlstats
+library(dlstat)
+library(dlstats)
+x <- cran_stats(c("gglasso"))#
+head(x)
+library("ggplot2")
+x <- cran_stats(c("HDtweedie","fastcox","gcdnet"))#
+head(x)
+ggplot(x, aes(end, downloads, group=package, color=package)) +#
+    geom_line() + geom_point(aes(shape=package))
+?
+matrix
+n <- 50#
+p <- 8#
+beta <- c(3,1.5,0,0,2,0,0,0)#
+b0 <- 1#
+x <- matrix(rnorm(n*p,0,1),nrow=n,ncol=p)#
+e <- rnorm(n)#
+y <- x %*% beta + b0 + e
+v_BIC <- SOIL(x, y, family = "gaussian", weight_type = "BIC")
+v_BIC
+library(HDtweedie)
+library(TDboost)
+train_dat
+ls()
+example(TDboost)
+x=rnorm(100,0,1)
+x1=rnorm(100,0,1)
+x2 = rep(NA,100)
+for(i in 1:100) x2[i] = rnorm(1,0,1)
+x2
+for(i in 1:10000) x2[i] = rnorm(1,0,1)
+x1=rnorm(10000,0,1)
+hist(x1)
+hist(x2)
+example(lm)
+double(3)
+diag(3)
+colsums(diag(1,2,3))
+colsums(matrix(1:9,3,3))
+colSum(matrix(1:9,3,3))
+colSums(matrix(1:9,3,3))
+matrix(1:9,3,3)
+library(magrittr)
+library(tidyr)
+library(data.table)
+library(readr)
+hsb2<-read.table("http://www.ats.ucla.edu/stat/data/hsb2.csv", sep=",", header=T)
+library(jpeg)
+cat <- readJPEG('cat.jpg')#
+ncol(cat)#
+nrow(cat)
+9.812^2
+^2
+5.723^2
+library(car)
+scatterplot
+example(scatterplot)
+?scatterplot
+n <- 50#
+p <- 8#
+beta <- c(3,1.5,0,0,2,0,0,0)#
+b0 <- 1#
+x <- matrix(rnorm(n*p,0,1),nrow=n,ncol=p)
+library(SOIL)
+e <- rnorm(n)#
+y <- x %*% beta + b0 + e
+x
+y
+head(x)
+v_ARM <- SOIL(x, y, family = "gaussian",#
+weight_type = "ARM", prior = TRUE)
+v_ARM
+n <- 20#
+p <- 5#
+x <- matrix(rnorm(n * p), nrow = n)#
+a <- t(x) \%*\% x#
+matinv(a)#
+matdet(a)#
+b <- rnorm(p)#
+matsolve(a, b)#
+matsmash(a, b)
+n <- 20#
+p <- 5#
+x <- matrix(rnorm(n * p), nrow = n)#
+a <- t(x) %*% x#
+matinv(a)#
+matdet(a)#
+b <- rnorm(p)#
+matsolve(a, b)#
+matsmash(a, b)
+library(baz)
+?baz
+??matvecmult
+?matvecmult
+12*3+9.5*2
+install.packages(’NHANES’)library(NHANES)
+install.packages(NHANES)
+install.packages("NHANES")
+library(NHANES)
+?NHANES
+set.seed(680)#
+n=10; p=5; sigma.star=1#
+Z=matrix( rnorm(n*(p-2)), nrow=n, ncol=(p-2))#
+v2=c( rep(1, n/2), rep(0, n/2) )#
+X=cbind(1, v2, Z)#
+beta.star=p^(-0.5) * rnorm(p)#
+y=X%*%beta.star + sigma.star * rnorm(n)
+out=qr(x=X)
+out
+qr.solve
+qr.coef
+?qr.coef
+?solve
+9798/2-3000
+blogdown::new_site(theme = "dim0627/hugo_theme_beg")
+ls
+rm(list = ls())#
+knitr::opts_chunk$set(cache=TRUE, message = FALSE, tidy = FALSE, echo = FALSE, fig.width = 6, fig.asp = 0.618, #
+fig.align = 'center', out.width = "100%", size = 'scriptsize')
+pacman::p_load(knitr)#
+pacman::p_load(cowplot)#
+pacman::p_load(sjPlot)#
+pacman::p_load(sjmisc)#
+pacman::p_load(ISLR)#
+pacman::p_load(data.table)#
+pacman::p_load(rpart)#
+pacman::p_load(rpart.plot)#
+pacman::p_load(xtable)#
+pacman::p_load(splines)#
+pacman::p_load(plotmo)#
+pacman::p_load(caret)#
+pacman::p_load(tidyverse)#
+trop <- RSkittleBrewer::RSkittleBrewer("trop")#
+gg_sy <- theme(legend.position = "bottom", axis.text = element_text(size = 20), axis.title = element_text(size = 20), legend.text = element_text(size = 20), legend.title = element_text(size = 20))
+?save
+setwd('/Users/yiyang/Dropbox/Research/prog_project/gglasso/tests/testthat')
+library(gglasso)#
+context("KKT checks")#
+data(bardet)#
+data(colon)#
+group1 <- rep(1:20, each = 5)#
+group2 <- rep(1:20, each = 5)#
+#
+test_that("KKT checks for loss = 'ls', without observation weights", {#
+  m1 <- gglasso(x = bardet$x, y = bardet$y, group = group1, loss = "ls", eps = 1e-10)#
+  violations <- gglasso:::KKT(b0 = m1$b0, beta = m1$beta, y = bardet$y, x = bardet$x, lambda = m1$lambda,#
+                              pf = rep(sqrt(5),20), group = group1, thr = 1e-4, loss = "ls")#
+  expect_lte(violations, 0)#
+})#
+test_that("KKT checks for loss = 'logit', without observation weights", {#
+  m2 <- gglasso(x = colon$x, y = colon$y, group = group2, loss = "logit", eps = 1e-10)#
+#
+  violations <- gglasso:::KKT(b0 = m2$b0, beta = m2$beta, y = colon$y, x = colon$x, lambda = m2$lambda,#
+                              pf = rep(sqrt(5),20), group = group2, thr = 1e-4, loss = "logit")#
+  expect_lte(violations, 0)#
+})

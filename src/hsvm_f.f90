@@ -180,7 +180,7 @@ SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
         flmin = Max (mfl, flmin)
         alf = flmin ** (1.0D0 / (nlam - 1.0D0))
     ENDIF
-    vl = 0.0
+    vl = 0.0D0
     CALL hsvmdrv(delta,nobs,nvars,x,y,r,vl)
     DO g = 1,bn
             ALLOCATE(u(bs(g)))
