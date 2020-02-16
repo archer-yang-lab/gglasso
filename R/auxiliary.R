@@ -1,4 +1,4 @@
-dhsvm <- function(v, delta) {
+dhsvm <- function(v, delta, weight) {
     r <- v[1]
     if (r > 1) 
         dl <- 0 else if (r <= (1 - delta)) 
@@ -7,18 +7,22 @@ dhsvm <- function(v, delta) {
 }
 
 
-dlogit <- function(r, delta) {
+dlogit <- function(r, delta, weight) {
     dl <- -1/(1 + exp(r))
     dl
 }
 
-dsqsvm <- function(r, delta) {
+dsqsvm <- function(r, delta, weight) {
     dl <- -2 * ifelse((1 - r) > 0, (1 - r), 0)
     dl
 }
 
-dls <- function(r, delta) {
+dls <- function(r, delta, weight) {
     dl <- -r
+}
+
+dwls <- function(r, delta, weight) {
+    dl <- -r%*%weight
 }
 
 margin <- function(b0, beta, y, x, delta, loss = c("ls", "logit", 
@@ -31,7 +35,9 @@ margin <- function(b0, beta, y, x, delta, loss = c("ls", "logit",
         r <- y * link
     } else r <- y - link
     fun <- paste("d", loss, sep = "")
-    dMat <- apply(r, c(1, 2), eval(fun), delta = delta)
+    if (loss %in% c("wls")) {
+    	dMat <- apply(r, 2, eval(fun), delta = delta, weight = weight)
+	} else dMat <- apply(r, c(1, 2), eval(fun), delta = delta, weight = weight)
     if (loss %in% c("logit", "sqsvm", "hsvm")) {
         yxdMat <- t(x) %*% (dMat * y)/nobs
     } else if(loss=="wls") yxdMat <- t(x) %*% dMat
@@ -40,11 +46,12 @@ margin <- function(b0, beta, y, x, delta, loss = c("ls", "logit",
 }
 
 
-KKT <- function(b0, beta, y, x, lambda, pf, group, thr, delta, loss = c("ls", 
-    "logit", "sqsvm", "hsvm")) {
+KKT <- function(b0, beta, y, x, weight = NULL, lambda, pf, group, thr, delta, loss = c("ls", 
+    "logit", "sqsvm", "hsvm","wls")) {
     loss <- match.arg(loss)
+	y <- drop(y)
     bn <- as.integer(max(group))
-    dl <- margin(b0, beta, y, x, delta, loss)
+    dl <- margin(b0, beta, y, x, delta, loss, weight)
     B <- matrix(NA, ncol = length(lambda))
     ctr <- 0
     for (l in 1:length(lambda)) {
@@ -68,5 +75,5 @@ KKT <- function(b0, beta, y, x, lambda, pf, group, thr, delta, loss = c("ls",
         }
     }
     # cat("# of violations", ctr/length(lambda), "\n")
-    return(ctr/length(lambda))
+    cat("Averge # of violations per lambda", ctr/length(lambda))
 } 
