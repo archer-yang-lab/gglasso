@@ -23,9 +23,7 @@ pacman::p_load_gh('emeryyi/gglasso')
 ```
 
 
-## Quick Start
-
-### Least squares regression
+## Least squares regression
 ```{r}
 library(gglasso)
 
@@ -41,7 +39,7 @@ plot(fit_ls)
 coef(fit_ls)[1:5,90:100]
 ```
 
-#### Cross-Validation
+## Cross-Validation
 
 ```{r}
 cvfit_ls <- cv.gglasso(x = bardet$x, y = bardet$y, group = group1, loss = "ls")
@@ -53,7 +51,7 @@ coef(cvfit_ls, s = "lambda.min")
 
 
 
-### Weight Least squares regression
+## Weight Least squares regression
 
 We can also perform weighted least-squares regression by specifying `loss='wls'`, and providing a $n \times n$ weight matrix in the `weights` argument, where $n$ is the number of observations. Note that cross-validation is **NOT IMPLEMENTED** for `loss='wls'`.
 
