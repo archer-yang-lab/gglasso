@@ -8,8 +8,17 @@
 \alias{cv.sqsvm}
 \title{Cross-validation for gglasso}
 \usage{
-cv.gglasso(x, y, group, lambda = NULL, pred.loss = c("misclass", "loss",
-  "L1", "L2"), nfolds = 5, foldid, delta, ...)
+cv.gglasso(
+  x,
+  y,
+  group,
+  lambda = NULL,
+  pred.loss = c("misclass", "loss", "L1", "L2"),
+  nfolds = 5,
+  foldid,
+  delta,
+  ...
+)
 }
 \arguments{
 \item{x}{matrix of predictors, of dimension \eqn{n \times p}{n*p}; each row

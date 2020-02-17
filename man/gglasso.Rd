@@ -4,11 +4,23 @@
 \alias{gglasso}
 \title{Fits the regularization paths for group-lasso penalized learning problems}
 \usage{
-gglasso(x, y, group = NULL, loss = c("ls", "logit", "sqsvm", "hsvm"),
-  nlambda = 100, lambda.factor = ifelse(nobs < nvars, 0.05, 0.001),
-  lambda = NULL, pf = sqrt(bs), dfmax = as.integer(max(group)) + 1,
-  pmax = min(dfmax * 1.2, as.integer(max(group))), eps = 1e-08,
-  maxit = 3e+08, delta, intercept = TRUE)
+gglasso(
+  x,
+  y,
+  group = NULL,
+  loss = c("ls", "logit", "sqsvm", "hsvm", "wls"),
+  nlambda = 100,
+  lambda.factor = ifelse(nobs < nvars, 0.05, 0.001),
+  lambda = NULL,
+  pf = sqrt(bs),
+  weight = NULL,
+  dfmax = as.integer(max(group)) + 1,
+  pmax = min(dfmax * 1.2, as.integer(max(group))),
+  eps = 1e-08,
+  maxit = 3e+08,
+  delta,
+  intercept = TRUE
+)
 }
 \arguments{
 \item{x}{matrix of predictors, of dimension \eqn{n \times p}{n*p}; each row
@@ -45,18 +57,22 @@ this option unspecified users can have the program compute its own
 \code{lambda} sequence based on \code{nlambda} and \code{lambda.factor}.
 Supplying a value of \code{lambda} overrides this. It is better to supply a
 decreasing sequence of \code{lambda} values than a single (small) value, if
-not, the program will sort user-defined \code{lambda} sequence in decreasing
-order automatically.}
+not, the program will sort user-defined \code{lambda} sequence in
+decreasing order automatically.}
 
-\item{pf}{penalty factor, a vector in length of bn (bn is the total number
-of groups). Separate penalty weights can be applied to each group of
+\item{pf}{penalty factor, a vector in length of bn (bn is the total number of
+groups). Separate penalty weights can be applied to each group of
 \eqn{\beta}{beta's}s to allow differential shrinkage. Can be 0 for some
 groups, which implies no shrinkage, and results in that group always being
 included in the model. Default value for each entry is the square-root of
 the corresponding size of each group.}
 
-\item{dfmax}{limit the maximum number of groups in the model. Useful for
-very large \code{bs} (group size), if a partial path is desired. Default is
+\item{weight}{a \eqn{nxn} observation weight matrix in the where \eqn{n} is
+the number of observations. Only used if \code{loss='wls'} is specified.
+Note that cross-validation is NOT IMPLEMENTED for \code{loss='wls'}.}
+
+\item{dfmax}{limit the maximum number of groups in the model. Useful for very
+large \code{bs} (group size), if a partial path is desired. Default is
 \code{bs+1}.}
 
 \item{pmax}{limit the maximum number of groups ever to be nonzero. For
@@ -77,15 +93,15 @@ squared hinge loss). Default is 1.}
 }
 \value{
 An object with S3 class \code{\link{gglasso}}.  \item{call}{the call
-that produced this object} \item{b0}{intercept sequence of length
-\code{length(lambda)}} \item{beta}{a \code{p*length(lambda)} matrix of
-coefficients.} \item{df}{the number of nonzero groups for each value of
-\code{lambda}.} \item{dim}{dimension of coefficient matrix (ices)}
-\item{lambda}{the actual sequence of \code{lambda} values used}
-\item{npasses}{total number of iterations (the most inner loop) summed over
-all lambda values} \item{jerr}{error flag, for warnings and errors, 0 if no
-error.} \item{group}{a vector of consecutive integers describing the
-grouping of the coefficients.}
+  that produced this object} \item{b0}{intercept sequence of length
+  \code{length(lambda)}} \item{beta}{a \code{p*length(lambda)} matrix of
+  coefficients.} \item{df}{the number of nonzero groups for each value of
+  \code{lambda}.} \item{dim}{dimension of coefficient matrix (ices)}
+  \item{lambda}{the actual sequence of \code{lambda} values used}
+  \item{npasses}{total number of iterations (the most inner loop) summed over
+  all lambda values} \item{jerr}{error flag, for warnings and errors, 0 if no
+  error.} \item{group}{a vector of consecutive integers describing the
+  grouping of the coefficients.}
 }
 \description{
 Fits regularization paths for group-lasso penalized learning problems at a
@@ -128,9 +144,9 @@ m2 <- gglasso(x=colon$x,y=colon$y,group=group2,loss="logit")
 }
 \references{
 Yang, Y. and Zou, H. (2015), ``A Fast Unified Algorithm for
-Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and
-Computing}. 25(6), 1129-1141.\cr BugReport:
-\url{https://github.com/emeryyi/gglasso}\cr
+  Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and
+  Computing}. 25(6), 1129-1141.\cr BugReport:
+  \url{https://github.com/emeryyi/gglasso}\cr
 }
 \seealso{
 \code{plot.gglasso}

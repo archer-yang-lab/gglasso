@@ -26,3 +26,5 @@
 ^update_doc.R$
 ^cran-comments\.md$
 gglasso.Rproj
+^doc$
+^Meta$

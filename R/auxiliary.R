@@ -46,8 +46,8 @@ margin <- function(b0, beta, y, x, delta, loss = c("ls", "logit",
 }
 
 
-KKT <- function(b0, beta, y, x, weight = NULL, lambda, pf, group, thr, delta, loss = c("ls", 
-    "logit", "sqsvm", "hsvm","wls")) {
+KKT <- function(b0, beta, y, x, weight = NULL, lambda, pf, group, thr, delta, 
+                loss = c("ls", "logit", "sqsvm", "hsvm","wls")) {
     loss <- match.arg(loss)
 	y <- drop(y)
     bn <- as.integer(max(group))
@@ -76,4 +76,5 @@ KKT <- function(b0, beta, y, x, weight = NULL, lambda, pf, group, thr, delta, lo
     }
     # cat("# of violations", ctr/length(lambda), "\n")
     cat("Averge # of violations per lambda", ctr/length(lambda))
+    return(ctr)
 } 

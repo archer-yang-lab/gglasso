@@ -4,8 +4,7 @@
 \alias{predict.gglasso}
 \title{make predictions from a "gglasso" object.}
 \usage{
-\method{predict}{gglasso}(object, newx, s = NULL, type = c("class", "link"),
-  ...)
+\method{predict}{gglasso}(object, newx, s = NULL, type = c("class", "link"), ...)
 }
 \arguments{
 \item{object}{fitted \code{\link{gglasso}} model object.}
