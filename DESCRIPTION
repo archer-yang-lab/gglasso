@@ -5,11 +5,11 @@ Date: 2017-9-12
 Author: Yi Yang <yi.yang6@mcgill.ca>, Hui Zou <hzou@stat.umn.edu>
 Authors@R: c(
   person("Yi", "Yang", email = "yi.yang6@mcgill.ca",
-  role = c("aut", "cre")),
+  role = c("aut", "cre"), comment = "http://www.math.mcgill.ca/yyang/"),
   person("Hui", "Zou", email = "hzou@stat.umn.edu",
-  role = c("aut")),
+  role = c("aut"), comment = "http://users.stat.umn.edu/~zouxx019/"),
   person("Sahir", "Bhatnagar", email = "sahir.bhatnagar@gmail.com",
-  role = c("aut"))
+  role = c("aut"), comment = "http://sahirbhatnagar.com/")
   )
 Description: A unified algorithm, blockwise-majorization-descent (BMD), for efficiently computing the solution paths of the group-lasso penalized least squares, logistic regression, Huberized SVM and squared SVM. The package is an implementation of Yang, Y. and Zou, H. (2015) DOI: <doi:10.1007/s11222-014-9498-5>.
 License: GPL-2
@@ -19,9 +19,10 @@ BugReports: https://github.com/emeryyi/gglasso/issues
 Packaged: 2017-9-12 11:11:11 UTC; yiyang
 Repository: CRAN
 Date/Publication: 2017-9-12 11:11:11
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2
 Suggests: testthat,
     knitr,
     rmarkdown
+Encoding: UTF-8
 LazyData: TRUE
 VignetteBuilder: knitr

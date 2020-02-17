@@ -26,3 +26,8 @@
 ^update_doc.R$
 ^cran-comments\.md$
 gglasso.Rproj
+^doc$
+^Meta$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
