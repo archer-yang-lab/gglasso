@@ -2,7 +2,6 @@ Package: gglasso
 Title: Group Lasso Penalized Learning Using a Unified BMD Algorithm
 Version: 1.5
 Date: 2020-3-01
-Author: Yi Yang <yi.yang6@mcgill.ca>, Hui Zou <hzou@stat.umn.edu>, Sahir Bhatnagar <sahir.bhatnagar@gmail.com>
 Authors@R: c(
   person("Yi", "Yang", email = "yi.yang6@mcgill.ca",
   role = c("aut", "cre"), comment = "http://www.math.mcgill.ca/yyang/"),
