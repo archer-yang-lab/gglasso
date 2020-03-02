@@ -175,6 +175,7 @@ SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin
     npass = 0
     ni = npass
     alf = 0.0D0
+    dl = 0.0D0
 ! --------- lambda loop ----------------------------
     IF(flmin < 1.0D0) THEN
         flmin = Max (mfl, flmin)
@@ -414,6 +415,7 @@ DOUBLE PRECISION:: r(nobs)
 DOUBLE PRECISION:: x(nobs,nvars)
 DOUBLE PRECISION:: vl(nvars)
  vl = 0.0
+ dl = 0.0
  DO i = 1, nobs
      IF (r(i) > 1.0D0) THEN
         dl (i) = 0.0D0

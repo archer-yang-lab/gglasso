@@ -175,6 +175,7 @@ SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam
     ni=npass
     alf = 0.0D0
     vl = 0.0D0
+    dl = 0.0D0
 ! --------- lambda loop ----------------------------
     IF(flmin < 1.0D0) THEN
         flmin = Max (mfl, flmin)
