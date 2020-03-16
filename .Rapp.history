@@ -1,0 +1,373 @@
+pmin(5:1, pi)
+load("/Users/yiyang/Dropbox/collaborator/Yanjia/FG/realdata/internel_model_ncvreg/adlasso_gamma2/colon_result.rda")
+res
+25+10+30+492+64+10
+631/2
+53.91+150.38+159.17
+363.46/2
+363.46/2+46
+315.5-227.73
+87.77+240
+library(stat4)
+library(stats4)
+set.seed(680)n=10; p=5; sigma.star=1
+qr.solve(t(X)%*%X) %*% t(X)%*%y
+beta.star
+qr.solve(crossprod(X)) %*% crossprod(X,y)
+qr.solve(crossprod(X), crossprod(X,y))
+set.seed(680)
+q=min(c(n,p))
+out=svd(X, nu=q, nv=q)
+X=cbind(X[,1],X)
+svd(X)
+out=svd(X, nu=10, nv=10)
+out=svd(X, nu=3, nv=3)
+?svd
+svd(X, nu=10, nv=3)
+svd(X, nu=6, nv=3)
+svd(X, nu=, nv=3)
+X=matrix(rnorm(n*p), nrow=n, ncol=p)
+svd(X, nu=,5 nv=3)
+svd(X, nu=5 nv=3)
+svd(X, nu=5, nv=3)
+X
+svd(X, nu=4, nv=4)
+svd(X, nu=5, nv=\5)
+svd(X, nu=5, nv=5)
+set.seed(5701)n=5; p=10X=cbind(1, matrix(rnorm(n*(p-1)), nrow=n, ncol=(p-1)))beta.star=rep(1,p)y=X%*%beta.star + 1*rnorm(n)xbar=apply(X[,-1], 2, mean); ybar=mean(y)Xtilde=scale(X[,-1], center=xbar, scale=FALSE); ytilde=y-ybarq=min(c(n-1, p-1))out=svd(Xtilde, nu=q, nv=q)
+lam.vec=10^seq(from=-8, to=8, by=0.5) beta.hat.matrix=matrix(NA, nrow=p, ncol=length(lam.vec)) for(j in 1:length(lam.vec)){  H=diag(out$d[1:q]/(out$d[1:q]^2 + lam.vec[j]))  bhatm1=out$v%*%H%*%t(out$u)%*%ytilde  bhat1=ybar - sum(xbar*bhatm1)  beta.hat.matrix[,j]=c(bhat1, bhatm1)}
+lam.vec=10^seq(from=-8, to=8, by=0.5)
+beta.hat.matrix=matrix(NA, nrow=p, ncol=length(lam.vec)) for(j in 1:length(lam.vec)){  H=diag(out$d[1:q]/(out$d[1:q]^2 + lam.vec[j]))  bhatm1=out$v%*%H%*%t(out$u)%*%ytilde  bhat1=ybar - sum(xbar*bhatm1)  beta.hat.matrix[,j]=c(bhat1, bhatm1)}
+library(glmvsd)
+example(glmvsd)
+b_AIC
+v1_BIC
+library(gglasso)
+data(Bardet)
+data(bardet)
+load("/Users/yiyang/Dropbox/Teaching/MATH680/Topic4/note/Bardet.rda")
+library(glmnet)#
+load("Bardet.rda")
+library(e1071)
+hamming.window(10)#
+#
+x<-rnorm(500)#
+y<-stft(x, wtype="hamming.window")
+plot(x)
+plot(y)
+145+85.83
+List <- c(0,0,1,1,1,1,2,2,2,2,2,3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,5,5,6,6,7,7,7,7,8,8,9)#
+#
+stripchart(List, xlim = c(0,10), ylim = c(0,8), method = "stack", offset = 1)
+18*5
+?bs
+library(spline)
+library(splines)
+?bs()
+111-3.99
+1-0.0918
+(1-0.0918)^20
+(1-0.0918)^19
+1920.55+684.30
+90.61+94.73+143.43
+2604.85+328.77
+library(cplm)#
+data(AutoClaim)#
+da <- AutoClaim #
+da <- transform(da, CLM_AMT5 = CLM_AMT5/5000,	INCOME = INCOME/10000)#
+hist(da$CLM_AMT5, col ="grey", breaks = 50, main =NA,#
+xlab = "Total Insurance Claim Amount (in $1000) Per Policy Year",cex.lab=1.3,cex.axis=1.3, ylim = c(0,7500))
+install.packages("tufte")
+install.packages("rmarkdown")
+library(cplm)
+load(AutoClaim)
+head(Autoclaim)
+head(AutoClaim)
+example(HDtweedie)
+m1
+m1$beta
+plot(m1)
+library(parallel)#
+library(Matrix)#
+library(igraph)#
+gamma0 <- 0.0025#
+ggratio <- 10#
+gamma1 <- ggratio * gamma0#
+#
+ratio <- 0.4999 #
+#
+graph_size <- 10#
+step_size <- 10500#
+#
+repetition <- 10#
+#
+average_degree <- 5
+average_degree/2*graph_size
+setwd('/Users/yiyang/Dropbox/collaborator/Bofan/code/zheng's version')
+g <- sample_fitness_pl (graph_size, average_degree/2*graph_size, exponent.in = -1, exponent.out = Inf)
+g
+plot(g)
+tools::package_native_routine_registration_skeleton
+tools::package_native_routine_registration_skeleton(".")
+example(dlstats)
+?dlstats
+library(dlstat)
+library(dlstats)
+x <- cran_stats(c("gglasso"))#
+head(x)
+library("ggplot2")
+x <- cran_stats(c("HDtweedie","fastcox","gcdnet"))#
+head(x)
+ggplot(x, aes(end, downloads, group=package, color=package)) +#
+    geom_line() + geom_point(aes(shape=package))
+?
+matrix
+n <- 50#
+p <- 8#
+beta <- c(3,1.5,0,0,2,0,0,0)#
+b0 <- 1#
+x <- matrix(rnorm(n*p,0,1),nrow=n,ncol=p)#
+e <- rnorm(n)#
+y <- x %*% beta + b0 + e
+v_BIC <- SOIL(x, y, family = "gaussian", weight_type = "BIC")
+v_BIC
+library(HDtweedie)
+library(TDboost)
+train_dat
+ls()
+example(TDboost)
+x=rnorm(100,0,1)
+x1=rnorm(100,0,1)
+x2 = rep(NA,100)
+for(i in 1:100) x2[i] = rnorm(1,0,1)
+x2
+for(i in 1:10000) x2[i] = rnorm(1,0,1)
+x1=rnorm(10000,0,1)
+hist(x1)
+hist(x2)
+example(lm)
+double(3)
+diag(3)
+colsums(diag(1,2,3))
+colsums(matrix(1:9,3,3))
+colSum(matrix(1:9,3,3))
+colSums(matrix(1:9,3,3))
+matrix(1:9,3,3)
+library(magrittr)
+library(tidyr)
+library(data.table)
+library(readr)
+hsb2<-read.table("http://www.ats.ucla.edu/stat/data/hsb2.csv", sep=",", header=T)
+library(jpeg)
+cat <- readJPEG('cat.jpg')#
+ncol(cat)#
+nrow(cat)
+9.812^2
+^2
+5.723^2
+library(car)
+scatterplot
+example(scatterplot)
+?scatterplot
+n <- 50#
+p <- 8#
+beta <- c(3,1.5,0,0,2,0,0,0)#
+b0 <- 1#
+x <- matrix(rnorm(n*p,0,1),nrow=n,ncol=p)
+library(SOIL)
+e <- rnorm(n)#
+y <- x %*% beta + b0 + e
+y
+head(x)
+v_ARM <- SOIL(x, y, family = "gaussian",#
+weight_type = "ARM", prior = TRUE)
+v_ARM
+n <- 20#
+p <- 5#
+x <- matrix(rnorm(n * p), nrow = n)#
+a <- t(x) \%*\% x#
+matinv(a)#
+matdet(a)#
+b <- rnorm(p)#
+matsolve(a, b)#
+matsmash(a, b)
+n <- 20#
+p <- 5#
+x <- matrix(rnorm(n * p), nrow = n)#
+a <- t(x) %*% x#
+matinv(a)#
+matdet(a)#
+b <- rnorm(p)#
+matsolve(a, b)#
+matsmash(a, b)
+library(baz)
+?baz
+??matvecmult
+?matvecmult
+12*3+9.5*2
+install.packages(’NHANES’)library(NHANES)
+install.packages(NHANES)
+install.packages("NHANES")
+library(NHANES)
+?NHANES
+set.seed(680)#
+n=10; p=5; sigma.star=1#
+Z=matrix( rnorm(n*(p-2)), nrow=n, ncol=(p-2))#
+v2=c( rep(1, n/2), rep(0, n/2) )#
+X=cbind(1, v2, Z)#
+beta.star=p^(-0.5) * rnorm(p)#
+y=X%*%beta.star + sigma.star * rnorm(n)
+out=qr(x=X)
+out
+qr.solve
+qr.coef
+?qr.coef
+?solve
+9798/2-3000
+blogdown::new_site(theme = "dim0627/hugo_theme_beg")
+ls
+rm(list = ls())#
+knitr::opts_chunk$set(cache=TRUE, message = FALSE, tidy = FALSE, echo = FALSE, fig.width = 6, fig.asp = 0.618, #
+fig.align = 'center', out.width = "100%", size = 'scriptsize')
+pacman::p_load(knitr)#
+pacman::p_load(cowplot)#
+pacman::p_load(sjPlot)#
+pacman::p_load(sjmisc)#
+pacman::p_load(ISLR)#
+pacman::p_load(data.table)#
+pacman::p_load(rpart)#
+pacman::p_load(rpart.plot)#
+pacman::p_load(xtable)#
+pacman::p_load(splines)#
+pacman::p_load(plotmo)#
+pacman::p_load(caret)#
+pacman::p_load(tidyverse)#
+trop <- RSkittleBrewer::RSkittleBrewer("trop")#
+gg_sy <- theme(legend.position = "bottom", axis.text = element_text(size = 20), axis.title = element_text(size = 20), legend.text = element_text(size = 20), legend.title = element_text(size = 20))
+?save
+x
+x=2
+str(x)
+a = list(x=3, y = matrix(1:4,2,2))
+a
+a[[1]]
+a[[2]]
+devtools::install_github("hkasahara/normalregmix")
+dat<- data.frame(t=seq(0, 2*pi, by=0.1) )#
+ xhrt <- function(t) 16*sin(t)^3#
+ yhrt <- function(t) 13*cos(t)-5*cos(2*t)-2*cos(3*t)-cos(4*t)#
+ dat$y=yhrt(dat$t)#
+ dat$x=xhrt(dat$t)#
+ with(dat, plot(x,y, type="l"))
+with(dat, polygon(x,y, col="hotpink"))
+?hist
+predict.lm
+?predict.lm
+names(stackloss)#
+  help(stackloss)
+data(ChickWeight)#
+names(ChickWeight)#
+attach(ChickWeight)
+coplot(weight ~ Time | Chick, data = ChickWeight,type = "b", show.given = FALSE)
+ChickWeight
+library(R1magic)#
+#
+p <- 100 #
+#
+K <- 4 #
+#
+M <- 40#
+#
+phi <- GaussianMatrix(p,M)#
+#
+xorg <- sparseSignal(p, K, nlev=1e-3)#
+#
+y <- phi %*% xorg ;#
+#
+T <- diag(p) ;#
+#
+p <- matrix(0, p, 1) ;#
+#
+ll <- solveL1(phi, y, T, p)#
+x1 <- ll$estimate#
+par(mfrow=c(1,2))#
+plot( 1:100, seq(0.011,1.1,0.011), type = "n", xlab="",ylab="")#
+title(main= "Random Sparse Signal Recovery ",#
+      xlab= "Signal Component", ylab= "Spike Value" )#
+lines(1:100, xorg , col = "red")#
+plot( 1:100, seq(0.011,1.1,0.011), type = "n", xlab="",ylab="")#
+title(main= "Original Signal",#
+      xlab= "Signal Component", ylab= "Spike Value" )#
+lines(1:100, x1, col = "blue", cex = 1.5)
+600+300+540+285+1899+225+675+100+25155
+1259+ 41+1049
+2349+568
+70.5+36+33+40+19+30+3143+847.5
+4219782.37
+782.37
+370+415
+1,042+782
+1042+782
+1274+12.10+24.90
+33+645+42+108+2880+655+824
+465+962
+46+669+621+636+1
+46+669+621+636
+97+408+10+69+575
+54+454+1100+619+1450
+681+55+41+1304+430+50
+2561+1427+29+2052+2917+243+1824
+sep(1:100)
+sep(1)
+seq()
+seq(1:100)
+combn(2,4)
+combn(4,2)
+choose(5, 10)/2^10
+choose(5, 10)/(2^10)
+choose(5, 10)
+choose(10,5)
+choose(10,5)/2^10
+adpen<-(1/0,.Machine$double.eps))
+adpen<-(1/0,.Machine$double.eps)
+adpen<-(1/pmax(abs(bhat),.Machine$double.eps))
+adpen<-(1/pmax(0,.Machine$double.eps))
+adpen
+adpen<-(1/pmax(5,.Machine$double.eps))
+.Machine$double.eps
+data(stackloss)
+names(ChickWeight)
+data(stackloss)#
+names(stackloss)
+270-(270*(13000-10000)*0.00225)/11.25
+(68.8-67.3)/2*40/67.3
+(68.8-67.3)/40/67.3
+(68.8-67.3)*40/67.3
+125.7-68.8
+56.9*41/68.8
+56.9*41/67.3
+56.9*40/67.3
+55*(-100.345)+32.743 + 2.0484 * sqrt(124.8^2 * (1 + 1/30 + (55 - 50.636)^2/4171.37))
+x = 40
+x *(-100.345)+32.743 + 2.0484 * sqrt(124.8^2 * (1 + 1/30 + (x - 50.636)^2/4171.37))
+x = 55
+x *(-100.345)+32.743 - 2.0484 * sqrt(124.8^2 * (1 + 1/30 + (x - 50.636)^2/4171.37))
+install.packages("rhub")
+setwd("/Users/yiyang/Dropbox/Research/prog_project/gglasso")
+getwd()
+rhub::check_on_debian()#
+via  #
+#
+Type a message
+rhub::check_on_debian()
+check_for_cran()
+rhub::check_for_cran()
+rhub::platforms()#
+via  #
+#
+Type a message
+rhub::platforms()
+rhub::check(platform = "debian-clang-devel")
+rhub::check(platform = "debian-gcc-devel-nold")
+rhub::check(platform = "debian-gcc-patched")
+rhub::check(platform = "fedora-clang-devel")
